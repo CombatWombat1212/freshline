@@ -352,6 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function entrancesInit() {
   const body = document.querySelector("body");
   body.style.setProperty("opacity", 1);
+  
 
   gsap.registerPlugin(ScrollTrigger);
 
