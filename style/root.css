@@ -508,7 +508,7 @@ body {
 }
 @media screen and (max-width: 990px) {
   .navigation--logo-wrapper {
-    max-width: 12rem;
+    max-width: 14rem;
   }
 }
 .navigation--logo {
