@@ -1,0 +1,509 @@
+// // Mixin optional - see below
+// @mixin unify-parent($child) {
+//   @at-root #{selector.unify(&, $child)} {
+//     @content;
+//   }
+// }
+
+@mixin selected($sel) {
+  @at-root section.map-section .w-dyn-item[data-country].selected #{$sel} {
+    @content;
+  }
+}
+
+@mixin theme($theme) {
+  @at-root #{selector.replace(&, "section.map-section", "section.map-section[data-theme='#{$theme}']")} {
+    @content;
+  }
+}
+
+@mixin map-loading {
+  @at-root #{selector.replace(&, "[data-map]", "[data-map]:not([data-loaded])")} {
+    @content;
+  }
+}
+
+@mixin map-loaded {
+  @at-root #{selector.replace(&, "[data-map]", "[data-map][data-loaded]")} {
+    @content;
+  }
+}
+
+section.map-section {
+  --map-height: 30rem;
+  --mobile-body-height: 20rem;
+  --selected-padding: 2rem;
+
+  counter-reset: item-counter;
+  @include lg-down {
+    --map-height: 20rem;
+  }
+
+  @include md-down {
+    --map-height: 16rem;
+    --mobile-body-height: 20rem;
+    --selected-padding: 1.5rem;
+  }
+  @include sm-down {
+    --map-height: 12rem;
+    --mobile-body-height: 18rem;
+  }
+
+  padding-top: 0rem;
+
+  .w-dyn-item {
+    counter-increment: item-counter;
+    cursor: pointer;
+    // pointer-events: auto;
+  }
+
+  .map {
+    &--container {
+      &.selected {
+        @include lg-down {
+          background-color: $col--primary__light;
+          @include theme("turf") {
+            background-color: $col--turf;
+          }
+        }
+      }
+
+      @include lg-down {
+        grid-template-columns: 1fr;
+        gap: 0rem !important;
+        background-color: $col--primary__lighter;
+        border-radius: var(--border-radius);
+      }
+    }
+
+    &--selection-wrapper {
+      $scrollbar-width: 0.625rem;
+
+      &:not(.no-scroll) {
+        padding-right: $scrollbar-width;
+      }
+      @include lg-down {
+        padding-right: 0rem !important;
+        order: 1;
+      }
+
+      @include md-down {
+        height: var(--mobile-body-height);
+        max-height: var(--mobile-body-height);
+        overflow: visible;
+      }
+
+      @include scrollbar {
+        width: $scrollbar-width;
+      }
+
+      @include scrollbar-track {
+        background: var(--color--primary__lighter);
+        border-radius: 100rem;
+      }
+
+      // @include theme-turf(".map--selection-wrapper") {
+      //   @include scrollbar-track {
+      //     background: var(--color--turf__lightest);
+      //   }
+      // }
+
+      @include scrollbar-thumb {
+        background-color: var(--color--primary__dark);
+        border-radius: 100rem;
+      }
+      // @include theme-turf(".map--selection-wrapper") {
+      //   @include scrollbar-thumb {
+      //     background: var(--color--turf);
+      //   }
+      // }
+
+      @supports not selector(::-webkit-scrollbar) {
+        scrollbar-color: var(--color--primary__dark) var(--color--primary__lighter);
+      }
+      // @include theme-turf(".map--selection-wrapper") {
+      //   @supports not selector(::-webkit-scrollbar) {
+      //     scrollbar-color: var(--color--turf) var(--color--primary__lighter);
+      //   }
+      // }
+    }
+
+    &--collection-list {
+      @include lg-down {
+        gap: 0rem;
+      }
+    }
+
+    &--list-item {
+      transition: background-color 0.15s;
+
+      @include lg-down {
+        @include pad-x(calc(var(--border-radius) / 2));
+        border-radius: 0rem;
+        background-color: $col--primary__light !important;
+      }
+
+      @include theme("turf") {
+        background-color: var(--color--turf) !important;
+      }
+
+      @include hover("section.map-section .w-dyn-item", ".map--list-item") {
+        background-color: var(--color--primary__light);
+        @include theme("turf") {
+          background-color: var(--color--turf__dark);
+        }
+      }
+
+      @include selected(".map--list-item") {
+        height: var(--map-height);
+        padding: var(--selected-padding);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        background-color: var(--color--primary__light);
+        cursor: default;
+
+        @include flex-col;
+        align-items: flex-start;
+
+        @include lg-down {
+          height: var(--mobile-body-height);
+        }
+      }
+    }
+
+    &--heading-text {
+      @include selected(".map--heading-text") {
+        @include text--h3;
+      }
+    }
+
+    &--date {
+      @include selected(".map--date") {
+        margin-top: -0.25rem;
+      }
+    }
+
+    &--number {
+      transition: 0.15s;
+      height: unset;
+
+      @include lg-down {
+        margin-right: calc(var(--border-radius) / 2);
+      }
+
+      &::before {
+        content: counter(item-counter);
+      }
+
+      @include hover("section.map-section .w-dyn-item", ".map--number") {
+        background-color: var(--color--primary);
+      }
+
+      @include selected(".map--number") {
+        display: none;
+      }
+    }
+
+    &--paragraph {
+      display: none;
+      @include selected(".map--paragraph") {
+        display: block;
+        margin-top: 1.75rem;
+
+        @include line-cutoff(8);
+      }
+      @include lg-down {
+        display: none !important;
+      }
+    }
+
+    &--close {
+      margin-bottom: auto;
+      display: none;
+
+      @include selected(".map--close") {
+        display: flex;
+      }
+      @include lg-down {
+        display: none !important;
+      }
+    }
+    &--close-mask {
+      transition: 0.2s;
+
+      @include theme("turf") {
+        background-color: darken($col--turf__dark, 10%);
+      }
+      @include hover("section.map-section .map--close", ".map--close-mask") {
+        background-color: var(--color--accent__hovered);
+        @include theme("turf") {
+          background-color: darken($col--turf__dark, 15%);
+        }
+      }
+    }
+
+    &--button-wrapper {
+      display: none;
+
+      @include selected(".map--button-wrapper") {
+        @include flex-row-between;
+        align-items: flex-end;
+        margin-top: auto;
+        width: 100%;
+
+        @include lg-down {
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
+      }
+    }
+
+    &--seek {
+      @include lg-down {
+        position: absolute;
+        bottom: 0;
+        transform: translate(-50%, calc(100% + var(--selected-padding)));
+        left: 50%;
+        gap: 2rem;
+      }
+    }
+
+    &--seek-button {
+      position: relative;
+      pointer-events: all;
+      cursor: pointer;
+      width: 3.5rem;
+      height: 3.5rem;
+    }
+
+    &--seek-image {
+      pointer-events: none;
+      opacity: 1;
+
+      &.hovered {
+        opacity: 0;
+      }
+
+      @include hover(".map--seek-button", ".map--seek-image.hovered") {
+        opacity: 1 !important;
+      }
+      @include hover(".map--seek-button", ".map--seek-image:not(.hovered)") {
+        opacity: 0 !important;
+      }
+    }
+  }
+
+  .button {
+    @include theme("turf") {
+      background-color: var(--color--turf__dark);
+    }
+
+    @include lg-down {
+      // @include pad-y(0.5rem);
+      // @include pad-x(1.25rem);
+      width: 100%;
+    }
+  }
+
+  .unique-factors {
+    // @include lg-down {
+    //   display: none !important;
+    // }
+    &--wrapper {
+      display: none !important;
+    }
+
+    display: none;
+
+    @include lg-down {
+      // margin-top: 2rem !important;
+      margin-top: 1rem !important;
+      max-height: calc((Max(var(--tag--font-size), var(--tag--line-height)) * 2) + 2rem + 1.15rem);
+      overflow: hidden;
+    }
+
+    @include selected(".unique-factors") {
+      display: flex;
+      margin-top: 0.85rem;
+    }
+
+    &--list {
+      flex-wrap: wrap;
+    }
+
+    &--item {
+      pointer-events: none;
+      cursor: default;
+      @include theme("turf") {
+        background-color: var(--color--turf__dark);
+      }
+    }
+
+    &--mask {
+      @include theme("turf") {
+        background-color: var(--color--primary__lightest);
+      }
+    }
+  }
+
+  .map--container > [data-map] {
+    height: var(--map-height, 30rem);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+
+    &,
+    & * {
+      @include map-loading {
+        pointer-events: none;
+      }
+    }
+
+    &::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      content: "";
+      background-color: var(--color--primary__lighter);
+      z-index: 10000;
+      transition: 0.2s;
+
+      @include map-loading {
+        opacity: 1;
+      }
+
+      @include map-loaded {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+  }
+
+  .leaflet-left .leaflet-control {
+    margin-top: calc(var(--border-radius) / 1.75);
+    margin-left: calc(var(--border-radius) / 1.75);
+    border: 0rem !important;
+    border-radius: 1000rem;
+    overflow: hidden;
+
+    a {
+      transition: 0.15s;
+      background-color: var(--color--accent);
+      color: var(--color--primary__lightest);
+      border-radius: 0rem;
+      @include theme("turf") {
+        background-color: var(--color--turf);
+      }
+
+      @include hover {
+        background-color: var(--color--accent__hovered);
+        color: var(--color--primary__lightest);
+
+        @include theme("turf") {
+          background-color: var(--color--turf__dark);
+        }
+      }
+    }
+  }
+
+  .leaflet-popup-content-wrapper {
+    background-color: var(--color--primary__lightest);
+    border-radius: 100rem;
+  }
+
+  .leaflet-popup-tip {
+    background-color: var(--color--primary__lightest);
+  }
+
+  $popup-x-size: 1rem;
+  $popup-x-gap: 0.5rem;
+  $popup-marg-right: 1.25rem;
+
+  .leaflet-popup-content {
+    @include marg-y(0.75rem);
+    @include marg-x($popup-marg-right);
+    margin-right: 3.7rem;
+    @include text--body;
+    @include flex-row-center;
+    text-align: center;
+
+    @include lg-down {
+      @include marg-x(1.5rem);
+    }
+
+    &,
+    & > * {
+      color: var(--color--primary__dark);
+      font-weight: 500 !important;
+    }
+  }
+
+  .leaflet-popup-close-button {
+    height: 100%;
+    width: 2.9rem;
+
+    @include flex-row-center;
+    align-items: center;
+
+    top: 50%;
+    transform: translateY(calc(-50% - 1px));
+    right: 0;
+
+    border-left: 1px solid rgba($col--primary__dark, 0.15);
+
+    pointer-events: all;
+    cursor: pointer;
+
+    border-top-right-radius: 100rem;
+    border-bottom-right-radius: 100rem;
+
+    @include lg-down {
+      display: none !important;
+    }
+
+    @include hover {
+      background-color: rgba($col--accent, 0.15);
+      @include theme("turf") {
+        background-color: rgba($col--turf, 0.15);
+      }
+    }
+
+    span {
+      color: var(--color--accent);
+      display: none;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: $popup-x-size;
+      height: $popup-x-size;
+      transform: translateX(-2px);
+
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-image: url("https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/668579d5fd0f2e7795db6563_Times.svg");
+      mask-position: center;
+      pointer-events: none;
+      background-color: var(--color--accent);
+      @include theme("turf") {
+        background-color: var(--color--turf);
+      }
+    }
+  }
+
+  .leaflet-control-attribution {
+    display: none;
+  }
+}
+
+.unique-factors {
+  &--mask {
+    @include safari {
+      display: none;
+    }
+  }
+}

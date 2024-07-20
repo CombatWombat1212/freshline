@@ -1,0 +1,81 @@
+@import "Colors-Core";
+
+$font-family--primary: "Neuething Sans";
+$font-family--secondary: "Arrus";
+$font-family--tertiary: "Lato";
+$neuething-stretch: 50%;
+
+@mixin text--h1 {
+  font-family: var(--font-title);
+  font-size: var(--h1--font-size);
+  line-height: var(--h1--line-height);
+  letter-spacing: var(--h1--letter-spacing);
+  font-weight: 700;
+  
+}
+
+@mixin text--h2 {
+  font-family: var(--font-title-condensed);
+  font-size: var(--h2--font-size);
+  line-height: var(--h2--line-height);
+  letter-spacing: var(--h2--letter-spacing);
+  font-weight: 700;
+}
+
+@mixin text--h3 {
+  font-family: var(--h3--font-family);
+  font-size: var(--h3--font-size);
+  line-height: var(--h3--line-height);
+  letter-spacing: var(--h3--letter-spacing);
+  font-weight: 600;
+}
+
+@mixin text--h4 {
+  font-family: var(--h4--font-family);
+  font-size: var(--h4--font-size);
+  line-height: var(--h4--line-height);
+  letter-spacing: var(--h4--letter-spacing);
+  font-weight: 700;
+}
+
+@mixin text--body {
+  font-family: var(--body--font-family);
+  font-size: var(--body--font-size);
+  line-height: var(--body--line-height);
+  letter-spacing: var(--body--letter-spacing);
+  font-weight: 400;
+}
+
+@mixin text--tag {
+  font-family: var(--tag--font-family);
+  font-size: var(--tag--font-size);
+  line-height: var(--tag--line-height);
+  letter-spacing: var(--tag--letter-spacing);
+  font-weight: 400;
+}
+
+%text {
+  &--h1 {
+    @include text--h1;
+  }
+
+  &--h2 {
+    @include text--h2;
+  }
+
+  &--h3 {
+    @include text--h3;
+  }
+
+  &--h4 {
+    @include text--h4;
+  }
+
+  &--body {
+    @include text--body;
+  }
+
+  &--tag {
+    @include text--tag;
+  }
+}

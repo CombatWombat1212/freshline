@@ -1,0 +1,20 @@
+.polaroid {
+  --translate-x: 0;
+  --translate-y: 0;
+  --rotation: 0;
+
+  transform: translate(var(--translate-x), var(--translate-y))
+    rotate(var(--rotation));
+
+  &.background {
+    --translate-x: 8rem;
+    --translate-y: -3rem;
+    --rotation: 8deg;
+  }
+
+  &--image {
+  }
+
+  &--countdown {
+  }
+}

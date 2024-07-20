@@ -1,0 +1,83 @@
+.looking-for {
+  &--section {
+    --graphic-margin-bottom: 0.5rem;
+    --graphic-height: 7.5rem;
+
+    --scroll-wrapper-translate__offset: calc(var(--graphic-margin-bottom) + var(--graphic-height));
+
+    --scroll-wrapper-translate: calc((var(--scroll-wrapper-translate__offset) * -1) + var(--h3--line-height));
+
+    margin-top: calc(var(--section-pad) + var(--scroll-wrapper-translate__offset)) !important;
+    padding-top: 0rem !important;
+
+    @include md-down {
+      margin-top: var(--section-pad);
+    }
+  }
+
+  @include md-down {
+    @include flex-col;
+    // top: calc(var(--nav-height) + 2rem);
+    top: calc(var(--nav-height) + 20vh);
+    gap: 1rem;
+    --graphic-margin-bottom: 1rem;
+  }
+  @include md-down {
+    top: calc(var(--nav-height) + 10vh);
+  }
+
+  &--wrapper {
+  }
+
+  &--body {
+    @include md-down {
+      width: 100%;
+    }
+
+    br {
+      @include md-down {
+        display: none;
+      }
+    }
+  }
+  &--scroll-wrapper {
+    margin-top: 0rem;
+    transform: translateY(var(--scroll-wrapper-translate));
+
+    @include md-down {
+      width: 100%;
+      min-width: 100%;
+      margin-top: 0rem;
+      transform: unset;
+    }
+  }
+
+  &--scroll {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(calc(var(--index) * -100%)) translateY(calc((var(--distance-from-active) * 100%) + 1px));
+    @include md-down {
+      width: 100%;
+      min-width: 100%;
+    }
+  }
+  &--graphic {
+    @include md-down {
+      width: 100%;
+      min-width: 100%;
+      height: 20rem;
+      margin-bottom: 1rem;
+    }
+    @include sm-down {
+      width: 100%;
+      min-width: 100%;
+      height: 14rem;
+    }
+  }
+  &--heading {
+    @include md-down {
+      text-transform: capitalize;
+    }
+  }
+  &--paragraph {
+  }
+}

@@ -1,0 +1,61 @@
+.section-group {
+  border-radius: unset;
+
+  &__bottom-transition {
+    position: relative;
+    z-index: 1;
+
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      transform: translateY(100%);
+      height: var(--border-radius);
+      background-color: inherit;
+      border-bottom-left-radius: var(--border-radius);
+      border-bottom-right-radius: var(--border-radius);
+      overflow: hidden;
+    }
+
+    & + section.section {
+      z-index: 0;
+    }
+  }
+  &__top-transition {
+    position: relative;
+    z-index: 1;
+
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      transform: translateY(-100%);
+      height: var(--border-radius);
+      background-color: inherit;
+      border-top-left-radius: var(--border-radius);
+      border-top-right-radius: var(--border-radius);
+      overflow: hidden;
+    }
+  }
+
+  & > *:first-child {
+    padding-top: var(--section-pad);
+  }
+
+  & > *:last-child {
+    padding-bottom: var(--section-pad);
+  }
+
+  @at-root .navigation + .section-group {
+    padding-top: var(--site-top-pad);
+    & > *:first-child {
+      padding-top: 0;
+    }
+  }
+}

@@ -1,0 +1,143 @@
+@import "Functions";
+@import "Breakpoints";
+
+$m: 0.85;
+
+$m-mob: 0.65;
+$m-desk: 0.85;
+
+@mixin fluid-line-height {
+  @supports (font-size: Clamp(3.75rem, calc(2.0533rem + 3.9344vi), 5.25rem)) {
+    @include utopia.generateClamps(
+      (
+        "minWidth": 690,
+        "maxWidth": 1300,
+        "pairs": (
+          (78 * $m-mob, 147.2 * $m-desk),
+          (160 * $m-mob, 160 * $m-desk),
+          (52 * $m-mob, 78 * $m-desk),
+          (41.6 * $m-mob, 41.6 * $m-desk),
+          (24, 30 * $m-desk),
+          (24 * $m-mob, 24 * $m-desk),
+        ),
+        "prefix": (
+          "h1--line-height",
+          "h2--line-height",
+          "h3--line-height",
+          "h4--line-height",
+          "body--line-height",
+          "tag--line-height",
+        ),
+        useRem: true,
+      )
+    );
+  }
+
+  @supports not (font-size: Clamp(3.75rem, calc(2.0533rem + 3.9344vi), 5.25rem)) {
+    --h1--line-height: 7.82rem;
+    --h2--line-height: 8.5rem;
+    --h3--line-height: 4.14rem;
+    --h4--line-height: 2.21rem;
+    --body--line-height: 1.59rem;
+    --tag--line-height: 1.275rem;
+  
+    @include lg-down {
+      --h1--line-height: 5.98rem;
+      --h2--line-height: 7.71rem;
+      --h3--line-height: 3.34rem;
+      --h4--line-height: 2.00rem;
+      --body--line-height: 1.56rem;
+      --tag--line-height: 1.16rem;
+    }
+  
+    @include md-down {
+      --h1--line-height: 4.75rem;
+      --h2--line-height: 7.18rem;
+      --h3--line-height: 2.80rem;
+      --h4--line-height: 1.87rem;
+      --body--line-height: 1.53rem;
+      --tag--line-height: 1.08rem;
+    }
+  
+    @include sm-down {
+      --h1--line-height: 3.17rem;
+      --h2--line-height: 6.5rem;
+      --h3--line-height: 2.11rem;
+      --h4--line-height: 1.69rem;
+      --body--line-height: 1.50rem;
+      --tag--line-height: 0.98rem;
+    }
+  }
+  
+
+
+}
+
+@mixin fluid-type {
+  @supports (font-size: Clamp(3.75rem, calc(2.0533rem + 3.9344vi), 5.25rem)) {
+    @include utopia.generateClamps(
+      (
+        "minWidth": 690,
+        "maxWidth": 1300,
+        "pairs": (
+          (64 * $m-mob, 128 * $m-desk),
+          (128 * $m-mob, 128 * $m-desk),
+          (38 * $m-mob, 60 * $m-desk),
+          (24 * $m-mob, 28 * $m-desk),
+          (16, 20 * $m-desk),
+          (14, 16 * $m-desk),
+        ),
+        "prefix": (
+          "h1--font-size",
+          "h2--font-size",
+          "h3--font-size",
+          "h4--font-size",
+          "body--font-size",
+          "tag--font-size",
+        ),
+        useRem: true,
+      )
+    );
+  }
+
+  @supports not (font-size: Clamp(3.75rem, calc(2.0533rem + 3.9344vi), 5.25rem)) {
+    --h1--font-size: 6.8rem;
+    --h2--font-size: 6.8rem;
+    --h3--font-size: 3.1875rem;
+    --h4--font-size: 1.4875rem;
+    --body--font-size: 1.0625rem;
+    --tag--font-size: 0.85rem;
+
+    @include lg-down {
+      --h1--font-size: 5.13rem;
+      --h2--font-size: 6.17rem;
+      --h3--font-size: 2.54rem;
+      --h4--font-size: 1.28rem;
+      --body--font-size: 1.04rem;
+      --tag--font-size: 0.86rem;
+    }
+
+    @include md-down {
+      --h1--font-size: 4.03rem;
+      --h2--font-size: 5.74rem;
+      --h3--font-size: 2.1rem;
+      --h4--font-size: 1.15rem;
+      --body--font-size: 1.02rem;
+      --tag--font-size: 0.87rem;
+    }
+
+    @include sm-down {
+      --h1--font-size: 2.6rem;
+      --h2--font-size: 5.2rem;
+      --h3--font-size: 1.54rem;
+      --h4--font-size: 0.98rem;
+      --body--font-size: 1rem;
+      --tag--font-size: 0.88rem;
+    }
+  }
+}
+
+:root {
+  @include fluid-type;
+  @include fluid-line-height;
+}

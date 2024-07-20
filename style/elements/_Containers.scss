@@ -1,0 +1,9 @@
+.container--large.w-container::before,
+.container--large.w-container::after {
+  content: none;
+}
+
+.w-container:before,
+.w-container:after {
+  content: none !important;
+}

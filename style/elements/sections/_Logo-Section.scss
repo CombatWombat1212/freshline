@@ -1,0 +1,112 @@
+@mixin theme($theme) {
+  @at-root .logo-section[data-theme="#{$theme}"] & {
+    @content;
+  }
+}
+
+.logo-section {
+  --gap: 2rem;
+  --divider-width: 0.25rem;
+  @include flex-col;
+  width: 100%;
+  padding: 0rem;
+
+  &--title {
+    @include lg-down {
+      text-align: center;
+      margin-bottom: 0rem;
+    }
+  }
+
+  &--logo {
+    @include theme("primary") {
+      background-color: $col--primary__dark;
+    }
+  }
+  &--logo-row {
+    position: relative;
+    gap: var(--gap);
+    grid-column-gap: var(--gap);
+    grid-row-gap: var(--gap);
+    margin: 0rem;
+
+    @include lg-down {
+      flex-wrap: wrap;
+      background-color: $col--charcoal;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+
+      gap: var(--divider-width);
+      grid-column-gap: var(--divider-width);
+      grid-row-gap: var(--divider-width);
+
+      @include theme("primary") {
+        background-color: $col--primary__lighter;
+      }
+    }
+
+    @mixin before-after {
+      content: "";
+      position: absolute;
+      display: block;
+      background-color: $col--charcoal__dark;
+      @include theme("primary") {
+        background-color: $col--primary__lightest;
+      }
+    }
+
+    &::before {
+      @include lg-down {
+        width: var(--divider-width);
+        height: 100%;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        @include before-after;
+      }
+    }
+    &::after {
+      @include lg-down {
+        width: 100%;
+        height: var(--divider-width);
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        @include before-after;
+      }
+    }
+  }
+  &--logo-wrapper {
+    @include lg-down {
+      --gap: var(--divider-width);
+      @include e-col-width(6);
+      padding: 2rem;
+      @include flex-col-center;
+      height: 6rem;
+    }
+    @include md-down {
+      height: 6rem;
+      padding: 2rem;
+    }
+    @include sm-down {
+      padding: 1.5rem;
+    }
+  }
+  &--logo {
+    @include lg-down {
+      margin: auto;
+      background-color: rgba($col--primary__lightest, 0.85);
+    }
+  }
+  &--divider {
+    @include theme("primary") {
+      background-color: $col--primary__dark;
+    }
+    @include lg-down {
+      display: none;
+    }
+  }
+}
+
+// https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/6686ebebd686e7451273712f_torn-paper-long__top.svg
+// https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/6686ebeb1e7156ec9183d2ee_torn-paper-long__bottom.svg

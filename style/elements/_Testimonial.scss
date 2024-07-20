@@ -1,0 +1,91 @@
+@mixin theme($theme) {
+  @at-root #{selector.replace(&, "section.section", "section.section[data-theme='#{$theme}']")} {
+    @content;
+  }
+}
+
+// all of the nonsense you see about margin bottom and translations are the result of the background-color initially being built around a solid color background, but then having to be addapted to work with transparent backgrounds, the fix for which caused issues within a grid-3 because it switches from flex to grid at different sizes which needed the breakpoint specific tweaks.
+
+section.section {
+  &.testimonial--section {
+    .section--container {
+      @include sm {
+        @include flex-col;
+      }
+    }
+  }
+
+  .testimonial {
+    background-color: $col--primary__lighter;
+    margin-bottom: calc(var(--testimonial-user-wrapper-height) / 1);
+    @include md-down {
+      margin-bottom: calc(var(--testimonial-user-wrapper-height) / 2);
+    }
+
+    @include theme("turf") {
+      background-color: $col--turf__lightest;
+    }
+
+    &--body {
+      margin-bottom: calc(var(--testimonial-user-wrapper-height) / -2);
+
+      @include md-down {
+        margin-bottom: unset;
+      }
+      @include theme("turf") {
+        color: $col--turf__dark;
+      }
+    }
+
+    &--user-container {
+    }
+
+    &--inner-mask {
+      background-image: unset;
+      // background-image: linear-gradient(
+      //   180deg,
+      //   var(--color--primary__lighter) 50%,
+      //   var(--color--primary__lightest) 50%
+      // );
+      // @include theme("turf") {
+      //   background-image: linear-gradient(
+      //     180deg,
+      //     $col--turf__lightest 50%,
+      //     rgba($col--turf, 0) 50%
+      //   );
+      // }
+    }
+
+    &--user-wrapper {
+      @include theme("turf") {
+        background-color: $col--turf__light;
+      }
+      transform: translateY(50%);
+
+      margin-top: calc(var(--testimonial-user-wrapper-height) / -1);
+      @include lg {
+      }
+      @include md-down {
+        margin-top: calc(var(--testimonial-user-wrapper-height) / -2);
+      }
+    }
+
+    &--user-name-wrapper {
+    }
+
+    &--name {
+    }
+
+    &--title {
+      @include md-down {
+        margin-top: 0.025rem;
+      }
+    }
+
+    &--image-wrapper {
+    }
+
+    &--image {
+    }
+  }
+}

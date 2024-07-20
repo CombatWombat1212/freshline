@@ -1,0 +1,13 @@
+{
+    "plugins": ["@prettier/plugin-php"],
+    "printWidth": 150,
+    "overrides": [
+      {
+        "files": "*.php",
+        "options": {
+          "parser": "php"
+        }
+      }
+    ]
+  }
+  

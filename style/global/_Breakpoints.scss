@@ -1,0 +1,314 @@
+// $grid-breakpoints: (
+//   xs: 0em,
+//   sm: 37em,
+//   md: 50em,
+//   lg: 62em,
+//   xl: 80em,
+//   xxl: 92em,
+// );
+
+// $grid-breakpoints: (
+//   xs: 0px,
+//   sm: 440px,
+//   md: 690px,
+//   lg: 1000px,
+//   xl: 1301px,
+// );
+
+$grid-breakpoints: (
+  xs: 0px,
+  sm: 478px,
+  md: 767px,
+  lg: 991px,
+  xl: 1328px,
+);
+
+// $grid-breakpoints: (xs: 0,
+//     sm: 576px,
+//     md: 768px,
+//     lg: 992px,
+//     xl: 1200px,
+//     xxl: 1400px);
+
+// $grid-breakpoints: (xs: 0,
+//     sm: 576px,
+//     md: 768px,
+//     lg: 992px,
+//     xl: 1200px,
+//     xxl: 1400px,
+//     xxxl: 1930px);
+
+$grid-breakpoint-min_key: nth(map-keys($grid-breakpoints), 1);
+$grid-breakpoint-min_value: nth(map-values($grid-breakpoints), 1);
+$grid-breakpoint-max_key: nth(map-keys($grid-breakpoints), -1);
+$grid-breakpoint-max_value: nth(map-values($grid-breakpoints), -1);
+
+// $grid-breakpoints_inverted: mapReverse($grid-breakpoints);
+$grid-breakpoints_inverted: mapReverseLastOnTop($grid-breakpoints);
+
+//below the mentioned breakpoint,
+// i.e. xxl-down is actually "xl and below" or "below xxl"
+
+$subtractor: 1px;
+// $subtractor: 0.0625em;
+
+@mixin xxl-down {
+  @media screen and (max-width: map-get($grid-breakpoints, xxl) - $subtractor) {
+    @content;
+  }
+}
+
+@mixin xl-down {
+  @media screen and (max-width: map-get($grid-breakpoints, xl) - $subtractor) {
+    @content;
+  }
+}
+
+@mixin lg-down {
+  @media screen and (max-width: map-get($grid-breakpoints, lg) - $subtractor) {
+    @content;
+  }
+}
+
+@mixin md-down {
+  @media screen and (max-width: map-get($grid-breakpoints, md) - $subtractor) {
+    @content;
+  }
+}
+
+@mixin sm-down {
+  @media screen and (max-width: map-get($grid-breakpoints, sm) - $subtractor) {
+    @content;
+  }
+}
+
+@mixin xs-down {
+  @media screen and (max-width: map-get($grid-breakpoints, xs) - $subtractor) {
+    @content;
+  }
+}
+
+// ////////////////////////////////////
+
+//above the mentioned breakpoint
+//i.e. xxl-up is "above xxl", xl-up is "above xl"
+
+@mixin xxl-up {
+  @media screen and (min-width: map-get($grid-breakpoints, xxl)) {
+    @content;
+  }
+}
+
+@mixin xl-up {
+  @media screen and (min-width: map-get($grid-breakpoints, xl)) {
+    @content;
+  }
+}
+
+@mixin lg-up {
+  @media screen and (min-width: map-get($grid-breakpoints, lg)) {
+    @content;
+  }
+}
+
+@mixin md-up {
+  @media screen and (min-width: map-get($grid-breakpoints, md)) {
+    @content;
+  }
+}
+
+@mixin sm-up {
+  @media screen and (min-width: map-get($grid-breakpoints, sm)) {
+    @content;
+  }
+}
+
+@mixin xs-up {
+  @media screen and (min-width: map-get($grid-breakpoints, xs)) {
+    @content;
+  }
+}
+
+// ////////////////////////////////////
+
+@mixin xxl-xl {
+  @media screen and (max-width: map-get($grid-breakpoints, xxl) - $subtractor) and (min-width: map-get($grid-breakpoints, xl)) {
+    @content;
+  }
+}
+
+@mixin xl-lg {
+  @media screen and (max-width: map-get($grid-breakpoints, xl) - $subtractor) and (min-width: map-get($grid-breakpoints, lg)) {
+    @content;
+  }
+}
+
+@mixin lg-md {
+  @media screen and (max-width: map-get($grid-breakpoints, lg) - $subtractor) and (min-width: map-get($grid-breakpoints, md)) {
+    @content;
+  }
+}
+
+@mixin md-sm {
+  @media screen and (max-width: map-get($grid-breakpoints, md) - $subtractor) and (min-width: map-get($grid-breakpoints, sm)) {
+    @content;
+  }
+}
+
+@mixin sm-xs {
+  @media screen and (max-width: map-get($grid-breakpoints, sm) - $subtractor) and (min-width: map-get($grid-breakpoints, xs)) {
+    @content;
+  }
+}
+
+// ////////////////////////////////////
+
+@mixin xxl-lg {
+  @media screen and (max-width: map-get($grid-breakpoints, xxl) - $subtractor) and (min-width: map-get($grid-breakpoints, lg)) {
+    @content;
+  }
+}
+
+@mixin xxl-md {
+  @media screen and (max-width: map-get($grid-breakpoints, xxl) - $subtractor) and (min-width: map-get($grid-breakpoints, md)) {
+    @content;
+  }
+}
+
+@mixin xxl-sm {
+  @media screen and (max-width: map-get($grid-breakpoints, xxl) - $subtractor) and (min-width: map-get($grid-breakpoints, sm)) {
+    @content;
+  }
+}
+
+@mixin xxl-xs {
+  @media screen and (max-width: map-get($grid-breakpoints, xxl) - $subtractor) and (min-width: map-get($grid-breakpoints, xs)) {
+    @content;
+  }
+}
+
+// ////////////////////////////////////
+
+@mixin xl-md {
+  @media screen and (max-width: map-get($grid-breakpoints, xl) - $subtractor) and (min-width: map-get($grid-breakpoints, md)) {
+    @content;
+  }
+}
+
+@mixin xl-sm {
+  @media screen and (max-width: map-get($grid-breakpoints, xl) - $subtractor) and (min-width: map-get($grid-breakpoints, sm)) {
+    @content;
+  }
+}
+
+@mixin xl-xs {
+  @media screen and (max-width: map-get($grid-breakpoints, xl) - $subtractor) and (min-width: map-get($grid-breakpoints, xs)) {
+    @content;
+  }
+}
+
+// ////////////////////////////////////
+
+@mixin lg-sm {
+  @media screen and (max-width: map-get($grid-breakpoints, lg) - $subtractor) and (min-width: map-get($grid-breakpoints, sm)) {
+    @content;
+  }
+}
+
+@mixin lg-xs {
+  @media screen and (max-width: map-get($grid-breakpoints, lg) - $subtractor) and (min-width: map-get($grid-breakpoints, xs)) {
+    @content;
+  }
+}
+
+// ////////////////////////////////////
+
+@mixin md-xs {
+  @media screen and (max-width: map-get($grid-breakpoints, md) - $subtractor) and (min-width: map-get($grid-breakpoints, xs)) {
+    @content;
+  }
+}
+
+// ////////////////////////////////////
+
+@mixin xxl {
+  @media screen and (max-width: map-get($grid-breakpoints, xxl) - $subtractor) and (min-width: map-get($grid-breakpoints, xl)) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media screen and (max-width: map-get($grid-breakpoints, xl) - $subtractor) and (min-width: map-get($grid-breakpoints, lg)) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media screen and (max-width: map-get($grid-breakpoints, lg) - $subtractor) and (min-width: map-get($grid-breakpoints, md)) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media screen and (max-width: map-get($grid-breakpoints, md) - $subtractor) and (min-width: map-get($grid-breakpoints, sm)) {
+    @content;
+  }
+}
+
+@mixin sm {
+  @media screen and (max-width: map-get($grid-breakpoints, sm) - $subtractor) and (min-width: map-get($grid-breakpoints, xs)) {
+    @content;
+  }
+}
+
+/////////////////////
+
+@mixin responsive-down($str, $b) {
+  #{$str}-#{$b} {
+    @media screen and (max-width: map-get($breakpoints, "xxl") - $subtractor) {
+      @content;
+    }
+
+    @media screen and (min-width: map-get($breakpoints, "xxl")) {
+      @content;
+    }
+  }
+
+  @each $key, $val in $breakpoints_inverted {
+    @if ($key != "xs") {
+      #{$str}-#{$key}-#{$b} {
+        @media screen and (max-width: map-get($breakpoints, $key) - $subtractor) {
+          @content;
+        }
+      }
+    }
+  }
+}
+
+// Media of at most the maximum breakpoint width. No query for the largest breakpoint.
+// Makes the @content apply to the given breakpoint and narrower.
+@mixin media-breakpoint-down($name, $breakpoints: $grid-breakpoints_inverted) {
+  $max: breakpoint-max($name, $breakpoints);
+
+  @if $max {
+    @media (max-width: $max) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+// Media of at least the minimum breakpoint width. No query for the smallest breakpoint.
+// Makes the @content apply to the given breakpoint and wider.
+@mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+  $min: breakpoint-min($name, $breakpoints);
+
+  @if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}

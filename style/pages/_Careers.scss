@@ -1,0 +1,118 @@
+#careers {
+  &--hero {
+    $opacity: 0.075;
+    $pattern-img: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/6697d4bebd6bd73a4c926c2f_topographic-small__dark.svg";
+
+    --background-img-1: linear-gradient(
+      to bottom,
+      #{rgba($col--primary__lighter, 1 - $opacity)},
+      #{rgba($col--primary__lighter, 1 - $opacity)}
+    );
+    --background-size-1: auto;
+    --background-position-1: center;
+
+    --background-img-2: url(#{$pattern-img});
+    --background-size-2: 35%;
+    --background-position-2: bottom left;
+
+    --background-img-3: linear-gradient(
+      to bottom,
+      #{$col--primary__lighter},
+      #{$col--primary__lighter}
+    );
+    --background-size-3: auto;
+    --background-position-3: center;
+
+    @include lg-down {
+      --background-size-2: 60%;
+    }
+    @include md-down {
+      --background-size-2: 80%;
+    }
+
+    background-image: var(--background-img-1), var(--background-img-2),
+      var(--background-img-3);
+    background-size: var(--background-size-1), var(--background-size-2),
+      var(--background-size-3);
+    background-position: var(--background-position-1),
+      var(--background-position-2), var(--background-position-3);
+
+    @include md-down {
+      height: auto;
+      padding-top: var(--site-top-pad);
+      padding-bottom: 5rem;
+    }
+
+    .container__wide {
+      @include md {
+        @include container;
+        width: 80%;
+      }
+    }
+
+    h1 {
+      @include md-down {
+        margin-right: auto;
+        text-align: left;
+      }
+    }
+
+    p {
+      margin-top: 1.25rem !important;
+      margin-bottom: 0rem !important;
+      @include md-down {
+        margin-right: auto;
+        text-align: left;
+      }
+    }
+    .button {
+      margin-top: 3rem !important;
+      @include md-down {
+        margin-top: 2rem !important;
+      }
+    }
+  }
+
+  &--work {
+    padding-top: 0rem;
+    .image--square {
+      aspect-ratio: unset;
+    }
+
+    .split-section {
+      &--container {
+        @include flex-group(65%, 35%);
+        @include lg {
+          @include flex-group(55%, 45%);
+        }
+        @include md-down {
+          max-width: var(--site-max-width_wide);
+          @include flex-group(100%);
+        }
+      }
+    }
+  }
+
+  &--looking {
+    h3 {
+      margin-right: auto;
+      text-align: left;
+    }
+  }
+  &--testimonials {
+    .testimonial {
+      width: 100%;
+    }
+  }
+
+  &--footer {
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    overflow: hidden;
+    margin-top: calc(var(--border-radius) / -1);
+
+    .footer--container {
+      margin-top: calc(4rem + 0.75rem);
+    }
+  }
+}

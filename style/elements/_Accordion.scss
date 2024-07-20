@@ -1,0 +1,31 @@
+.accordion {
+  &--panel {
+  }
+  &--question {
+    @include lg-down {
+      @include pad-y(0rem);
+      height: 3.75rem;
+    }
+  }
+  &--question-inner {
+  }
+  &--number-wrapper {
+    @include lg-down {
+      width: 3.75rem;
+      height: 3.75rem;
+    }
+  }
+  &--question-text {
+  }
+  &--icon-wrapper {
+  }
+  &--icon {
+  }
+  &--answer {
+  }
+  &--answer-inner {
+    @include lg-down {
+      margin-bottom: 0rem;
+    }
+  }
+}

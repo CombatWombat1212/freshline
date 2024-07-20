@@ -1,0 +1,126 @@
+.footer {
+
+
+  @include pad-x(0rem);
+  &--graphic {
+    width: 100%;
+  }
+  &--image {
+    width: 60%;
+    object-fit: cover;
+
+    @include lg-down {
+      opacity: 0.05 !important;
+      width: 100%;
+    }
+
+    @include md-down {
+      object-fit: contain;
+      width: 100%;
+      transform: unset !important;
+      object-position: bottom right;
+    }
+  }
+
+  &--inner {
+  }
+
+  &--container {
+    @include marg-y(4rem);
+  }
+
+  &--logo-wrapper {
+    @include lg-down {
+      width: 50%;
+    }
+    @include md-down {
+      width: 80%;
+      margin-right: auto;
+    }
+    @include sm-down {
+      width: 90%;
+    }
+  }
+  &--logo {
+    object-fit: contain;
+    object-position: center left;
+  }
+  &--content {
+    @at-root .section-group__bottom-transition + .footer .footer--content{
+      padding-top: var(--border-radius);
+    }
+
+    @include md-down {
+      margin-top: 2rem;
+      margin-bottom: 0rem;
+      justify-content: flex-start;
+      text-align: left;
+    }
+  }
+  &--sitemap {
+    gap: 6rem;
+
+    @include md-down {
+      gap: 3rem;
+      margin-top: 4rem;
+
+      width: 100%;
+
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  &--block {
+    @include md-down {
+      text-align: left;
+    }
+  }
+  &--link {
+    display: inline-block !important;
+    z-index: 1;
+
+    @include before-panel(0rem, rgba($col--charcoal__light, 0)) {
+      transition: 0.1s !important;
+    }
+
+    @include hover {
+      @include before-panel((0.3rem, 0.65rem), rgba($col--charcoal__light, 1));
+      color: $col--primary__lightest;
+    }
+
+    @include md-down {
+      margin: 0;
+      margin-right: auto;
+
+      & + & {
+        margin-top: 1rem;
+      }
+    }
+  }
+  &--socials-wrapper {
+    @include md-down {
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      margin-top: 4rem;
+    }
+  }
+  &--socials-group {
+    @include md-down {
+      flex-wrap: wrap;
+    }
+  }
+  &--divider {
+  }
+  &--copyright {
+    a {
+      color: $col--primary__lightest;
+      &,
+      & > * {
+        display: inline-block;
+      }
+    }
+  }
+
+  &--copyright-container {
+    justify-content: center;
+  }
+}

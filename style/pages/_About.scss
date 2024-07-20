@@ -1,0 +1,119 @@
+#about {
+  &--hero {
+    height: calc(80vh - var(--nav-height));
+    @include pad-y-important(6rem, 9rem);
+
+    @include lg-down {
+      height: auto;
+      @include pad-y-important(6rem, 8rem);
+    }
+    @include md-down {
+      @include pad-y-important(var(--site-top-pad), 5rem);
+    }
+
+    .torn-split-section {
+      &--container {
+        height: 100%;
+        @include lg-down {
+          gap: 3rem !important;
+        }
+        @include md-down {
+          gap: 2rem !important;
+        }
+      }
+
+      &--graphic {
+        @include lg-down {
+          order: 0;
+          height: 100%;
+        }
+      }
+
+      &--image-wrapper {
+      }
+
+      &--image {
+      }
+
+      &--body {
+        @include lg-down {
+          order: 1;
+        }
+
+        br {
+          @include lg-down {
+            display: none;
+          }
+        }
+
+        h4,
+        p {
+          @include lg-down {
+            @include text--body;
+            margin-top: 1rem !important;
+          }
+        }
+      }
+    }
+  }
+  &--brotherhood {
+    @include text-section-left;
+  }
+  &--journey {
+    @include lg-down {
+      margin-bottom: var(--section-pad);
+    }
+  }
+  &--genesis {
+    margin-top: 0rem;
+  }
+  &--crafting {
+  }
+  &--founders {
+    padding-bottom: var(--section-pad);
+
+    h3 {
+      @include md-down {
+        text-align: left;
+        margin-right: auto;
+      }
+    }
+  }
+  &--careers {
+  }
+  &--form {
+    overflow: unset;
+    padding-bottom: var(--section-pad);
+
+    .split-section--container {
+      @include lg-down {
+        display: grid !important;
+
+        @include safari {
+          display: flex !important;
+          flex-direction: column;
+        }
+      }
+    }
+    .split-section--body {
+      width: 100%;
+    }
+
+    .signup {
+      width: 100%;
+
+      &--form-wrapper {
+        width: 100%;
+      }
+    }
+
+    [class*="container"] {
+      @include lg-down {
+        gap: 2rem !important;
+      }
+      & > * {
+        width: 100%;
+      }
+    }
+  }
+}

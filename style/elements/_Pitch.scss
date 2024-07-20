@@ -1,0 +1,77 @@
+@mixin dir($dir) {
+  @at-root #{selector.replace(&, ".split-section", ".split-section.#{$dir}")} {
+    @content;
+  }
+}
+
+.split-section {
+  .pitch {
+    --pad: 4rem;
+    @include lg-down {
+      --pad: 2rem;
+    }
+
+    @include dir("left") {
+      grid-template-columns: 0.55fr 0.45fr;
+    }
+    @include dir("right") {
+      grid-template-columns: 0.45fr 0.55fr;
+    }
+
+    gap: var(--pad);
+
+    opacity: 0;
+
+    @include lg-down {
+      grid-template-columns: 1fr !important;
+    }
+
+    &--graphic {
+      @include lg-down {
+        height: 20rem;
+        aspect-ratio: unset;
+      }
+      @include md-down {
+        order: 0;
+        // height: 10rem;
+      }
+      @include sm-down {
+        height: 10rem;
+      }
+    }
+    &--image {
+    }
+    &--body {
+      @include lg-down {
+        // order: 1;
+      }
+      @include md-down {
+        order: 1;
+      }
+
+      //   padding-top: var(--pad);
+      //   padding-bottom: var(--pad);
+      //   padding-left: var(--pad);
+      //   padding-right: var(--pad);
+
+      //   @include dir("left") {
+      //     padding-right: 0 !important;
+      //   }
+      //   @include dir("right") {
+      //     padding-left: 0 !important;
+      //   }
+    }
+    &--heading {
+    }
+    &--paragraph {
+      @include lg-down {
+        margin-top: 0.25rem;
+      }
+    }
+  }
+}
+
+.pitch-section{
+
+  // overflow:unset;
+}

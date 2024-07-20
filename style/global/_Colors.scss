@@ -1,0 +1,16 @@
+@import "Colors-Core";
+
+@each $name, $color in $colors {
+  .col--#{$name} {
+    &,
+    & * {
+      color: var(--col--#{$name}) !important;
+    }
+  }
+}
+
+:root {
+  @each $name, $color in $colors {
+    --col--#{$name}: #{$color};
+  }
+}

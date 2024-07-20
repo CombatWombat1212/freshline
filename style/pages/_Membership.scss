@@ -1,0 +1,197 @@
+#membership {
+  &--hero {
+    height: auto;
+    @include pad-y(6rem);
+    padding-bottom: 8rem;
+    overflow: hidden;
+
+    @include xl-down {
+      @include pad-y(0rem);
+      padding-bottom: 6rem;
+    }
+
+    .torn-split-section {
+      &--graphic {
+        height: 100%;
+      }
+
+      &--container {
+        gap: 6rem;
+        grid-template-columns: 0.8fr 1.2fr;
+
+        @include xl-down {
+          width: 100%;
+          max-width: unset;
+        }
+
+        h1 {
+          @include xl-up {
+            margin-right: -3rem;
+          }
+
+          br {
+            @include xl-down {
+              display: none;
+            }
+          }
+        }
+        h4 {
+          @include xl-down {
+            margin-top: 0.5rem !important;
+            margin-bottom: 1.75rem !important;
+          }
+        }
+
+        @include xl-down {
+          grid-template-columns: 1fr;
+          gap: 3rem;
+        }
+      }
+
+      &--graphic {
+        @include xl-down {
+          order: 0;
+        }
+
+        .value-highlight {
+          &--row {
+            @include xl-down {
+              display: none !important;
+            }
+          }
+        }
+      }
+      &--body {
+        @include xl-down {
+          order: 1;
+          max-width: var(--site-max-width_wide);
+          @include mx-auto;
+          width: 100%;
+        }
+      }
+
+      &--value-highlight {
+        @include gap;
+        --gap: 4rem;
+
+        @include xl-down {
+          order: 3;
+          display: flex !important;
+          max-width: var(--site-max-width_wide);
+          @include mx-auto;
+          width: 100%;
+
+          justify-content: flex-start;
+          flex-wrap: wrap;
+        }
+
+        @include lg-down {
+          --gap: 2rem;
+          margin-top: 1rem;
+        }
+
+        & > * {
+          @include md-down {
+            width: 100%;
+          }
+        }
+      }
+
+      &--image-wrapper {
+        @include lg-down {
+          height: 30vh;
+        }
+
+        img {
+          @include xl-down {
+            border-top-left-radius: unset;
+            border-top-right-radius: unset;
+          }
+        }
+      }
+    }
+  }
+
+  &--benefits {
+    $icons: (
+      "brotherhood": "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/6695964c788b64ba28c6b200_brotherhood.svg",
+      "exclusive": "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/6695964ce1524213596d200b_exclusive.svg",
+      "priority": "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66959651d325c38516214140_priority.svg",
+    );
+
+    .section {
+      &--container {
+        --gap: 3rem !important;
+      }
+    }
+
+    .value-highlight {
+      &--graphic {
+        @include flex-col-center;
+        background-color: unset;
+      }
+
+      &--icon {
+        @include mask;
+        @include s;
+        --size: 5rem;
+        object-fit: contain;
+        object-position: center;
+        background-color: $col--primary__dark;
+        margin: auto;
+        @each $name, $icon in $icons {
+          &.#{$name} {
+            --mask-img: url("#{$icon}");
+          }
+        }
+      }
+    }
+  }
+
+  &--what-it-means-group {
+    padding-top: 0rem;
+    &::after {
+      background-color: $col--charcoal__dark;
+    }
+  }
+
+
+
+
+  &--scroll-video {
+    h3 {
+      @include lg-down {
+        text-align: left;
+      }
+    }
+  }
+
+  &--next-steps {
+    .section {
+      &--container {
+        @include lg-down {
+          flex-wrap: wrap;
+        }
+
+        & > * {
+          @include lg-down {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+  &--masonry {
+  }
+  &--application {
+    [class*="container"] {
+      padding-top: calc(var(--section-pad) - var(--border-radius)) !important;
+      @include lg-down {
+        gap: 2rem !important;
+      }
+      & > * {
+        width: 100%;
+      }
+    }
+  }
+}

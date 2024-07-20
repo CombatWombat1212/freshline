@@ -1,0 +1,28 @@
+@mixin theme($theme) {
+  @at-root #{selector.replace(&, ".profile-card", '.profile-card[data-theme="#{$theme}"]')} {
+    @content;
+  }
+}
+
+.profile-card {
+  background-color: $col--turf__dark;
+
+  @include theme("primary") {
+    background-color: $col--primary__lighter;
+  }
+  &--image-wrapper {
+    width: 100%;
+  }
+  &--image {
+    @include img-cover;
+  }
+  &--heading {
+   padding: 0.95rem 1.65rem 1.5rem
+  }
+  &--name {
+    @extend %text--h4;
+  }
+  &--title {
+    margin-top:-0.15rem;
+  }
+}

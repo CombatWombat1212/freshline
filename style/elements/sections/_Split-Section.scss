@@ -1,0 +1,62 @@
+@mixin split-section-col($col) {
+  @at-root .split-section.col-#{$col} & {
+    @content;
+  }
+}
+
+.split-section {
+  --gap: 4rem;
+  padding: 0rem;
+  //   @include pad-x(0rem);
+
+  //   @include md-down {
+  //     padding-bottom: 0rem;
+  //   }
+
+  &--container {
+    gap: var(--gap) !important;
+    display: flex !important;
+    @include split-section-col(2) {
+      @include flex-group(50%, 50%);
+      @include md {
+        max-width: 80%;
+      }
+      @include md-down {
+        --gap: 1.5rem;
+        @include flex-group(100%);
+      }
+    }
+    @include split-section-col(3) {
+      @include flex-group(33.33333%, 33.33333%, 33.33333%);
+      @include lg-down {
+        --gap: 2rem;
+      }
+      @include md-down {
+        @include flex-group(100%);
+      }
+    }
+  }
+
+  &--body {
+    @include marg-y(0rem);
+    @include md-down {
+      order: 1;
+    }
+  }
+
+  &--paragraph {
+    margin-bottom:0rem;
+    @include md-down {
+      margin-top: 0.35rem;
+    }
+  }
+  &--graphic {
+    @include md-down {
+      order: 0;
+    }
+  }
+
+  .button{
+    margin-top: 1.65rem;
+  }
+}

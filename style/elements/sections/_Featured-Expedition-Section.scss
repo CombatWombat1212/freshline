@@ -1,0 +1,66 @@
+.featured-expedition {
+  --gap: 6rem;
+  --polarioid-background-translate-x: 8rem;
+  @include pad-y-important(calc(var(--border-radius) + var(--section-pad)));
+
+  @include lg-down {
+    --gap: 4rem;
+  }
+
+  &.section-group__top-transition {
+    margin-top: calc(var(--border-radius) * -1);
+    padding-top: var(--border-radius) !important;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+  }
+
+  &--container {
+    @include flex-group(55%, 45%);
+    @include lg-down {
+      flex-wrap: wrap;
+      //   padding-top: 2rem;
+      //   padding-bottom: 3rem;
+    }
+    @include md-down {
+      //   padding-top: 4rem;
+    }
+  }
+
+  &--body {
+    // @include lg-down {
+    //   width: 100%;
+    // }
+    @include lg-down {
+      order: 1;
+      width: 75% !important;
+    }
+    @include md-down {
+      width: 100% !important;
+    }
+  }
+
+  &--graphic {
+    @include lg-down {
+      order: 0;
+      width: 50% !important;
+      transform: translateX(calc((var(--polarioid-background-translate-x) / 2.25) * -1));
+    }
+    @include md-down {
+      width: 62.5% !important;
+    }
+    @include md-down {
+      width: 60% !important;
+    }
+  }
+
+  &--heading {
+  }
+  &--paragraph {
+  }
+
+  .polaroid {
+    &.background {
+      --translate-x: var(--polarioid-background-translate-x);
+    }
+  }
+}

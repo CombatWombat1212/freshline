@@ -1,0 +1,225 @@
+<div id="map"></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", async (event) => {
+    var map = L.map("map").setView([20, 0], 2);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(map);
+
+    var customIcon = L.icon({
+      iconUrl:
+        "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66844fdb5d94f2dfa69b22c4_drop.svg",
+      iconSize: [32.3, 42.5],
+      iconAnchor: [16.15, 42.5],
+      popupAnchor: [0, -42.5],
+    });
+
+    var hoverIcon = L.icon({
+      iconUrl:
+        "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66845298a4a75c8fa2ec692b_drop__hovered.svg",
+      iconSize: [32.3, 42.5],
+      iconAnchor: [16.15, 42.5],
+      popupAnchor: [0, -42.5],
+    });
+
+    var markers = [];
+
+    function getDynItems() {
+      const mapElement = document.getElementById("map");
+      const mapSection = mapElement.closest(".map-section");
+      const dynItems = mapSection.querySelectorAll(
+        ".w-dyn-item:not(.w-dyn-item .w-dyn-item)",
+      );
+      
+      const arr = Array.from(dynItems).map((item) => {
+        const obj = { elem: item };
+        Array.from(item.attributes).forEach((attr) => {
+          if (attr.name.startsWith("data-")) {
+            const propName = attr.name
+              .slice(5)
+              .replace(/-./g, (x) => x[1].toUpperCase());
+            obj[propName] = attr.value;
+          }
+        });
+        return obj;
+      });
+
+      return arr;
+    }
+
+    function initializeUniqueFactor(factorElem, dataLink) {
+      factorElem.style.setProperty("--mask-url", `url(${dataLink})`);
+    }
+
+    function zoomToLocation(lat, long, marker) {
+      map.flyTo([lat, long], 6, {
+        duration: 1.75,
+      });
+      marker.openPopup();
+    }
+
+    function applySelection(item, dynItemArray) {
+      const selectionWrapper = document.querySelector(
+        ".map--selection-wrapper",
+      );
+      dynItemArray.forEach((i) => {
+        if (i.elem !== item) {
+          i.elem.classList.add("d-none");
+        } else {
+          i.elem.classList.remove("d-none");
+          i.elem.classList.add("selected");
+          i.elem.removeEventListener("click", handleItemClick);
+        }
+      });
+      selectionWrapper.classList.add("no-scroll");
+    }
+
+    function removeSelection(dynItemArray) {
+      const selectionWrapper = document.querySelector(
+        ".map--selection-wrapper",
+      );
+      dynItemArray.forEach((i) => {
+        i.elem.classList.remove("selected");
+        i.elem.classList.remove("d-none");
+        setTimeout(() => {
+          i.elem.addEventListener("click", handleItemClick);
+        }, 0);
+      });
+      selectionWrapper.classList.remove("no-scroll");
+    }
+
+    function handleItemClick(event) {
+      const itemElem = event.currentTarget;
+      if (itemElem.classList.contains("selected")) {
+        return;
+      }
+      const dynItemArray = getDynItems();
+      const item = dynItemArray.find((i) => i.elem === itemElem);
+
+      if (item) {
+        processItemClick(item, itemElem, dynItemArray);
+      }
+    }
+
+    function processItemClick(item, itemElem, dynItemArray) {
+      const lat = parseFloat(item.lat);
+      const long = parseFloat(item.long);
+      const marker = markers.find((m) => m.itemElem === itemElem);
+      if (marker) {
+        applySelection(itemElem, dynItemArray);
+        zoomToLocation(lat, long, marker.leafletMarker);
+      }
+    }
+
+    function addMarkers() {
+      const dynItemArray = getDynItems();
+
+      dynItemArray.forEach((item) => {
+        const lat = parseFloat(item.lat);
+        const long = parseFloat(item.long);
+        const country = item.country;
+
+        if (!isNaN(lat) && !isNaN(long)) {
+          const marker = L.marker([lat, long], { icon: customIcon })
+            .addTo(map)
+            .bindPopup(`<b>${country}</b>`);
+
+          markers.push({ itemElem: item.elem, leafletMarker: marker });
+
+          item.elem.addEventListener("click", handleItemClick);
+
+          item.elem.addEventListener("mouseover", () => {
+            marker.setIcon(hoverIcon);
+          });
+
+          item.elem.addEventListener("mouseout", () => {
+            marker.setIcon(customIcon);
+          });
+
+          marker.on("mouseover", () => {
+            marker.setIcon(hoverIcon);
+          });
+
+          marker.on("mouseout", () => {
+            marker.setIcon(customIcon);
+          });
+
+          marker.on("click", () => {
+            applySelection(item.elem, dynItemArray);
+            zoomToLocation(lat, long, marker);
+          });
+        } else {
+          console.error(`Invalid coordinates for ${country}`);
+        }
+      });
+    }
+
+    function resetMapView() {
+      map.flyTo([20, 0], 2, {
+        duration: 1.75,
+      });
+    }
+
+    document.querySelectorAll(".map--close").forEach((closeButton) => {
+      closeButton.addEventListener("click", () => {
+        map.closePopup();
+        const dynItemArray = getDynItems();
+        removeSelection(dynItemArray);
+        resetMapView();
+      });
+    });
+
+    document.getElementById("map").addEventListener("click", (event) => {
+      const isPopupClose = event.target.classList.contains(
+        "leaflet-popup-close-button",
+      );
+
+      const isPopupCloseChild = event.target.parentElement.classList.contains(
+        "leaflet-popup-close-button",
+      );
+
+      if (isPopupClose || isPopupCloseChild) {
+        const dynItemArray = getDynItems();
+        removeSelection(dynItemArray);
+        resetMapView(); // Reset the map view on close with smooth transition
+      }
+    });
+
+    function seek(direction) {
+      const dynItemArray = getDynItems();
+      const selectedElem = document.querySelector(".w-dyn-item.selected");
+      let selectedIndex = dynItemArray.findIndex(
+        (item) => item.elem === selectedElem,
+      );
+
+      if (direction === "left") {
+        selectedIndex =
+          (selectedIndex - 1 + dynItemArray.length) % dynItemArray.length;
+      } else if (direction === "right") {
+        selectedIndex = (selectedIndex + 1) % dynItemArray.length;
+      }
+
+      const target = dynItemArray[selectedIndex];
+
+      if (target.elem) {
+        removeSelection(dynItemArray);
+        setTimeout(() => {
+          processItemClick(target, target.elem, dynItemArray);
+        }, 0);
+      }
+    }
+
+    document.querySelectorAll(".map--seek-button.left").forEach((button) => {
+      button.addEventListener("click", () => seek("left"));
+    });
+
+    document.querySelectorAll(".map--seek-button.right").forEach((button) => {
+      button.addEventListener("click", () => seek("right"));
+    });
+
+    addMarkers();
+  });
+</script>

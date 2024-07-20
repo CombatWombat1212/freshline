@@ -1,0 +1,69 @@
+.cutout-card {
+  $cutout-card--border-radius: 35px;
+  $cutout-card-width: $cutout-card--border-radius * 2;
+  --cutout-card--border-radius: #{$cutout-card--border-radius};
+  --cutout-card--width: #{$cutout-card-width};
+
+  &--cutout-wrapper {
+    overflow: hidden;
+  }
+
+  &--number {
+  }
+
+  &--cutout {
+    background: transparent;
+
+    &-corner {
+      background: var(--color--charcoal__dark);
+      border-bottom-right-radius: $cutout-card--border-radius;
+    }
+
+    &-right {
+      position: relative;
+      width: $cutout-card-width;
+      height: $cutout-card-width;
+
+      & div {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: $cutout-card-width;
+        width: $cutout-card-width;
+        border-top-left-radius: $cutout-card--border-radius;
+        box-shadow: #{$cutout-card--border-radius * -1} #{$cutout-card--border-radius *
+          -1} 0 0 var(--color--charcoal__dark);
+      }
+    }
+
+    &-bottom {
+      position: relative;
+      width: $cutout-card-width;
+      height: $cutout-card-width;
+
+      & div {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: $cutout-card-width;
+        width: $cutout-card-width;
+        border-top-left-radius: $cutout-card--border-radius;
+        box-shadow: #{$cutout-card--border-radius * -1} #{$cutout-card--border-radius *
+          -1} 0 0 var(--color--charcoal__dark);
+      }
+    }
+  }
+
+  &--image-wrapper {
+  }
+  &--image {
+  }
+  &--body {
+  }
+  &--heading {
+  }
+  &--paragraph {
+  }
+}

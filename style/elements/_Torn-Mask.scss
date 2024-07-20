@@ -1,0 +1,39 @@
+@mixin direction($dir) {
+  @at-root #{selector.replace(&, ".torn-mask", ".torn-mask.#{$dir}")} {
+    @content;
+  }
+}
+
+.torn-mask {
+  mask-image: url("https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66958c7ee30f362037a2972d_torn-paper-longer__bottom.svg");
+  -webkit-mask-image: url("https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66958c7ee30f362037a2972d_torn-paper-longer__bottom.svg");
+  mask-position: bottom;
+  mask-repeat: no-repeat;
+  mask-size: 100%;
+
+  @include safari {
+    mask-image: unset!important;
+    -webkit-mask-image: unset!important;
+    mask-position: unset!important;
+    mask-repeat: unset!important;
+    mask-size: unset!important;
+  }
+
+  @include direction("top") {
+    mask-image: url("https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66958c7e122e0d17f3990a6e_torn-paper-longer__top.svg");
+    -webkit-mask-image: url("https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66958c7e122e0d17f3990a6e_torn-paper-longer__top.svg");
+    mask-position: top;
+
+    &.section {
+      margin-top: var(--section-pad);
+    }
+
+    &.section-group__bottom-transition {
+      // margin-top: var(--section-pad);
+      // padding-bottom: var(--border-radius) !important;
+      // margin-bottom: calc(var(--border-radius) * -1) !important;
+      // border-bottom-left-radius: var(--border-radius);
+      // border-bottom-right-radius: var(--border-radius);
+    }
+  }
+}

@@ -1,0 +1,1590 @@
+@use "sass:math";
+
+
+// @mixin text() {
+
+//     h1,
+//     h2,
+//     h3,
+//     h4,
+//     h5,
+//     h6,
+//     p,
+//     li,
+// 	a,
+// 	label,
+//     span {
+//         @content;
+//     }
+
+// }
+
+@mixin text($not: null) {
+    h1#{if($not, ":not(#{$not})", "")},
+    h2#{if($not, ":not(#{$not})", "")},
+    h3#{if($not, ":not(#{$not})", "")},
+    h4#{if($not, ":not(#{$not})", "")},
+    h5#{if($not, ":not(#{$not})", "")},
+    h6#{if($not, ":not(#{$not})", "")},
+    p#{if($not, ":not(#{$not})", "")},
+    li#{if($not, ":not(#{$not})", "")},
+    a#{if($not, ":not(#{$not})", "")},
+    label#{if($not, ":not(#{$not})", "")},
+    span#{if($not, ":not(#{$not})", "")} {
+        @content;
+    }
+}
+
+
+
+@mixin no-select {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+
+@mixin mx-auto {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+@mixin mx-auto-important {
+	margin-right: auto!important;
+	margin-left: auto!important;
+}
+
+
+@mixin mx-0 {
+	margin-right: 0;
+	margin-left: 0;
+}
+
+@mixin m-0 {
+	margin: 0;
+}
+
+
+@mixin m-auto {
+	margin: auto;
+}
+
+
+@mixin my-auto($important: false) {
+	@if $important {
+		margin-top: auto !important;
+		margin-bottom: auto !important;
+	} @else {
+		margin-top: auto;
+		margin-bottom: auto;
+	}
+}
+
+@mixin my-0 {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+
+@mixin flex-col {
+	display: flex;
+	flex-direction: column;
+}
+
+@mixin flex-col-between {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+@mixin flex-col-end {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+@mixin flex-col-start {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+@mixin flex-col-center {
+	@include flex-col();
+	justify-content: center;
+}
+
+
+
+
+@mixin flex-col-important {
+	display: flex!important;
+	flex-direction: column!important;
+}
+
+@mixin flex-col-between-important {
+	display: flex!important;
+	flex-direction: column!important;
+	justify-content: space-between!important;
+}
+@mixin flex-col-end-important {
+	display: flex!important;
+	flex-direction: column!important;
+	justify-content: flex-end!important;
+}
+
+@mixin flex-col-center-important {
+	@include flex-col-important;
+	justify-content: center!important;
+}
+
+
+
+
+
+@mixin flex-row {
+	display: flex;
+	flex-direction: row;
+}
+
+@mixin flex-row-left {
+	display: flex;
+	flex-direction: row;
+	justify-content: start;
+}
+
+@mixin flex-row-right {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+@mixin flex-row-center {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+
+@mixin flex-row-between {
+	@include flex-row();
+	justify-content: space-between;
+}
+
+@mixin flex-row-end {
+	@include flex-row();
+	justify-content: flex-end;
+}
+
+
+
+@mixin flex-row-important{
+	display: flex!important;
+	flex-direction: row!important;
+}
+
+@mixin flex-row-left-important{
+	display: flex!important;
+	flex-direction: row!important;
+	justify-content: start!important;
+}
+
+@mixin flex-row-right-important{
+	display: flex!important;
+	flex-direction: row!important;
+	justify-content: flex-end!important;
+}
+
+@mixin flex-row-center-important{
+	display: flex!important;
+	flex-direction: row!important;
+	justify-content: center!important;
+}
+
+
+@mixin flex-row-between-important{
+	@include flex-row-important;
+	justify-content: space-between!important;
+}
+
+@mixin flex-row-end-important{
+	@include flex-row-important;
+	justify-content: flex-end!important;
+}
+
+
+
+
+
+@mixin line-cutoff($key) {
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: $key;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+}
+
+
+@mixin word-cutoff($key){
+	display: block;
+	width: $key;
+	// max-width: $key;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+  }
+
+
+
+
+
+
+
+@mixin pad-x($val) {
+	padding-left: $val;
+	padding-right: $val;
+}
+@mixin pad-x-important($val) {
+	padding-left: $val!important;
+	padding-right: $val!important;
+}
+
+@mixin pad-y($val1, $val2: null) {
+  @if $val2 == null {
+    padding-top: $val1;
+    padding-bottom: $val1;
+  } @else {
+    padding-top: $val1;
+    padding-bottom: $val2;
+  }
+}
+
+@mixin pad-y-important($val1, $val2: null) {
+  @if $val2 == null {
+    padding-top: $val1!important;
+    padding-bottom: $val1!important;
+  } @else {
+    padding-top: $val1!important;
+    padding-bottom: $val2!important;
+  }
+}
+
+
+@mixin marg-x($val) {
+	margin-left: $val;
+	margin-right: $val;
+}
+@mixin marg-x-important($val) {
+	margin-left: $val!important;
+	margin-right: $val!important;
+}
+
+@mixin marg-y($val) {
+	margin-top: $val;
+	margin-bottom: $val;
+}
+@mixin marg-y-important($val) {
+	margin-top: $val!important;
+	margin-bottom: $val!important;
+}
+
+
+@mixin x-100() {
+	width: 100%;
+}
+
+@mixin y-100() {
+	height: 100%;
+}
+
+@mixin xy-100() {
+	width: 100%;
+	height: 100%;
+}
+
+
+
+
+@mixin s($val:var(--size)) {
+	@if $val !=var(--size) {
+		--size: #{$val};
+	}
+
+	width: $val;
+	height: $val;
+}
+
+
+
+
+@mixin img-cover($val: 100%) {
+	width: $val;
+	height: $val;
+	object-fit: cover;
+}
+
+@mixin img-cover-important($val: 100%) {
+	width: $val!important;
+	height: $val!important;
+	object-fit: cover!important;
+}
+
+
+@mixin img-contain($val: 100%) {
+	width: $val;
+	height: $val;
+	object-fit: contain;
+}
+
+@mixin img-contain-important($val: 100%) {
+	width: $val!important;
+	height: $val!important;
+	object-fit: contain!important;
+}
+
+
+
+
+
+@mixin scrollbar {
+	&::-webkit-scrollbar {
+		@content;
+	}
+}
+
+@mixin scrollbar-track {
+	&::-webkit-scrollbar-track {
+		@content;
+	}
+}
+
+@mixin scrollbar-thumb {
+	&::-webkit-scrollbar-thumb {
+		@content;
+	}
+}
+
+
+@mixin scrollbar-none {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+
+
+
+@mixin scroll-smooth {
+	scroll-snap-type: y mandatory;
+	scroll-behavior: smooth;
+}
+
+
+@function r-rem($val) {
+	$px: 0.8;
+	$vmin: 0.05335;
+	$px: $px * $val * 16;
+	$vmin: $vmin * $val * 16;
+	@return Min(calc(#{#{$px}px + #{$vmin}vmin
+		}
+
+	), #{$val}rem);
+}
+
+
+
+
+
+@mixin aspect-support-fix($aspect-width, $aspect-height, $width, $height) {
+	@supports (aspect-ratio: 1/1) {
+		aspect-ratio: #{$aspect-width} / #{$aspect-height};
+	}
+
+	@supports not (aspect-ratio: 1/1) {
+		@if $width {
+			height: calc(#{$width} / (#{$aspect-width} / #{$aspect-height}));
+		}
+
+		@else if $height {
+			width: calc(#{$height} / (#{$aspect-height} / #{$aspect-width}));
+		}
+	}
+}
+
+
+
+
+@mixin b-rad($val: var(--b-rad)) {
+	border-radius: $val;
+	-webkit-border-radius: $val;
+	-moz-border-radius: $val;
+	-khtml-border-radius: $val;
+}
+
+
+
+@mixin trans($val:var(--transition)) {
+	transition: $val;
+}
+
+
+
+
+  
+	
+// @mixin hover ($parent: (''), $child: (''), $transition:var(--transition)) {
+// 	@each $p in $parent {
+// 		@if $p == ('') and $child == ('') {
+// 			&{
+// 				transition: $transition;
+// 			}
+// 			&:hover,
+// 			&:focus,
+// 			&.focus,
+// 			&.hover
+// 			{
+// 				@content;
+// 			}
+// 		}
+// 		@else if $child==('') {
+// 			//if there is no child
+// 			@at-root {
+// 				#{$p} {
+// 					transition: $transition;
+// 				}
+// 				#{$p}:hover,
+// 				#{$p}:focus,
+// 				#{$p}.focus,
+// 				#{$p}.hover
+// 				{
+// 					@content;
+// 				}
+// 			}
+// 		}
+// 		@else {
+// 			@each $c in $child {
+
+// 				// use case for treating '&' correctly
+// 				@if $c=='&' {
+// 					@at-root {
+// 						#{$p} & {
+// 							transition: $transition;
+// 						}
+// 						#{$p}:hover &,
+// 						#{$p}:focus &,
+// 						#{$p}.focus 
+// 						#{$p}.hover 
+// 						{
+// 							@content;
+// 						}
+// 					}
+// 				}
+
+// 				@else {
+// 					@at-root {
+
+// 						// regular functionality
+// 						#{$p} #{$c} {
+// 							transition: $transition;
+// 						}
+// 						#{$p}:hover #{$c},
+// 						#{$p}:focus #{$c},
+// 						#{$p}.focus #{$c}
+// 						#{$p}.hover #{$c}
+// 						{
+// 							@content;
+// 						}
+// 					}
+// 				}
+// 			}
+
+// 		}
+// 	}
+// }
+
+
+// @use "sass:math";
+// @mixin hover($parent: (''), $child: (''), $transition: var(--transition)) {
+
+//   @each $p in $parent {
+//     @if $p == ('') and $child == ('') {
+//       & {
+//         transition: $transition;
+//       }
+//       &:hover,
+//       &:focus,
+//       &.focus,
+//       &.hover {
+//         @content;
+//       }
+//     } @else if $child == ('') {
+//       // if there is no child
+//       @at-root {
+//         #{$p} {
+//           transition: $transition;
+//         }
+//         #{$p}:hover,
+//         #{$p}:focus,
+//         #{$p}.focus,
+//         #{$p}.hover {
+//           @content;
+//         }
+//       }
+//     } @else {
+//       $splitChild: str-split($child, ',');
+//       @each $c in $splitChild {
+//         // use case for treating '&' correctly
+//         @if $c == '&' {
+//           @at-root {
+//             #{$p} & {
+//               transition: $transition;
+//             }
+//             #{$p}:hover &,
+//             #{$p}:focus &,
+//             #{$p}.focus &,
+//             #{$p}.hover & {
+//               @content;
+//             }
+//           }
+//         } @else {
+//           @at-root {
+//             // regular functionality
+//             #{$p} #{$c} {
+//               transition: $transition;
+//             }
+//             #{$p}:hover #{$c},
+//             #{$p}:focus #{$c},
+//             #{$p}.focus #{$c},
+//             #{$p}.hover #{$c} {
+//               @content;
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+
+
+
+
+
+
+
+// this one seems to be working perfectly but only supports a list of children, in the next version i'll be updating it to support a list of parents as well
+// @function str-split($string, $separator) {
+//     $split: ();
+//     $index: str-index($string, $separator);
+//     @while $index {
+//       $split: append($split, str-slice($string, 1, $index - 1));
+//       $string: str-slice($string, $index + 1);
+//       $index: str-index($string, $separator);
+//     }
+//     $split: append($split, $string);
+//     @return $split;
+//   }
+
+//   @function generate-child-selectors($parent, $splitChild, $suffixes) {
+// 	$selectors: ();
+// 	@each $p in $parent {
+// 	  @each $c in $splitChild {
+// 		$processedChild: null;
+// 		@if $c == '&' {
+// 		  $processedChild: $p;
+// 		} @else {
+// 		  $processedChild: " #{$c}";
+// 		}
+// 		@each $s in $suffixes {
+// 		  $selectors: append($selectors, "#{$p}#{$s}#{$processedChild}", comma);
+// 		}
+// 	  }
+// 	}
+// 	@return $selectors;
+//   }
+		
+// @use "sass:math";
+// @mixin hover($parent: (''), $child: (''), $transition: var(--transition)) {
+// 	@each $p in $parent {
+// 	  @if $p == ('') and $child == ('') {
+// 		& {
+//         transition: $transition;
+//       }
+//       &:hover,
+//       &:focus,
+//       &.focus,
+//       &.hover {
+//         @content;
+//       }
+//     } @else if $child == ('') {
+// 		// if there is no child
+//       @at-root {
+//         #{$p} {
+//           transition: $transition;
+//         }
+//         #{$p}:hover,
+//         #{$p}:focus,
+//         #{$p}.focus,
+//         #{$p}.hover {
+//           @content;
+//         }
+//       }
+//     } @else {
+// 		$splitChild: str-split($child, ',');
+// 		$suffixes: (':hover', ':focus', '.focus', '.hover');
+// 		$childSelectors: generate-child-selectors($parent, $splitChild, $suffixes);
+// 		@at-root {
+// 		  #{$childSelectors} {
+// 			@content;
+// 		  }
+// 		}
+// 		@at-root {
+// 		  #{$parent} #{$child} {
+// 			transition: $transition;
+// 		  }
+// 		}
+// 	  }
+// 	}
+//   }
+  
+
+@function str-split($string, $separator) {
+	$split: ();
+	$index: str-index($string, $separator);
+	@while $index {
+	  $split: append($split, str-slice($string, 1, $index - 1));
+	  $string: str-slice($string, $index + 1);
+	  $index: str-index($string, $separator);
+	}
+	$split: append($split, $string);
+	@return $split;
+  }
+  
+  @function generate-child-selectors($parent, $splitChild, $suffixes) {
+	$selectors: ();
+	@each $p in $parent {
+	  @each $c in $splitChild {
+		$processedChild: null;
+		@if $c == '&' {
+		  $processedChild: $p;
+		} @else {
+		  $processedChild: " #{$c}";
+		}
+		@each $s in $suffixes {
+		  $selectors: append($selectors, "#{$p}#{$s}#{$processedChild}", comma);
+		}
+	  }
+	}
+	@return $selectors;
+  }
+  
+//   @mixin hover($parent: (''), $child: (''), $transition: var(--transition)) {
+// 	$splitParent: str-split($parent, ',');
+// 	@each $p in $splitParent {
+// 	  @if $p == '' and $child == '' {
+// 		& {
+// 		  transition: $transition;
+// 		}
+// 		&:hover,
+// 		&:focus,
+// 		&.focus,
+// 		&.hover {
+// 		  @content;
+// 		}
+// 	  } @else if $child == '' {
+// 		// if there is no child
+// 		@at-root {
+// 		  #{$p} {
+// 			transition: $transition;
+// 		  }
+// 		  #{$p}:hover,
+// 		  #{$p}:focus,
+// 		  #{$p}.focus,
+// 		  #{$p}.hover {
+// 			@content;
+// 		  }
+// 		}
+// 	  } @else {
+// 		$splitChild: str-split($child, ',');
+// 		$suffixes: (':hover', ':focus', '.focus', '.hover');
+// 		$childSelectors: generate-child-selectors($splitParent, $splitChild, $suffixes);
+// 		@at-root {
+// 		  #{$childSelectors} {
+// 			@content;
+// 		  }
+// 		}
+// 		@at-root {
+// 		  #{$parent} #{$child} {
+// 			transition: $transition;
+// 		  }
+// 		}
+// 	  }
+// 	}
+//   }
+  
+
+  
+  @mixin hover($parent: (''), $child: (''), $transition: var(--transition)) {
+	$splitParent: str-split($parent, ',');
+	@each $p in $splitParent {
+	  @if $p == '' and $child == '' {
+		& {
+		  transition: $transition;
+		}
+		&:hover,
+		&:focus,
+		&.focus,
+		&.hover {
+		  @content;
+		}
+	  } @else if $child == '' {
+		// if there is no child
+		@at-root {
+		  #{$p} {
+			transition: $transition;
+		  }
+		  #{$p}:hover,
+		  #{$p}:focus,
+		  #{$p}.focus,
+		  #{$p}.hover {
+			@content;
+		  }
+		}
+	  } @else {
+		$splitChild: str-split($child, ',');
+		$suffixes: (':hover', ':focus', '.focus', '.hover');
+		$childSelectors: generate-child-selectors($splitParent, $splitChild, $suffixes);
+		@at-root {
+		  #{$childSelectors} {
+			@content;
+		  }
+		}
+		// @at-root {
+		//   #{$parent} #{$child} {
+		// 	transition: $transition;
+		//   }
+		// }
+	  }
+	}
+  }
+  
+
+
+  
+
+@mixin colgutter($col: var(--col), $gut: var(--gutter)) {
+	width: calc((100%/#{$col}) - ((#{$gut} * (#{$col} - 1)) / #{$col})) !important;
+}
+
+
+@function colgutter($col: var(--col), $gut: var(--gutter)) {
+	@return calc((100%/#{$col}) - ((#{$gut} * (#{$col} - 1)) / #{$col}));
+}
+
+
+
+
+@mixin absolute-center{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+@mixin responsive-down($str, $b) {
+
+    #{$str}-#{$b} {
+        @media screen and (max-width: map-get($grid-breakpoints, 'xxl') - $subtractor) {
+            @content;
+        }
+
+        @media screen and (min-width: map-get($grid-breakpoints, 'xxl')) {
+            @content;
+        }
+    }
+
+    @each $key,
+    $val in $grid-breakpoints_inverted {
+        @if($key !='xs') {
+            #{$str}-#{$key}-#{$b} {
+                @media screen and (max-width: map-get($grid-breakpoints, $key) - $subtractor) {
+                    @content;
+                }
+            }
+        }
+    }
+
+}
+
+
+
+
+@mixin injected-parameters($type, $props, $vals, $un, $i) {
+
+
+    @for $num from 1 through length($props) {
+
+
+        $x: "";
+
+        @if ((contains((nth($vals, $num)), 'xyz'))==true) {
+            $x: str-replace(nth($vals, $num), 'xyz', $i);
+
+            @if($type==range) {
+                @if ((contains((nth($vals, $num)), '/'))==true) {
+                    $a: str-split($x, '/');
+                    $a: (to-number(nth($a, 1)) / to-number(nth($a, 2)));
+                    $x: $a;
+                }
+            }
+        }
+
+        @else {
+            $x: nth($vals, $num);
+        }
+
+
+        @if(length($un)==1) {
+
+            @if($un==none) {
+                #{nth($props,$num)}: $x;
+            }
+
+            @else {
+                #{nth($props,$num)}: #{$x}#{$un};
+            }
+        }
+
+        @else {
+
+            @if(nth($un, $num)==none) {
+                #{nth($props,$num)}: $x;
+            }
+
+            @else {
+                $u: nth($un, $num);
+                #{nth($props,$num)}: #{$x}#{$u};
+            }
+
+        }
+
+
+
+
+    }
+
+}
+
+
+
+
+@mixin responsive-down-range($str, $type, $props, $vals, $un, $min, $max, $map) {
+    @for $i from $min to $max+1 {
+        #{$str}-#{$i} {
+            @media screen and (max-width: map-get($grid-breakpoints, 'xxl') - $subtractor) {
+                @include injected-parameters($type, $props, $vals, $un, $i);
+                @content;
+            }
+
+            @media screen and (min-width: map-get($grid-breakpoints, 'xxl')) {
+                @include injected-parameters($type, $props, $vals, $un, $i);
+                @content;
+            }
+        }
+    }
+
+    @each $key,
+    $val in $grid-breakpoints_inverted {
+        @for $i from $min to $max+1 {
+            @if($key !='xs') {
+                #{$str}-#{$key}-#{$i} {
+                    @media screen and (max-width: map-get($grid-breakpoints, $key) - $subtractor) {
+                        @include injected-parameters($type, $props, $vals, $un, $i);
+                        @content;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@mixin responsive-down-map($str, $type, $props, $vals, $un, $min, $max, $map) {
+
+    @each $thing,
+    $value in $map {
+        #{$str}-#{$thing} {
+            @media screen and (max-width: map-get($grid-breakpoints, 'xxl') - $subtractor) {
+                @include injected-parameters($type, $props, $vals, $un, $value);
+                @content;
+            }
+
+            @media screen and (min-width: map-get($grid-breakpoints, 'xxl')) {
+                @include injected-parameters($type, $props, $vals, $un, $value);
+                @content;
+            }
+        }
+    }
+
+    @each $key,
+    $val in $grid-breakpoints_inverted {
+
+        @each $thing,
+        $value in $map {
+            @if($key !='xs') {
+                #{$str}-#{$key}-#{$thing} {
+                    @media screen and (max-width: map-get($grid-breakpoints, $key) - $subtractor) {
+                        @include injected-parameters($type, $props, $vals, $un, $value);
+                        @content;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+@mixin responsive-down-manual($str, $type, $props, $vals, $un, $min, $max, $map) {
+
+    @if($type==range) {
+        @include responsive-down-range($str, $type, $props, $vals, $un, $min, $max, $map) {
+            @content;
+        }
+    }
+
+    @if($type==map) {
+        @include responsive-down-map($str, $type, $props, $vals, $un, $min, $max, $map) {
+            @content;
+        }
+    }
+
+}
+
+
+
+
+
+
+
+@mixin box-shadow-border($width: var(--b-width), $color: var(--b-color), $type: inset) {
+	
+	@if ($type==inset) {
+
+		box-shadow: 
+		$type calc(#{$width} * -1) 0 0 $color,
+		$type 0 calc(#{$width} * -1) 0 $color,
+		$type $width 0 0 $color,
+		$type 0 $width 0 $color;
+		
+	} 
+
+
+}
+
+
+@mixin image-layout-fill-contain(){
+    @include s;
+    position: relative;
+	img{
+		@include img-contain;
+	}
+}
+
+
+
+
+@mixin mask {
+	// --mask-aspect-width: 205;
+	// --mask-aspect-height: 168;
+	mask-image: var(--mask-img);
+	-webkit-mask-image: var(--mask-img);
+	-webkit-mask-size: contain;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-position: center;
+  
+	// @include aspect-support-fix(var(--mask-aspect-width), var(--mask-aspect-height), 100%, null);
+  }
+
+
+
+  @mixin mask-width($w, $i: ''){
+	width:  calc((var(--mask-aspect-width) / var(--mask-aspect-height)) * #{$w}) #{$i};
+  }
+
+  @mixin mask-height($h, $i: ''){
+	height:  calc(( var(--mask-aspect-height/ var(--mask-aspect-width))) * #{$h}) #{$i};
+  }
+
+
+  @mixin graphic-width($w, $i: ''){
+	width:  Max(calc((var(--mask-aspect-width) / var(--mask-aspect-height)) * #{$w}),calc((var(--img-aspect-width) / var(--img-aspect-height)) * #{$w})) #{$i};
+  }
+
+  @mixin graphic-height($h, $i: ''){
+	height:  Max(calc(( var(--mask-aspect-height/ var(--mask-aspect-width))) * #{$h}), calc(( var(--img-aspect-height/ var(--img-aspect-width))) * #{$h})) #{$i};
+  }
+
+
+
+
+  @function mask-width($w, $i: ''){
+	  $result: calc((var(--mask-aspect-width) / ( var(--mask-aspect-height))) * #{$w}) #{$i};
+	  @return $result;
+	}
+	
+	@function mask-height($h, $i: ''){
+	  $result: calc((( var(--mask-aspect-height) / var(--mask-aspect-width) )) * #{$h}) #{$i};
+	  @return $result;
+  }
+
+
+
+
+  @function img-width($w, $i: ''){
+	$result: calc((var(--img-aspect-width) / ( var(--img-aspect-height))) * #{$w}) #{$i};
+	@return $result;
+  }
+  
+  @function img-height($h, $i: ''){
+	$result: calc((( var(--img-aspect-height) / var(--img-aspect-width) )) * #{$h}) #{$i};
+	@return $result;
+}
+
+
+
+  @function aspect-width($aw, $ah, $w, $i: ''){
+	  $result: calc(( #{$aw} / #{$ah}) * #{$w}) #{$i};
+	  @return $result;
+	}
+
+  @function aspect-height($aw, $ah, $w, $i: ''){
+	  $result: calc(( #{$ah} / #{$aw}) * #{$w}) #{$i};
+	  @return $result;
+	}
+
+
+
+
+
+
+  @mixin img-width($w){
+	width:  calc((var(--img-aspect-width) / var(--img-aspect-height)) * #{$w});
+  }
+
+
+  @mixin gap($g:var(--gap)){
+	// TODO: this would be a great place to build out a mixin that can work when gap isn't supported and when it is
+
+	gap: #{$g};
+	column-gap: #{$g};
+	row-gap: #{$g};
+
+
+
+  }
+
+
+  
+@function groupWidth($col, $gutter) {
+
+    $result: calc((100%/ #{$col}) - (#{$gutter} * (#{$col} - 1)) / #{$col});
+    @return $result;
+
+}
+
+
+
+@mixin gridGroup($gut) {
+    display: grid;
+    justify-content: space-between;
+    column-gap: $gut;
+    row-gap: $gut;
+}
+
+
+
+
+@mixin slider-handle{
+
+	&::-webkit-slider-thumb{
+		@content;
+	}
+	
+	&::-moz-range-thumb{
+		@content;
+	}
+	
+
+}
+
+
+
+
+
+
+  
+@mixin section-mask-color($col) {
+	.section--graphic {
+		.mask{
+			background-color: $col;
+		}
+	}
+  }
+  
+  @mixin section-list-spacing($mt, $mt_less: null) {
+	$mt_less_value: #{if($mt_less == null, calc(#{$mt} * 0.5), $mt_less)};
+	
+	.section--description {
+	  li + li{
+		margin-top: $mt;
+	  }
+	  
+	  li + li.mt-less {
+		margin-top: $mt_less_value;
+	  }
+  
+	}
+  }
+  
+
+
+  @mixin nth-children($numbers...) {
+	@for $i from 1 through length($numbers) {
+	  &:nth-child(#{nth($numbers, $i)}) {
+		@content;
+	  }
+	}
+  }
+  
+
+  @mixin before-panel($pad: 0, $background: var(--col-before)) {
+	position: relative;
+	display:block;
+	&::before {
+		content: "";
+		position: absolute;
+		@if type-of($pad) == 'list' and length($pad) == 2 {
+			top: nth($pad, 1) * -1;
+			bottom: nth($pad, 1) * -1;
+			left: nth($pad, 2) * -1;
+			right: nth($pad, 2) * -1;
+		} @else if type-of($pad) == 'list' and length($pad) == 4 {
+			top: nth($pad, 1) * -1;
+			right: nth($pad, 2) * -1;
+			bottom: nth($pad, 3) * -1;
+			left: nth($pad, 4) * -1;
+		} @else {
+			top: $pad * -1;
+			left: $pad * -1;
+			right: $pad * -1;
+			bottom: $pad * -1;
+		}
+		border-radius: var(--border-radius);
+		background-color: $background;
+		z-index:-1;
+		@content;
+    }
+}
+
+@function floor-round($value) {
+	@return unquote("calc(#{$value} * var(--sfh) / var(--sfh))");
+}
+
+  @mixin root {
+
+
+	@at-root :root {
+		@content;
+	}
+
+  }
+
+
+@mixin mts($size) {  
+	margin-top: map-get($spacers_section, $size);
+}
+@mixin mts-val($size) {  
+	--mts: #{map-get($spacers_section, $size)};
+}
+  
+
+@mixin non-chromium {
+	.safari &, .firefox & {
+	  @content;
+	}
+  }
+
+@mixin safari {
+	.safari & {
+	  @content;
+	}
+  }
+
+@mixin ios-safari {
+	.ios.safari & {
+	  @content;
+	}
+  }
+  
+  @mixin chrome {
+	.chrome & {
+	  @content;
+	}
+  }
+  
+  @mixin firefox {
+	.firefox & {
+	  @content;
+	}
+  }
+  @mixin mac-firefox {
+	  .mac.firefox & {
+		  @content;
+		}
+	}
+	@mixin not-firefox {
+		:not(.firefox) & {
+			@content;
+		}
+	}
+  
+  @mixin windows {
+	.windows & {
+	  @content;
+	}
+  }
+  @mixin windows-chrome {
+	.windows.chrome & {
+	  @content;
+	}
+  }
+  @mixin windows-firefox {
+	.windows.firefox & {
+	  @content;
+	}
+  }
+  
+  @mixin mac {
+	.mac & {
+	  @content;
+	}
+  }
+  
+  @mixin linux {
+	.linux & {
+	  @content;
+	}
+  }
+  
+  @mixin android {
+	.android & {
+	  @content;
+	}
+  }
+  @mixin android-chrome {
+	.android.chrome & {
+	  @content;
+	}
+  }
+  
+  @mixin ios {
+	.ios & {
+	  @content;
+	}
+  }
+	
+
+  @mixin safari-rem($property, $value) {
+	// Remove 'rem' from the end of the value and convert to number
+	$remValue: to-number(str-slice($value, 1, str-length($value) - 3));
+  
+	// Convert rem to pixels (assuming 1rem is 16px)
+	$pxValue: $remValue * 16;
+  
+	// Output the default property
+	#{$property}: #{$value};
+  
+	// Output the Safari-specific property
+	@include safari {
+	  #{$property}: #{$pxValue}px;
+	}
+  }
+	  
+
+
+  
+  @mixin combine-transform($transforms...) {
+	$transform-string: "";
+	@each $transform in $transforms {
+	  $transform-string: $transform-string + " " + $transform;
+	}
+	transform: unquote($transform-string);
+  }
+  
+  @mixin in-out($map) {
+	$initial: map-get($map, initial);
+	$animate: map-get($map, animate);
+	$exit: map-get($map, exit);
+	$all: map-get($map, all);
+	$options: map-get($map, options);
+  
+	$important: "";
+	$visibility: true;
+	@if map-has-key($map, options) {
+	  $options: map-get($map, options);
+	  @if map-get($options, important) == true {
+		$important: "!important";
+	  }
+	  @if map-get($options, visibility) == false {
+		$visibility: false;
+	  }
+	}
+  
+	@if map-has-key($map, all) {
+	  &__initial,
+	  &__animate,
+	  &__exit {
+		@each $property, $value in $all {
+			#{if(type-of($property) == string, unquote($property), $property)}: if(type-of($value) == string, unquote($value), $value) #{$important};
+		}
+	  }
+	}
+  
+	&__initial {
+	  @include handle-state($initial, "initial", $important, $visibility);
+	}
+  
+	&__animate {
+	  @include handle-state($animate, "animate", $important, $visibility);
+	}
+  
+	&__exit {
+	  @include handle-state($exit, "exit", $important, $visibility);
+	}
+  }
+  
+  @mixin handle-state($state, $name, $important, $visibility) {
+	$transition: map-get($state, transition);
+	$properties: map-keys($state);
+  
+	@if $transition == null {
+	  $transition: "";
+	  @each $property in $properties {
+		$transition: $transition + $property + " var(--transition), ";
+	  }
+  
+	  @if $visibility == true {
+		@if $name == "animate" {
+		  $transition: $transition + "visibility 0s 0s";
+		  visibility: visible #{$important};
+		} @else {
+		  $transition: $transition + "visibility 0s var(--transition)";
+		  visibility: hidden #{$important};
+		}
+	  }
+  
+	  $transition: unquote($transition);
+	}
+  
+	@each $property, $value in $state {
+		#{if(type-of($property) == string, unquote($property), $property)}: if(type-of($value) == string, unquote($value), $value) #{$important};
+	}
+  
+	transition: $transition #{$important};
+  }
+  
+
+
+
+
+
+  @mixin background-hover-animation($top, $right, $bottom, $left) {
+	z-index: 1;
+	@include before-panel(($top $right $bottom $left), rgba($col-secondary, 0)) {
+	  transition: 0.2s;
+	  border-radius: 0.25rem;
+	}
+  
+	@include hover {
+	  &::before {
+		background-color: rgba($col-secondary,0.15);
+	  }
+	}
+  }
+  
+
+  @mixin hyphenate(){
+	hyphens: auto;
+    /* For webkit browsers like Safari */
+    -webkit-hyphens: auto;
+    /* For Mozilla browsers like Firefox */
+    -moz-hyphens: auto;
+    /* For Internet Explorer 10+ */
+    -ms-hyphens: auto;
+
+  }
+
+  @mixin flex-group($values...) {
+	$num-values: length($values);
+  
+	@if $num-values == 1 {
+		flex-wrap: wrap;
+	//   gap: 0;
+	//   column-gap: 0;
+	//   row-gap: 0;
+  
+	  & > *:nth-child(n) {
+		width: nth($values, 1);
+		// min-width: 100%;
+		// max-width: 100%;
+	  }
+	} @else {
+	  gap: var(--gap);
+	  column-gap: var(--gap);
+	  row-gap: var(--gap);
+  
+	  @for $i from 1 through $num-values {
+		$value: nth($values, $i);
+		$gap-divisor: $num-values;
+		$gap-divided: calc(var(--gap) / #{$gap-divisor});
+  
+		& > *:nth-child(#{$i}) {
+		  width: calc(#{$value} - #{$gap-divided});
+		//   min-width: calc(#{$value} - #{$gap-divided});
+		//   max-width: calc(#{$value} - #{$gap-divided});
+		}
+	  }
+	}
+  }
+  
+  @mixin flex-group-force($values...) {
+	$num-values: length($values);
+  
+	@if $num-values == 1 {
+	  flex-wrap: wrap;
+	//   gap: 0;
+	//   column-gap: 0;
+	//   row-gap: 0;
+  
+	  & > *:nth-child(n) {
+		width: nth($values, 1);
+		min-width: nth($values, 1);
+		max-width: nth($values, 1);
+	  }
+	} @else {
+	  gap: var(--gap);
+	  column-gap: var(--gap);
+	  row-gap: var(--gap);
+  
+	  @for $i from 1 through $num-values {
+		$value: nth($values, $i);
+		$gap-divisor: $num-values;
+		$gap-divided: calc(var(--gap) / #{$gap-divisor});
+  
+		& > *:nth-child(#{$i}) {
+		  width: calc(#{$value} - #{$gap-divided});
+		  min-width: calc(#{$value} - #{$gap-divided});
+		  max-width: calc(#{$value} - #{$gap-divided});
+		}
+	  }
+	}
+  }
+  
+  @mixin text-section-left {
+	@include lg-down {
+	  &,
+	  & > * {
+		text-align: left;
+	  }
+  
+	  @include text {
+		margin-right: auto;
+	  }
+	}
+  }
+  
+
+
+
+
+  @function blend-numbers($blend-factor: var(--blend), $number1: var(--number-1), $number2: var(--number-2)) {
+	@return calc(#{$number1} * (1 - #{$blend-factor}) + #{$number2} * #{$blend-factor});
+  }
+	
+
+
+
+
+  @mixin seek-arrows($theme: "primary") {
+	// Define the default URLs
+	$seek-left: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66847a2d0b20f1796d0ae99d_Seek-Left.svg";
+	$seek-right: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66847a2ceceaa2a16505efb4_Seek-Right.svg";
+	$seek-left-hovered: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66847a2c9f9c8d92d53520c1_Seek-Left__Hovered.svg";
+	$seek-right-hovered: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66847a2dd9fc454870af021b_Seek-Right__Hovered.svg";
+
+	// Define the charcoal URLs
+	$seek-left__charcoal: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66996d54cba52431d6de8d5d_Seek-Left__Charcoal.svg";
+	$seek-right__charcoal: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66996d54e9551d4a203cb638_Seek-Right__Charcoal.svg";
+	$seek-left-hovered__charcoal: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66996d55466158ceee34511f_Seek-Left__HoveredCharcoal.svg";
+	$seek-right-hovered__charcoal: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66996d546c5164fa9f0a8c3f_Seek-Right__HoveredCharcoal.svg";
+
+	// Check theme and set URLs accordingly
+	@if $theme == "dark" {
+		$seek-left: $seek-left__charcoal;
+		$seek-right: $seek-right__charcoal;
+		$seek-left-hovered: $seek-left-hovered__charcoal;
+		$seek-right-hovered: $seek-right-hovered__charcoal;
+	}
+
+	--seek-width: 3.5rem;
+
+	width: var(--seek-width);
+	height: var(--seek-width);
+	background-size: contain;
+	background-repeat: no-repeat;
+	cursor: pointer;
+
+	&.left {
+		background-image: url($seek-left);
+		&.disabled,&[disabled] {
+			background-image: url($seek-left) !important;
+		}
+		@include hover {
+			background-image: url($seek-left-hovered);
+		}
+	}
+	&.right {
+		background-image: url($seek-right);
+		&.disabled,&[disabled] {
+			background-image: url($seek-right) !important;
+		}
+		@include hover {
+			background-image: url($seek-right-hovered);
+		}
+	}
+
+	&.disabled,&[disabled] {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+}

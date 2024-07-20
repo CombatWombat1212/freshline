@@ -1,0 +1,84 @@
+$column-grid-min: 0;
+$column-grid-max: 12;
+
+:root{
+    --column-grid-min: #{$column-grid-min};
+    --column-grid-max: #{$column-grid-max};
+}
+
+@mixin col-width($b, $i:0) {
+    --column-width: #{$b};
+    width: #{($b/$column-grid-max) * 100%};
+  }
+  
+@mixin e-col-width($b, $gap: var(--gap)) {
+    //  --expected-cols: #{floor-round(calc((12 / #{$b})))};
+    // $calculated-cols: floor();
+    
+    $expected-cols: 0;
+    $cols: 0;
+
+    @if $b == 0 {
+        $cols: 0;
+    } @else {
+        $cols: $column-grid-max/$b;
+    }
+
+    $expected-cols: floor($cols);
+
+    --expected-cols: #{$expected-cols};
+
+    
+
+    min-width: calc((100% - ((var(--expected-cols) - 1) * #{$gap})) / var(--expected-cols));
+    max-width: calc((100% - ((var(--expected-cols) - 1) * #{$gap})) / var(--expected-cols));
+}
+
+
+
+@function col-width($b) {
+  @return #{($b/$column-grid-max) * 100%};
+}
+
+@function col-width_vw ($b) {
+    @return ($b/$column-grid-max) * 100#{'vw'};
+}
+
+@function col-width_vh ($b) {
+    @return ($b/$column-grid-max) * 100#{'vh'};
+}
+
+
+
+
+
+// TODO: it would be good if this could be done in such a way that it is all inside one media query rather than each one being its own media query. 
+
+// @for $b from $column-grid-min to $column-grid-max+1 {
+//     .col-#{$b} {
+//         @media screen and (max-width: map-get($grid-breakpoints, $grid-breakpoint-max_key) - $subtractor) {
+//             @include col-width($b, var(--flexChildren));
+//         }
+
+//         @media screen and (min-width: map-get($grid-breakpoints, $grid-breakpoint-max_key)) {
+//             @include col-width($b, var(--flexChildren));
+//         }
+//     }
+
+//     .e-col-#{$b} {
+//         @include e-col-width($b);
+//     }
+// }
+
+// @each $key,
+// $val in $grid-breakpoints_inverted {
+//     @for $b from $column-grid-min to $column-grid-max+1 {
+//         @if($key !=$grid-breakpoint-min_key) {
+//             .col-#{$key}-#{$b} {
+//                 @media screen and (max-width: map-get($grid-breakpoints, $key) - $subtractor) {
+//                     @include col-width($b, var(--flexChildren));
+//                 }
+//             }
+//         }
+//     }
+// }

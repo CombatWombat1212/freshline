@@ -1,0 +1,99 @@
+:root {
+  --containers--max-width-small-pad: 2.35rem;
+  --containers--max-width-small: calc(100% - calc(--containers--max-width-small-pad)) !important;
+  --screen-width: calc(100vw - 15px);
+  --scrollbar-width: 15px;
+}
+
+body {
+  position: relative;
+  @include flex-col;
+
+  opacity: 0;
+  transition: opacity 0.2s;
+
+  // overflow: hidden;
+  // max-width: 100vw;
+}
+
+[data-hide-until-load] {
+  transition: opacity 0.2s;
+  opacity: 0 !important;
+}
+
+[data-hide-until-load="true"] {
+  opacity: 1 !important;
+}
+
+[href*="wized"],
+[class*="webflow-badge"] {
+  display: none !important;
+}
+
+// :root {
+//   --transition: 0.1s;
+
+//   @include text('.menu-title-text') {
+//     color: $col--background;
+//   }
+// }
+
+// :root {
+//   $bp: "";
+
+//   @each $key, $val in $grid-breakpoints {
+//     @if ($key !=nth(nth($grid-breakpoints, -1), 1)) {
+//       $bp: $bp + "#{$key}"+", ";
+//     } @else {
+//       $bp: $bp + "#{$key}";
+//     }
+//   }
+
+//   $bp: $bp + "";
+
+//   --breakpoints: #{$bp};
+// }
+
+// :root {
+//   @each $key, $val in $grid-breakpoints {
+//     --#{$key}: #{$val};
+//   }
+// }
+
+// html {
+// }
+
+// .overflow__ellipsis {
+//   height: var(--rounded-height);
+//   overflow: hidden;
+//   display: -webkit-box;
+//   -webkit-line-clamp: var(--visible-lines);
+//   -webkit-box-orient: vertical;
+//   text-overflow: ellipsis;
+// }
+
+.no-scroll {
+  overflow: hidden;
+  // overflow: -moz-hidden-unscrollable;
+  // touch-action: none;
+}
+
+// .scrollauto {
+//   scroll-behavior: auto !important;
+//   // * {
+//   //   scroll-behavior: auto !important;
+//   // }
+// }
+
+// .nobr,
+// [nobr] {
+//   white-space: nowrap;
+// }
+
+// .cursor-grabbed {
+//   cursor: grabbing !important;
+// }
+
+// .cursor-ew-resize {
+//   cursor: ew-resize !important;
+// }

@@ -1,0 +1,67 @@
+@mixin squiggle-vars {
+  $squiggle-stroke-width: 16px;
+  $squiggle-dot-size: 3rem;
+
+  --squiggle-stroke-width: #{$squiggle-stroke-width};
+  --squiggle-dot-size: #{$squiggle-dot-size};
+}
+
+.squiggle {
+  @include squiggle-vars;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  &--title {
+    @include lg-down {
+      text-align: center;
+    }
+  }
+
+  &--dot {
+    @include squiggle-vars;
+
+    width: var(--squiggle-dot-size);
+    height: var(--squiggle-dot-size);
+    min-width: var(--squiggle-dot-size);
+    min-height: var(--squiggle-dot-size);
+
+    background-color: rgba($col--accent, 0.5);
+  }
+
+  &--dot-inner {
+    --size: calc(var(--squiggle-dot-size) - var(--squiggle-stroke-width));
+    width: var(--size);
+    height: var(--size);
+    min-width: var(--size);
+    min-height: var(--size);
+  }
+
+  &--child {
+    @include squiggle-vars;
+
+    position: absolute;
+
+    height: var(--pitch-height, 200vh);
+    pointer-events: none;
+
+    // .cls-1 {
+    //   fill: none;
+    //   stroke: rgba($col--accent, 0);
+    //   stroke-width: var(--squiggle-stroke-width);
+    // }
+
+    // .cls-1 ~ .cls-1 {
+    //   stroke: rgba($col--accent, 0.5);
+    // }
+
+    .cls-1 {
+      fill: none;
+      stroke: rgba($col--accent, 0.25);
+      stroke-width: var(--squiggle-stroke-width);
+    }
+  }
+}

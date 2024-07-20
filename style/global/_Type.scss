@@ -1,0 +1,58 @@
+@use "../utopia/utopia" as utopia;
+@import "Type-Core";
+@import "Fluid-Type";
+
+.text {
+  &--h1 {
+    @extend %text--h1;
+  }
+
+  &--h2 {
+    @extend %text--h2;
+  }
+
+  &--h3 {
+    @extend %text--h3;
+  }
+
+  &--h4 {
+    @extend %text--h4;
+  }
+
+  &--body {
+    @extend %text--body;
+  }
+
+  &--tag {
+    @extend %text--tag;
+  }
+}
+
+p,
+.text--body * {
+  @extend %text--body;
+}
+
+h1,
+h1 *,
+.text--h1 * {
+  @extend %text--h1;
+}
+
+h2,
+h2 *,
+.text--h2 * {
+  @extend %text--h2;
+}
+
+h3,
+h3 *,
+.text--h3 * {
+  @extend %text--h3;
+}
+
+h4,
+h4 *,
+.text--h4 * {
+  @extend %text--h4;
+}

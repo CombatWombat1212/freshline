@@ -1,0 +1,32 @@
+.torn-split-section {
+  @include pad-y(6rem);
+  @include flex-col-center;
+
+  @include lg-down {
+    @include pad-y(4rem);
+    padding-top: 3rem;
+  }
+
+  &--container {
+    @include my-auto;
+
+    display: grid;
+
+    gap: 3rem;
+    grid-template-columns: 0.8fr 1.2fr;
+    width: 100%;
+
+    @include xl-down {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+    @include lg-down {
+      gap: 2rem;
+      grid-template-columns: 1fr;
+
+      @include safari{
+        @include flex-col;
+      }
+
+    }
+  }
+}

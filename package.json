@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "axios": "^1.7.2",
+    "chokidar": "^3.6.0",
+    "crypto": "^1.0.1",
+    "express": "^4.19.2",
+    "form-data": "^4.0.0",
+    "ngrok": "^5.0.0-beta.2",
+    "node-fetch": "^2.7.0",
+    "utopia-core-scss": "^1.0.1"
+  },
+  "scripts": {
+    "watch": "node ./script/watch-compile-live.js"
+  },
+  "devDependencies": {
+    "@prettier/plugin-php": "^0.22.2"
+  },
+  "name": "sandbox",
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

@@ -1,0 +1,13 @@
+
+
+
+
+.layered-background {
+  --parralax-distance: 500px;
+
+  height: calc(100% + var(--parralax-distance));
+//   margin-top: calc(var(--parralax-distance) * -1);
+
+  &--image-wrapper {
+  }
+}

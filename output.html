@@ -1,0 +1,802 @@
+<script async src="https://embed.wized.com/d76i4fktlUrOFn2edaqE.js"></script>
+<script
+  async
+  type="module"
+  data-wized-id="d76i4fktlUrOFn2edaqE"
+  src="https://embed.wized.com/v2/index.js"
+></script>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""
+/>
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""
+></script>
+
+<!-- [Attributes by Finsweet] CMS Nest -->
+<script
+  async
+  src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-cmsnest@1/cmsnest.js"
+></script>
+
+
+<style>
+.col--accent, .col--accent * {
+  color: var(--col--accent) !important;
+}
+
+.col--accent__hovered, .col--accent__hovered * {
+  color: var(--col--accent__hovered) !important;
+}
+
+.col--primary, .col--primary * {
+  color: var(--col--primary) !important;
+}
+
+.col--primary__light, .col--primary__light * {
+  color: var(--col--primary__light) !important;
+}
+
+.col--primary__lighter, .col--primary__lighter * {
+  color: var(--col--primary__lighter) !important;
+}
+
+.col--primary__lightest, .col--primary__lightest * {
+  color: var(--col--primary__lightest) !important;
+}
+
+.col--primary__dark, .col--primary__dark * {
+  color: var(--col--primary__dark) !important;
+}
+
+.col--charcoal__darker, .col--charcoal__darker * {
+  color: var(--col--charcoal__darker) !important;
+}
+
+.col--charcoal__dark, .col--charcoal__dark * {
+  color: var(--col--charcoal__dark) !important;
+}
+
+.col--charcoal, .col--charcoal * {
+  color: var(--col--charcoal) !important;
+}
+
+.col--charcoal__light, .col--charcoal__light * {
+  color: var(--col--charcoal__light) !important;
+}
+
+.col--charcoal__lightest, .col--charcoal__lightest * {
+  color: var(--col--charcoal__lightest) !important;
+}
+
+.col--turf__dark, .col--turf__dark * {
+  color: var(--col--turf__dark) !important;
+}
+
+.col--turf, .col--turf * {
+  color: var(--col--turf) !important;
+}
+
+.col--turf__light, .col--turf__light * {
+  color: var(--col--turf__light) !important;
+}
+
+.col--turn__lightest, .col--turn__lightest * {
+  color: var(--col--turn__lightest) !important;
+}
+
+.col--rust__light, .col--rust__light * {
+  color: var(--col--rust__light) !important;
+}
+
+.col--rust, .col--rust * {
+  color: var(--col--rust) !important;
+}
+
+:root {
+  --col--accent: #f15d30;
+  --col--accent__hovered: #bf370d;
+  --col--primary: #dfbe9c;
+  --col--primary__light: #f4d9be;
+  --col--primary__lighter: #f8e8d8;
+  --col--primary__lightest: #faff60;
+  --col--primary__dark: #54433c;
+  --col--charcoal__darker: #1d1d1d;
+  --col--charcoal__dark: #2c2c2c;
+  --col--charcoal: #363635;
+  --col--charcoal__light: #414141;
+  --col--charcoal__lightest: #565656;
+  --col--turf__dark: #3d3b36;
+  --col--turf: #545044;
+  --col--turf__light: #645f52;
+  --col--turn__lightest: #dad3c0;
+  --col--rust__light: #c9b5ac;
+  --col--rust: #a58574;
+}
+
+:root {
+  --containers--max-width-small: calc(100% - 2.35rem) !important;
+  --screen-width: calc(100vw - 15px);
+  --scrollbar-width: 15px;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.container--large.w-container::before,
+.container--large.w-container::after {
+  content: none;
+}
+
+.w-container:before,
+.w-container:after {
+  content: none !important;
+}
+
+.image-stack {
+  --image-stack--top-offset: 4rem;
+  --image-stack--left-offset: 8rem;
+  position: relative;
+  width: calc(100% - var(--image-stack--left-offset));
+  margin-left: var(--image-stack--left-offset);
+  margin-bottom: var(--image-stack--top-offset);
+}
+.image-stack--image-wrapper:nth-child(2) {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: var(--image-stack--top-offset);
+  left: calc(-1 * var(--image-stack--left-offset));
+}
+.map-section {
+  --map-height: 30rem;
+  counter-reset: item-counter;
+}
+.map-section .w-dyn-item {
+  counter-increment: item-counter;
+  cursor: pointer;
+}
+.map-section .map--selection-wrapper:not(.no-scroll) {
+  padding-right: 0.625rem;
+}
+.map-section .map--selection-wrapper::-webkit-scrollbar {
+  width: 0.625rem;
+}
+.map-section .map--selection-wrapper::-webkit-scrollbar-track {
+  background: var(--color--primary__lighter);
+  border-radius: 100rem;
+}
+.map-section .map--selection-wrapper::-webkit-scrollbar-thumb {
+  background-color: var(--color--primary__dark);
+  border-radius: 100rem;
+}
+@supports not selector(::-webkit-scrollbar) {
+  .map-section .map--selection-wrapper {
+    scrollbar-color: var(--color--primary__dark) var(--color--primary__lighter);
+  }
+}
+.map-section .map--list-item {
+  transition: 0.15s;
+}
+.map-section .w-dyn-item:hover .map--list-item, .map-section .w-dyn-item:focus .map--list-item, .map-section .w-dyn-item.focus .map--list-item, .map-section .w-dyn-item.hover .map--list-item {
+  background-color: var(--color--primary__light);
+}
+
+.map-section .w-dyn-item .map--list-item {
+  transition: var(--transition);
+}
+
+.map-section .w-dyn-item[data-country].selected .map--list-item {
+  height: var(--map-height);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  background-color: var(--color--primary__light);
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.map-section .w-dyn-item[data-country].selected .map--heading-text {
+  font-family: var(--h3--font-family);
+  font-size: var(--h3--font-size);
+  line-height: var(--h3--line-height);
+  letter-spacing: var(--h3--letter-spacing);
+  font-weight: 600;
+}
+
+.map-section .w-dyn-item[data-country].selected .map--date {
+  margin-top: -0.25rem;
+}
+
+.map-section .map--number {
+  transition: 0.15s;
+  height: unset;
+}
+.map-section .map--number::before {
+  content: counter(item-counter);
+}
+.map-section .w-dyn-item:hover .map--number, .map-section .w-dyn-item:focus .map--number, .map-section .w-dyn-item.focus .map--number, .map-section .w-dyn-item.hover .map--number {
+  background-color: var(--color--primary);
+}
+
+.map-section .w-dyn-item .map--number {
+  transition: var(--transition);
+}
+
+.map-section .w-dyn-item[data-country].selected .map--number {
+  display: none;
+}
+
+.map-section .map--paragraph {
+  display: none;
+}
+.map-section .w-dyn-item[data-country].selected .map--paragraph {
+  display: block;
+  margin-top: 1.75rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+}
+
+.map-section .map--close {
+  margin-bottom: auto;
+  display: none;
+}
+.map-section .w-dyn-item[data-country].selected .map--close {
+  display: flex;
+}
+
+.map-section .map--close {
+  transition: var(--transition);
+}
+.map-section .map--close:hover .map--close-mask, .map-section .map--close:focus .map--close-mask, .map-section .map--close.focus .map--close-mask, .map-section .map--close.hover .map--close-mask {
+  background-color: var(--color--accent__hovered);
+}
+
+.map-section .map--close .map--close-mask {
+  transition: var(--transition);
+}
+
+.map-section .map--button-wrapper {
+  display: none;
+}
+.map-section .w-dyn-item[data-country].selected .map--button-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: auto;
+  width: 100%;
+}
+
+.map-section .map--seek-button {
+  position: relative;
+  pointer-events: all;
+  cursor: pointer;
+}
+.map-section .map--seek-image {
+  pointer-events: none;
+  opacity: 1;
+}
+.map-section .map--seek-image.hovered {
+  opacity: 0;
+}
+.map--seek-button:hover .map--seek-image.hovered, .map--seek-button:focus .map--seek-image.hovered, .map--seek-button.focus .map--seek-image.hovered, .map--seek-button.hover .map--seek-image.hovered {
+  opacity: 1 !important;
+}
+
+.map--seek-button .map--seek-image.hovered {
+  transition: var(--transition);
+}
+
+.map--seek-button:hover .map--seek-image:not(.hovered), .map--seek-button:focus .map--seek-image:not(.hovered), .map--seek-button.focus .map--seek-image:not(.hovered), .map--seek-button.hover .map--seek-image:not(.hovered) {
+  opacity: 0 !important;
+}
+
+.map--seek-button .map--seek-image:not(.hovered) {
+  transition: var(--transition);
+}
+
+.map-section .unique-factors {
+  display: none;
+}
+.map-section .unique-factors--wrapper {
+  display: none !important;
+}
+.map-section .w-dyn-item[data-country].selected .unique-factors {
+  display: flex;
+  margin-top: 0.85rem;
+}
+
+.map-section .unique-factors--item {
+  pointer-events: none;
+  cursor: default;
+}
+.map-section #map {
+  height: 100%;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+.map-section .leaflet-left .leaflet-control {
+  margin-top: calc(var(--border-radius) / 1.75);
+  margin-left: calc(var(--border-radius) / 1.75);
+  border: 0rem !important;
+  border-radius: 1000rem;
+  overflow: hidden;
+}
+.map-section .leaflet-left .leaflet-control a {
+  transition: 0.15s;
+  background-color: var(--color--accent);
+  color: var(--color--primary__lightest);
+  border-radius: 0rem;
+}
+.map-section .leaflet-left .leaflet-control a:hover, .map-section .leaflet-left .leaflet-control a:focus {
+  background-color: var(--color--accent__hovered);
+  color: var(--color--primary__lightest);
+}
+.map-section .leaflet-popup-content-wrapper {
+  background-color: var(--color--primary__lightest);
+  border-radius: 100rem;
+}
+.map-section .leaflet-popup-tip {
+  background-color: var(--color--primary__lightest);
+}
+.map-section .leaflet-popup-content {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+  margin-right: 3.7rem;
+  font-family: var(--body--font-family);
+  font-size: var(--body--font-size);
+  line-height: var(--body--line-height);
+  letter-spacing: var(--body--letter-spacing);
+  font-weight: 400;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  text-align: center;
+}
+.map-section .leaflet-popup-content, .map-section .leaflet-popup-content > * {
+  color: var(--color--primary__dark);
+  font-weight: 500 !important;
+}
+.map-section .leaflet-popup-close-button {
+  height: 100%;
+  width: 2.9rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  transform: translateY(calc(-50% - 1px));
+  right: 0;
+  border-left: 1px solid rgba(84, 67, 60, 0.15);
+  pointer-events: all;
+  cursor: pointer;
+  border-top-right-radius: 100rem;
+  border-bottom-right-radius: 100rem;
+}
+.map-section .leaflet-popup-close-button {
+  transition: var(--transition);
+}
+.map-section .leaflet-popup-close-button:hover, .map-section .leaflet-popup-close-button:focus, .map-section .leaflet-popup-close-button.focus, .map-section .leaflet-popup-close-button.hover {
+  background-color: rgba(241, 93, 48, 0.15);
+}
+.map-section .leaflet-popup-close-button span {
+  color: var(--color--accent);
+  display: none;
+}
+.map-section .leaflet-popup-close-button::before {
+  content: "";
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  transform: translateX(-2px);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-image: url("https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/668579d5fd0f2e7795db6563_Times.svg");
+  mask-position: center;
+  background-color: var(--color--accent);
+  pointer-events: none;
+}
+.map-section .leaflet-control-attribution {
+  display: none;
+}
+
+.cutout-card {
+  --cutout-card--border-radius: 35px;
+  --cutout-card--width: 70px;
+}
+.cutout-card--cutout-wrapper {
+  overflow: hidden;
+}
+.cutout-card--cutout {
+  background: transparent;
+}
+.cutout-card--cutout-corner {
+  background: var(--color--charcoal__dark);
+  border-bottom-right-radius: 35px;
+}
+.cutout-card--cutout-right {
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+.cutout-card--cutout-right div {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 70px;
+  width: 70px;
+  border-top-left-radius: 35px;
+  box-shadow: -35px -35px 0 0 var(--color--charcoal__dark);
+}
+.cutout-card--cutout-bottom {
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+.cutout-card--cutout-bottom div {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 70px;
+  width: 70px;
+  border-top-left-radius: 35px;
+  box-shadow: -35px -35px 0 0 var(--color--charcoal__dark);
+}/*# sourceMappingURL=root.css.map */
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const debounce = (func, wait) => {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  };
+
+  const updateElementProperty = ({
+    watch,
+    target,
+    property = "width",
+    name,
+  }) => {
+    const watchedElement = document.querySelector(watch);
+    if (!watchedElement) return;
+
+    const computedValue = window.getComputedStyle(watchedElement)[property];
+    const targetElement = document.querySelector(target);
+    if (targetElement) {
+      if (name) {
+        targetElement.style.setProperty(name, computedValue);
+      } else {
+        targetElement.style[property] = computedValue;
+      }
+    }
+  };
+
+  const createObserver = ({ watch, target, property = "width", name }) => {
+    const debouncedUpdateProperty = debounce(
+      () => updateElementProperty({ watch, target, property, name }),
+      100,
+    );
+
+    const observer = new MutationObserver(debouncedUpdateProperty);
+    const config = { attributes: true, childList: true, subtree: true };
+
+    const watchedElement = document.querySelector(watch);
+    if (watchedElement) {
+      observer.observe(watchedElement, config);
+    }
+
+    window.addEventListener("resize", debouncedUpdateProperty);
+    debouncedUpdateProperty();
+  };
+
+  window.createObserver = createObserver;
+});
+
+</script>
+<script>
+(function () {
+  let timeoutId;
+
+  function updateDimensions() {
+    const computedWidth = getComputedStyle(document.documentElement).width;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty("--screen-width", computedWidth);
+    document.documentElement.style.setProperty(
+      "--scrollbar-width",
+      `${scrollbarWidth}px`,
+    );
+  }
+
+  function debounceUpdate() {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(updateDimensions, 100);
+  }
+
+  // Update on resize
+  window.addEventListener("resize", debounceUpdate);
+
+  // Update on mutation
+  const observer = new MutationObserver(debounceUpdate);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["style"],
+  });
+
+  // Initial update
+  updateDimensions();
+})();
+
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", async (event) => {
+  document.querySelectorAll("[data-map]").forEach((mapElement) => {
+    const map = L.map(mapElement).setView([20, 0], 2);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(map);
+
+    const customIcon = L.icon({
+      iconUrl:
+        "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66844fdb5d94f2dfa69b22c4_drop.svg",
+      iconSize: [32.3, 42.5],
+      iconAnchor: [16.15, 42.5],
+      popupAnchor: [0, -42.5],
+    });
+
+    const hoverIcon = L.icon({
+      iconUrl:
+        "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66845298a4a75c8fa2ec692b_drop__hovered.svg",
+      iconSize: [32.3, 42.5],
+      iconAnchor: [16.15, 42.5],
+      popupAnchor: [0, -42.5],
+    });
+
+    const markers = [];
+
+    function getDynItems() {
+      const mapSection = mapElement.closest(".map-section");
+      const dynItems = mapSection.querySelectorAll(
+        ".w-dyn-item:not(.w-dyn-item .w-dyn-item)",
+      );
+
+      const arr = Array.from(dynItems).map((item) => {
+        const obj = { elem: item };
+        Array.from(item.attributes).forEach((attr) => {
+          if (attr.name.startsWith("data-")) {
+            const propName = attr.name
+              .slice(5)
+              .replace(/-./g, (x) => x[1].toUpperCase());
+            obj[propName] = attr.value;
+          }
+        });
+        return obj;
+      });
+
+      return arr;
+    }
+
+    function initializeUniqueFactor(factorElem, dataLink) {
+      factorElem.style.setProperty("--mask-url", `url(${dataLink})`);
+    }
+
+    function zoomToLocation(lat, long, marker) {
+      map.flyTo([lat, long], 6, {
+        duration: 1.75,
+      });
+      marker.openPopup();
+    }
+
+    function applySelection(item, dynItemArray) {
+      const selectionWrapper = mapElement
+        .closest(".map-section")
+        .querySelector(".map--selection-wrapper");
+      dynItemArray.forEach((i) => {
+        if (i.elem !== item) {
+          i.elem.classList.add("d-none");
+        } else {
+          i.elem.classList.remove("d-none");
+          i.elem.classList.add("selected");
+          i.elem.removeEventListener("click", handleItemClick);
+        }
+      });
+      selectionWrapper.classList.add("no-scroll");
+    }
+
+    function removeSelection(dynItemArray) {
+      const selectionWrapper = mapElement
+        .closest(".map-section")
+        .querySelector(".map--selection-wrapper");
+      dynItemArray.forEach((i) => {
+        i.elem.classList.remove("selected");
+        i.elem.classList.remove("d-none");
+        setTimeout(() => {
+          i.elem.addEventListener("click", handleItemClick);
+        }, 0);
+      });
+      selectionWrapper.classList.remove("no-scroll");
+    }
+
+    function handleItemClick(event) {
+      const itemElem = event.currentTarget;
+      if (itemElem.classList.contains("selected")) {
+        return;
+      }
+      const dynItemArray = getDynItems();
+      const item = dynItemArray.find((i) => i.elem === itemElem);
+
+      if (item) {
+        processItemClick(item, itemElem, dynItemArray);
+      }
+    }
+
+    function processItemClick(item, itemElem, dynItemArray) {
+      const lat = parseFloat(item.lat);
+      const long = parseFloat(item.long);
+      const marker = markers.find((m) => m.itemElem === itemElem);
+      if (marker) {
+        applySelection(itemElem, dynItemArray);
+        zoomToLocation(lat, long, marker.leafletMarker);
+      }
+    }
+
+    function addMarkers() {
+      const dynItemArray = getDynItems();
+
+      dynItemArray.forEach((item) => {
+        const lat = parseFloat(item.lat);
+        const long = parseFloat(item.long);
+        const country = item.country;
+
+        if (!isNaN(lat) && !isNaN(long)) {
+          const marker = L.marker([lat, long], { icon: customIcon })
+            .addTo(map)
+            .bindPopup(`<b>${country}</b>`);
+
+          markers.push({ itemElem: item.elem, leafletMarker: marker });
+
+          item.elem.addEventListener("click", handleItemClick);
+
+          item.elem.addEventListener("mouseover", () => {
+            marker.setIcon(hoverIcon);
+          });
+
+          item.elem.addEventListener("mouseout", () => {
+            marker.setIcon(customIcon);
+          });
+
+          marker.on("mouseover", () => {
+            marker.setIcon(hoverIcon);
+          });
+
+          marker.on("mouseout", () => {
+            marker.setIcon(customIcon);
+          });
+
+          marker.on("click", () => {
+            applySelection(item.elem, dynItemArray);
+            zoomToLocation(lat, long, marker);
+          });
+        } else {
+          console.error(`Invalid coordinates for ${country}`);
+        }
+      });
+    }
+
+    function resetMapView() {
+      map.flyTo([20, 0], 2, {
+        duration: 1.75,
+      });
+    }
+
+    mapElement
+      .closest(".map-section")
+      .querySelectorAll(".map--close")
+      .forEach((closeButton) => {
+        closeButton.addEventListener("click", () => {
+          map.closePopup();
+          const dynItemArray = getDynItems();
+          removeSelection(dynItemArray);
+          resetMapView();
+        });
+      });
+
+    mapElement.addEventListener("click", (event) => {
+      const isPopupClose = event.target.classList.contains(
+        "leaflet-popup-close-button",
+      );
+
+      const isPopupCloseChild = event.target.parentElement.classList.contains(
+        "leaflet-popup-close-button",
+      );
+
+      if (isPopupClose || isPopupCloseChild) {
+        const dynItemArray = getDynItems();
+        removeSelection(dynItemArray);
+        resetMapView(); // Reset the map view on close with smooth transition
+      }
+    });
+
+    function seek(direction) {
+      const dynItemArray = getDynItems();
+      const selectedElem = mapElement
+        .closest(".map-section")
+        .querySelector(".w-dyn-item.selected");
+      let selectedIndex = dynItemArray.findIndex(
+        (item) => item.elem === selectedElem,
+      );
+
+      if (direction === "left") {
+        selectedIndex =
+          (selectedIndex - 1 + dynItemArray.length) % dynItemArray.length;
+      } else if (direction === "right") {
+        selectedIndex = (selectedIndex + 1) % dynItemArray.length;
+      }
+
+      const target = dynItemArray[selectedIndex];
+
+      if (target.elem) {
+        removeSelection(dynItemArray);
+        setTimeout(() => {
+          processItemClick(target, target.elem, dynItemArray);
+        }, 0);
+      }
+    }
+
+    mapElement
+      .closest(".map-section")
+      .querySelectorAll(".map--seek-button.left")
+      .forEach((button) => {
+        button.addEventListener("click", () => seek("left"));
+      });
+
+    mapElement
+      .closest(".map-section")
+      .querySelectorAll(".map--seek-button.right")
+      .forEach((button) => {
+        button.addEventListener("click", () => seek("right"));
+      });
+
+    addMarkers();
+  });
+});
+
+</script>
+<script>
+// this should be updated to be a custom attribute and apply to others that have similar needs
+document.addEventListener("DOMContentLoaded", () => {
+  function uniqueFactorsInit() {
+    const factors = Array.from(
+      document.querySelectorAll(".unique-factors--item"),
+    );
+
+    factors.forEach((fac) => {
+      const src = fac.querySelector("img").src;
+      fac.style.setProperty("--mask-url", `url('${src}'`);
+    });
+  }
+
+  uniqueFactorsInit();
+});
+
+</script>

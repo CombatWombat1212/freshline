@@ -1,0 +1,121 @@
+#bootcamp {
+  &--hero-group {
+    @include lg-down {
+      padding-top: 0rem;
+    }
+  }
+  &--hero {
+    @include lg-down {
+      margin-top: 0rem;
+      padding-top: 0rem;
+    }
+
+    .container__wide {
+      margin: 0rem;
+      width: 100%;
+      max-width: unset;
+
+      @include lg-down {
+        gap: 1.65rem;
+      }
+    }
+
+    .split-head-content {
+      &--image {
+        @extend %container__wide;
+        @include mx-auto;
+
+        @include lg-down {
+          width: 100%;
+          max-width: unset;
+          margin: 0rem;
+          height: 60vh;
+        }
+        @include md-down {
+          height: 40vh;
+        }
+
+        img {
+          @include lg-down {
+            border-top-left-radius: 0rem;
+            border-top-right-radius: 0rem;
+          }
+        }
+      }
+
+      &--heading {
+        @extend %container__wide;
+        @include mx-auto;
+
+        @include lg-down {
+          order: 1;
+          @include flex-col;
+          justify-content: flex-start;
+          text-align: left;
+          margin-bottom: 0rem;
+        }
+
+        & > * {
+          @include lg-down {
+            margin: 0rem;
+            margin-right: auto;
+          }
+          @include sm-down {
+            margin: 0rem;
+            margin-right: auto;
+          }
+        }
+      }
+      &--body {
+      }
+    }
+  }
+
+  &--statement {
+    @include text-section-left;
+  }
+  &--leaders {
+    @include text-section-left;
+  }
+  &--masonry {
+  }
+  &--expand {
+    @include text-section-left;
+  }
+  &--tools {
+  }
+  &--not-everyone {
+    @include text-section-left;
+  }
+  &--scroll {
+  }
+  &--form {
+    .split-section--container {
+      @include lg-down {
+        // display: grid !important;
+        display: flex !important;
+        flex-direction: column;
+      }
+    }
+    .split-section--body {
+      width: 100%;
+    }
+
+    .signup {
+      width: 100%;
+
+      &--form-wrapper {
+        width: 100%;
+      }
+    }
+
+    [class*="container"] {
+      @include lg-down {
+        gap: 2rem !important;
+      }
+      & > * {
+        width: 100%;
+      }
+    }
+  }
+}

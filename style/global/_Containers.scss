@@ -1,0 +1,287 @@
+// // @mixin responsive-down-manual($str, $type, $props, $vals, $un, $min, $max, $map) {
+
+// //[Class name]
+// // [map-based or range based]
+// // [array of properties]
+// // [array of values]
+// //////use 'xyz' as if it were 'i' in a js for-loop, if you're using range.
+// //////If you're using map based, its more like map[i].
+// //////Its a hardcoded variable that refers to the index of the iteration if you're using range, and the value of the map if you're using map-based.
+// // [units] none if there are no units
+// // [min value] 0 if you're using a map
+// // [max value] 0 if you're using a map
+// // [map] none if you're using range
+
+$enable-grid-classes: true;
+
+// $container-max-width: (
+//   xs: 100%,
+//   sm: 23.75em,
+//   md: 31.85em,
+//   lg: 42.25em,
+//   xl: 51.15em,
+//   xxl: 70.75rem,
+// ) !default;
+
+// $container-max-width_wide: (
+//   xs: 100%,
+//   sm: 32em,
+//   md: 43em,
+//   lg: 57em,
+//   xl: 69em,
+//   xxl: 95.375rem,
+// ) !default;
+
+// $container-max-width: (
+//   xs: 90vw,
+//   sm: 34rem,
+//   md: 36rem,
+//   lg: 48rem,
+//   xl: 62rem,
+//   xxl: 68.75rem,
+// ) !default;
+
+$container-max-width: (
+  xs: calc(100% - 2.35rem),
+  sm: calc(100% - 2.35rem),
+  md: 45.5rem,
+  lg: 57.5rem,
+  xl: 62rem,
+  xxl: 66rem,
+) !default;
+
+$container-max-width_wide: (
+  xs: calc(100% - 2.35rem),
+  sm: calc(100% - 2.35rem),
+  md: 90%,
+  lg: 90%,
+  xl: 88%,
+  xxl: 86%,
+) !default;
+
+$container-max-width_vw: (
+  xs: calc(#{zoom-vw(100vw)} - 2.35rem - var(--scrollbar-width)),
+  sm: calc(#{zoom-vw(100vw)} - 2.35rem - var(--scrollbar-width)),
+  md: 45.5rem,
+  lg: 57.5rem,
+  xl: 62rem,
+  xxl: 66rem,
+) !default;
+
+$container-max-width_vw_wide: (
+  xs: calc(#{zoom-vw(100vw)} - 2.35rem - var(--scrollbar-width)),
+  sm: calc(#{zoom-vw(100vw)} - 2.35rem - var(--scrollbar-width)),
+  md: calc(#{zoom-vw(90vw)} - var(--scrollbar-width)),
+  lg: calc(#{zoom-vw(90vw)} - var(--scrollbar-width)),
+  xl: calc(#{zoom-vw(88vw)} - var(--scrollbar-width)),
+  xxl: calc(#{zoom-vw(86vw)} - var(--scrollbar-width)),
+) !default;
+
+// $container-max-width_wide: (
+//   xs: calc(100% - 2.35rem),
+//   sm: calc(100% - 2.35rem),
+//   md: 45rem,
+//   lg: 57rem,
+//   xl: 75rem,
+//   xxl: 87rem
+//   ) !default;
+
+// $container-max-width: (
+//   xs: 100%,
+//   sm: 32em,
+//   md: 43em,
+//   lg: 57em,
+//   xl: 69em,
+//   xxl: 82em,
+// ) !default;
+
+$container-max-widths_inverted: mapReverse($container-max-width);
+$container-max-widths_wide_inverted: mapReverse($container-max-width_wide);
+$container-max-widths_vw_inverted: mapReverse($container-max-width_vw);
+$container-max-widths_vw_wide_inverted: mapReverse(
+  $container-max-width_vw_wide
+);
+
+@function container-width($w: 100%) {
+  //   @return calc(#{$w} - var(--sidebar-width));
+  @return #{$w};
+}
+
+@mixin container() {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+// @mixin maxWidthToRoot($w) {
+//   @at-root {
+//     :root {
+//       --site-max-width: #{$w};
+//       // --site-pad-x: calc((100% - var(--site-max-width)) / 2)
+//     }
+//   }
+// }
+// @mixin maxWidthVwToRoot($w) {
+//   @at-root {
+//     :root {
+//       --site-max-width_vw: #{$w};
+//     }
+//   }
+// }
+
+// @mixin maxWidthWideToRoot($w) {
+//   @at-root {
+//     :root {
+//       --site-max-width_wide: #{$w};
+//       // --site-pad-x: calc((100% - var(--site-max-width)) / 2)
+//     }
+//   }
+// }
+
+// @mixin maxWidthVwWideToRoot($w) {
+//   @at-root {
+//     :root {
+//       --site-max-width_vw_wide: #{$w};
+//       // --site-pad-x: calc((100% - var(--site-max-width)) / 2)
+//     }
+//   }
+// }
+
+@mixin maxWidthToRoot($w, $type: null) {
+  @at-root {
+    :root {
+      @if $type == "vw" {
+        --site-max-width_vw: #{$w};
+      } @else if $type == "wide" {
+        --site-max-width_wide: #{$w};
+      } @else if $type == "vw_wide" {
+        --site-max-width_vw_wide: #{$w};
+      } @else {
+        --site-max-width: #{$w};
+      }
+    }
+  }
+}
+
+// @mixin container-padding {
+// @include pad-x(var(--site-pad-x));
+// }
+
+@if $enable-grid-classes {
+  // Single container class with breakpoint max-widths
+  .container,%container,
+    // 100% wide container at all breakpoints
+    .container-fluid,%container-fluid {
+    @include container();
+  }
+
+  .container__none,
+  %container__none {
+    @include container();
+  }
+
+  // .container-fluid{
+  // @include container-padding;
+  // }
+
+  // Responsive containers that are 100% wide until a breakpoint
+  //   @each $breakpoint, $container-max-width, $i in $container-max-widths_inverted
+  //   {
+  @for $i from 1 through length($container-max-widths_inverted) - 1 {
+    $breakpoint: nth(map-keys($container-max-widths_inverted), $i);
+    $container-max-width: nth(map-values($container-max-widths_inverted), $i);
+    $container-max-width_vw: nth(
+      map-values($container-max-widths_vw_inverted),
+      $i
+    );
+    $container-max-width_wide: nth(
+      map-values($container-max-widths_wide_inverted),
+      $i
+    );
+    $container-max-width_vw_wide: nth(
+      map-values($container-max-widths_vw_wide_inverted),
+      $i
+    );
+
+    //apply the correct container max-width to the correct breakpoint
+    //in my sysem, the responsive downwards system, we need to offset the following by one depending on whether or not it is first breakpoint at xxl
+    @if $breakpoint == nth(nth($container-max-widths_inverted, 1), 1) {
+      .container,
+      %container {
+        $width: nth(map-values($container-max-widths_inverted), $i + 1);
+        $width_vw: nth(map-values($container-max-widths_vw_inverted), $i + 1);
+        max-width: container-width($container-max-width);
+
+        @include maxWidthToRoot(#{container-width($container-max-width)});
+        @include maxWidthToRoot(
+          #{container-width($container-max-width_vw)},
+          "vw"
+        );
+
+        @include media-breakpoint-down($breakpoint) {
+          max-width: container-width($width);
+          @include maxWidthToRoot(#{container-width($width)});
+          @include maxWidthToRoot(#{container-width($width_vw)}, "vw");
+        }
+      }
+
+      .container__wide,
+      %container__wide {
+        $width: nth(map-values($container-max-widths_wide_inverted), $i + 1);
+        $width_vw: nth(
+          map-values($container-max-widths_vw_wide_inverted),
+          $i + 1
+        );
+        max-width: container-width($container-max-width_wide);
+        @include maxWidthToRoot(
+          #{container-width($container-max-width_wide)},
+          "wide"
+        );
+        @include maxWidthToRoot(
+          #{container-width($container-max-width_vw_wide)},
+          "vw_wide"
+        );
+        @include media-breakpoint-down($breakpoint) {
+          max-width: container-width($width);
+          @include maxWidthToRoot(#{container-width($width)}, "wide");
+          @include maxWidthToRoot(#{container-width($width_vw)}, "vw_wide");
+        }
+      }
+    } @else {
+      .container,
+      %container {
+        $width: nth(map-values($container-max-widths_inverted), $i + 1);
+        $width_vw: nth(map-values($container-max-widths_vw_inverted), $i + 1);
+        @include media-breakpoint-down($breakpoint) {
+          max-width: container-width($width);
+          @include maxWidthToRoot(#{container-width($width)});
+          @include maxWidthToRoot(#{container-width($width_vw)}, "vw");
+
+          //add padding on sm
+          // @if $breakpoint == nth(nth($container-max-widths_inverted, -2), 1) {
+          //   @include container-padding;
+          // }
+        }
+      }
+
+      .container__wide,
+      %container__wide {
+        $width: nth(map-values($container-max-widths_wide_inverted), $i + 1);
+        $width_vw: nth(
+          map-values($container-max-widths_vw_wide_inverted),
+          $i + 1
+        );
+        @include media-breakpoint-down($breakpoint) {
+          max-width: container-width($width);
+          @include maxWidthToRoot(#{container-width($width)}, "wide");
+          @include maxWidthToRoot(#{container-width($width_vw)}, "vw_wide");
+        }
+      }
+    }
+  }
+}
+
+.container__wide,
+%container__wide {
+  width: 100%;
+}

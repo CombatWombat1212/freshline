@@ -1,0 +1,36 @@
+.signup {
+  &--form-wrapper {
+  }
+  &--form {
+  }
+  &--heading {
+  }
+  &--row {
+  }
+  &--input-group {
+  }
+  &--label {
+  }
+
+  &--field {
+    color: var(--color--primary__dark);
+    transition: background-color 0.2s;
+
+    &::placeholder {
+      color: var(--color--primary__dark);
+      opacity: 0.5;
+    }
+
+    &:focus {
+      background-color: var(--color--primary);
+    }
+  }
+
+  &--image-wrapper {
+    @include md-down {
+      aspect-ratio: 1 / 1;
+      width: 100%;
+      height: auto;
+    }
+  }
+}

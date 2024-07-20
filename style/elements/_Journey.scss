@@ -1,0 +1,171 @@
+@use "../utopia/utopia" as utopia;
+@use "sass:selector";
+
+.journey-section {
+}
+
+.journey {
+  @include lg-down {
+    display: none;
+  }
+
+  &--heading-wrapper {
+    @include lg-down {
+      @include mx-auto;
+      margin-bottom: 0rem;
+      max-width: var(--site-max-width_wide);
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+  &--heading {
+    // @include lg-down {
+    //   margin-right: auto;
+    // }
+  }
+  &--graphic {
+  }
+  &--image-wrapper {
+  }
+  &--image {
+  }
+  &--bubble-wrapper {
+  }
+  &--bubble {
+  }
+  &--bubble-heading {
+  }
+  &--bubble-paragraph {
+  }
+  &--dot {
+  }
+  &--dot-number {
+  }
+}
+
+.journey-mobile {
+  display: none;
+
+  --journey-image-height: 8rem;
+
+  @include lg-down {
+    @include flex-col;
+  }
+  margin-top: 1rem;
+
+  &--card {
+    position: relative;
+    overflow: hidden;
+    background-color: $col--primary__lighter;
+    @include flex-col;
+    @extend %container__wide;
+    @include mx-auto;
+    border-radius: var(--border-radius);
+
+    @include safari{
+      border-radius: 0;
+    }
+  }
+  &--background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    @include flex-col;
+    z-index: 0;
+    background-color: $col--primary__lighter;
+  }
+  &--graphic {
+    @include flex-col;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-end;
+    margin-top: auto;
+    position: relative;
+  }
+  &--image {
+    position: absolute;
+    width: calc((var(--item-width) * var(--item-count)) * 0.5);
+    min-width: calc((var(--item-width) * var(--item-count)) * 0.5);
+    // height: calc(var(--journey-image-height) + 35%);
+    height: auto;
+    object-fit: cover;
+    left: 0;
+    bottom: 0%;
+    mix-blend-mode: luminosity;
+    opacity: 0.35;
+
+    --image-translate-y: 30%; //helps with whitespace, used in JS
+    transform: translateY(
+      var(--image-translate-y)
+    ); //because this gets overwritten by gsap
+  }
+  &--content {
+    @include flex-row;
+    padding-bottom: var(--journey-image-height);
+    z-index: 1;
+
+    // transition: 0.3s;
+    // transform: translateX(calc((var(--current-item) * -1) * var(--item-width)));
+  }
+  &--item {
+    padding: 1.75rem;
+    width: 100%;
+    min-width: 100%;
+    padding-bottom:0rem;
+  }
+  &--heading {
+  }
+  &--paragraph {
+    margin-top: 0.5rem;
+  }
+  &--controls {
+    @include flex-row-center;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  &--seek {
+    @include seek-arrows;
+  }
+
+  &--pagination {
+    @include flex-row;
+    gap: 0.85rem;
+    align-items: center;
+  }
+
+  &--dot {
+    --dot-width: 1rem;
+    --inner-dot-width: 0.5rem;
+    background-color: $col--accent;
+    width: var(--dot-width);
+    height: var(--dot-width);
+    border-radius: 1000rem;
+    cursor: pointer;
+    position: relative;
+
+    @include hover {
+      background-color: $col--accent__hovered;
+    }
+
+    &::before {
+      content: "";
+      border-radius: 1000rem;
+      position: absolute;
+      width: var(--inner-dot-width);
+      height: var(--inner-dot-width);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      background-color: rgba($col--accent, 0);
+
+      @at-root #{selector.replace(&, ".journey-mobile--dot", ".journey-mobile--dot.active")} {
+        background-color: $col--primary__lightest;
+      }
+    }
+
+    &.active {
+    }
+  }
+}
