@@ -2203,6 +2203,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
       });
       // selectionWrapper.classList.add("no-scroll");
       selectionWrapper.style.setProperty("overflow", "auto!important");
+      
     }
 
     function removeSelection(expeditionsArray) {
