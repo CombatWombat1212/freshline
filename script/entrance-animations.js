@@ -352,7 +352,6 @@ document.addEventListener("DOMContentLoaded", function () {
 function entrancesInit() {
   const body = document.querySelector("body");
   body.style.setProperty("opacity", 1);
-  
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -828,6 +827,7 @@ function entrancesInit() {
     ":not(.split-section h3)",
     ":not(.toolbelt h3)",
     ":not(.value-highlight--paragraph)",
+    ":not(#about--brotherhood h3)",
   ];
 
   const h3s = document.querySelectorAll("h3" + stipulations.join(""));
@@ -915,4 +915,145 @@ function entrancesInit() {
       });
     })();
   }
+
+  class SplitTextAnimator {
+    constructor(elem, { type = "lines" } = {}) {
+      this.type = type;
+      this.elem = elem;
+      this.split = new SplitType(elem);
+      this.splitTargets = this.split[type];
+      this.count = this.splitTargets.length;
+      this.delay = 0.05;
+      this.duration = DEFAULT.DURATION;
+      this.scrollTriggerDefaults = {
+        trigger: this.elem,
+        ease: DEFAULT.EASE,
+        start: "top bottom-=20%",
+        end: "bottom top+=45%",
+      };
+    }
+
+    init() {
+      this.splitTargets.forEach((target, index) => this.animateSplitTarget(target, index));
+    }
+
+    getDelay(index) {
+      return this.delay * index;
+    }
+
+    getAnimation(index) {
+      const entranceFrom = fade.up.from;
+      const entranceTo = {
+        ...fade.up.to,
+        delay: this.getDelay(index),
+        duration: this.duration,
+      };
+
+      const leaveFrom = fade.up.to;
+      const leaveTo = {
+        ...fade.up.from,
+        delay: this.getDelay(this.count - 1 - index),
+        duration: this.duration,
+      };
+
+      const entranceBackFrom = fade.up.from;
+      const entranceBackTo = {
+        ...fade.up.to,
+        delay: this.getDelay(this.count - 1 - index),
+        duration: this.duration,
+      };
+
+      const leaveBackFrom = fade.up.to;
+      const leaveBackTo = {
+        ...fade.up.from,
+        delay: this.getDelay(index),
+        duration: this.duration,
+      };
+
+      return { entranceFrom, entranceTo, leaveFrom, leaveTo, entranceBackFrom, entranceBackTo, leaveBackFrom, leaveBackTo };
+    }
+
+    animateSplitTarget(target, index) {
+      const { entranceFrom, entranceTo, leaveFrom, leaveTo, entranceBackFrom, entranceBackTo, leaveBackFrom, leaveBackTo } = this.getAnimation(index);
+
+      requestAnimationFrame(() => {
+        gsap.set(target, entranceFrom);
+      });
+
+      ScrollTrigger.create({
+        ...this.scrollTriggerDefaults,
+        onEnter: () => gsap.fromTo(target, entranceFrom, entranceTo),
+        onEnterBack: () => gsap.fromTo(target, entranceBackFrom, entranceBackTo),
+        onLeave: () => gsap.fromTo(target, leaveFrom, leaveTo),
+        onLeaveBack: () => gsap.fromTo(target, leaveBackFrom, leaveBackTo),
+      });
+    }
+  }
+
+  const splitTextElems = Array.from(document.querySelectorAll("#about--brotherhood h3"));
+  const splitTextAnimators = splitTextElems.map((elem) => new SplitTextAnimator(elem, { type: "words" }));
+  splitTextAnimators.forEach((animator) => animator.init());
+
+
+
+
+
+
+
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  const bootcampHero = document.querySelector("#bootcamp--hero-group");
+  if (bootcampHero) bootcampHeroInit(bootcampHero);
+  function bootcampHeroInit(hero) {
+    const target = hero.querySelector(".split-head-content--image");
+    const siteMaxWidthWide = window.getComputedStyle(document.documentElement).getPropertyValue("--site-max-width_wide");
+
+    const from = {
+      width: siteMaxWidthWide,
+      borderRadius: 40,
+    };
+
+    const to = {
+      width: "100%",
+      borderRadius: 0,
+    };
+
+    const scrollTrigger = {
+      trigger: body,
+      start: "top top",
+      end: "110px top",
+      scrub: true,
+    };
+
+    const compiledTo = {
+      ...to,
+      scrollTrigger,
+    };
+
+    gsap.fromTo(target, from, compiledTo);
+  }
+
+  window.addEventListener("resize", () => {
+    ScrollTrigger.refresh();
+  });
+
+  // call scrollTrigger refresh once every 500ms for 5 seconds
+  let i = 0;
+  const interval = setInterval(() => {
+    i++;
+    ScrollTrigger.refresh();
+    if (i === 30) clearInterval(interval);
+  }, 500);
 }

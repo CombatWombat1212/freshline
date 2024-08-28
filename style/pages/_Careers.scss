@@ -3,11 +3,7 @@
     $opacity: 0.075;
     $pattern-img: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/6697d4bebd6bd73a4c926c2f_topographic-small__dark.svg";
 
-    --background-img-1: linear-gradient(
-      to bottom,
-      #{rgba($col--primary__lighter, 1 - $opacity)},
-      #{rgba($col--primary__lighter, 1 - $opacity)}
-    );
+    --background-img-1: linear-gradient(to bottom, #{rgba($col--primary__lighter, 1 - $opacity)}, #{rgba($col--primary__lighter, 1 - $opacity)});
     --background-size-1: auto;
     --background-position-1: center;
 
@@ -15,13 +11,11 @@
     --background-size-2: 35%;
     --background-position-2: bottom left;
 
-    --background-img-3: linear-gradient(
-      to bottom,
-      #{$col--primary__lighter},
-      #{$col--primary__lighter}
-    );
+    --background-img-3: linear-gradient(to bottom, #{$col--primary__lighter}, #{$col--primary__lighter});
     --background-size-3: auto;
     --background-position-3: center;
+
+    height: calc(95vh - var(--nav-height));
 
     @include lg-down {
       --background-size-2: 60%;
@@ -30,12 +24,9 @@
       --background-size-2: 80%;
     }
 
-    background-image: var(--background-img-1), var(--background-img-2),
-      var(--background-img-3);
-    background-size: var(--background-size-1), var(--background-size-2),
-      var(--background-size-3);
-    background-position: var(--background-position-1),
-      var(--background-position-2), var(--background-position-3);
+    background-image: var(--background-img-1), var(--background-img-2), var(--background-img-3);
+    background-size: var(--background-size-1), var(--background-size-2), var(--background-size-3);
+    background-position: var(--background-position-1), var(--background-position-2), var(--background-position-3);
 
     @include md-down {
       height: auto;
@@ -60,6 +51,7 @@
     p {
       margin-top: 1.25rem !important;
       margin-bottom: 0rem !important;
+      max-width: 60ch;
       @include md-down {
         margin-right: auto;
         text-align: left;
@@ -100,6 +92,12 @@
     }
   }
   &--testimonials {
+    .container {
+      margin-top: 3.25rem;
+      @include md-down {
+        margin-top: 2rem;
+      }
+    }
     .testimonial {
       width: 100%;
     }

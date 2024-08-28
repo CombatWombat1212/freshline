@@ -41,13 +41,22 @@ $enable-grid-classes: true;
 //   xxl: 68.75rem,
 // ) !default;
 
+// $container-max-width: (
+//   xs: calc(100% - 2.35rem),
+//   sm: calc(100% - 2.35rem),
+//   md: 45.5rem,
+//   lg: 57.5rem,
+//   xl: 62rem,
+//   xxl: 66rem,
+// ) !default;
+
 $container-max-width: (
   xs: calc(100% - 2.35rem),
   sm: calc(100% - 2.35rem),
-  md: 45.5rem,
-  lg: 57.5rem,
-  xl: 62rem,
-  xxl: 66rem,
+  md: 46rem,
+  lg: 58rem,
+  xl: 71.3rem,
+  xxl: 75.85rem,
 ) !default;
 
 $container-max-width_wide: (

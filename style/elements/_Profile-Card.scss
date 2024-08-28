@@ -10,19 +10,27 @@
   @include theme("primary") {
     background-color: $col--primary__lighter;
   }
+
+  &--row {
+    gap: 3rem !important;
+  }
   &--image-wrapper {
     width: 100%;
+    height: 26rem !important;
+    @include lg-down {
+      height: 20rem !important;
+    }
   }
   &--image {
     @include img-cover;
   }
   &--heading {
-   padding: 0.95rem 1.65rem 1.5rem
+    padding: 0.95rem 1.65rem 1.5rem;
   }
   &--name {
     @extend %text--h4;
   }
   &--title {
-    margin-top:-0.15rem;
+    margin-top: -0.15rem;
   }
 }

@@ -6,7 +6,7 @@
 
 .split-section {
   .pitch {
-    --pad: 4rem;
+    --pad: 6rem;
     @include lg-down {
       --pad: 2rem;
     }
@@ -18,7 +18,7 @@
       grid-template-columns: 0.45fr 0.55fr;
     }
 
-    gap: var(--pad);
+    gap: var(--pad)!important;
 
     opacity: 0;
 
@@ -64,6 +64,8 @@
     &--heading {
     }
     &--paragraph {
+      @include text--body;
+      max-width: 50ch;
       @include lg-down {
         margin-top: 0.25rem;
       }

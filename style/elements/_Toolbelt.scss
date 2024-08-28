@@ -72,6 +72,7 @@ $wiggle-duration: 1.5s;
   &--body-mask {
   }
   &--body-slide {
+    padding: 3rem;
   }
   &--body-heading {
   }
@@ -132,17 +133,15 @@ $wiggle-duration: 1.5s;
 
   &--controls-wrapper {
     --gap: var(--toolbelt-gap);
-    margin-top:0rem;
+    margin-top: 0rem;
     padding-top: var(--toolbelt-gap);
     padding-bottom: var(--toolbelt-gap);
 
     @include gap;
     @include lg-down {
-    max-width: 100%;
-    @include pad-x-important(calc(var(--containers--max-width-small-pad) / 2));
-    @include marg-x-important(0rem);
-
-
+      max-width: 100%;
+      @include pad-x-important(calc(var(--containers--max-width-small-pad) / 2));
+      @include marg-x-important(0rem);
     }
   }
   &--button {
@@ -169,15 +168,12 @@ $wiggle-duration: 1.5s;
     }
   }
   &--button-image-wrapper {
-
-    @include safari{
+    @include safari {
       @include lg-down {
         width: 4rem;
         height: 4rem;
-        
       }
     }
-
   }
   &--button-image {
     @at-root {

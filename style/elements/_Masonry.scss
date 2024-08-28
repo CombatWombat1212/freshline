@@ -1,6 +1,31 @@
+@mixin masonry-img() {
+  @extend %masonry-img;
+  // @include hover(".masonry-section--collection-list-lightbox", "img") {
+  //   transform: scale(1.05);
+  // }
+}
+
+%masonry-img {
+  transform: scale(1);
+
+  img {
+    transition: 0.2s;
+    height:auto;
+  }
+  @include hover {
+    img {
+      transform: scale(1.05);
+    }
+  }
+}
+
 .masonry-section {
   --gap: 2rem;
   --border-radius: 40px;
+
+  height: calc((var(--masonry-list-height) * 0.85) + var(--border-radius) * 2) !important;
+  min-height: calc(80vh + (var(--border-radius) * 2)) !important;
+  max-height: calc(90vh + (var(--border-radius) * 2)) !important;
 
   &.hide {
     display: none !important;
@@ -12,12 +37,14 @@
   }
 
   &--collection-list {
-    --column-count: 4;
+    --column-count: 3;
     gap: var(--gap) !important;
     column-gap: var(--gap) !important;
     max-width: calc(100% - (var(--gap) * 2));
     column-count: var(--column-count);
     @include mx-auto;
+
+    transform: translateY(calc(var(--masonry-list-height) * var(--transform)));
 
     @include lg-down {
       --column-count: 3;
@@ -39,9 +66,12 @@
     &.col-4 {
       --column-count: 4;
 
-      @include lg-down {
+      @include xl-down {
         --column-count: 3;
       }
+      // @include lg-down {
+      //   --column-count: 3;
+      // }
       @include md-down {
         --column-count: 2;
       }
@@ -51,6 +81,9 @@
   &--collection-list-item {
     margin-bottom: var(--gap);
     border-radius: var(--border-radius);
+  }
+  &--collection-list-lightbox {
+    @include masonry-img;
   }
 }
 
@@ -78,6 +111,7 @@
   &--collection-list-wrapper {
   }
   &--collection-list {
+    will-change: transform!important;
     --gap: 2rem;
     &.gap {
       gap: var(--gap);
@@ -140,14 +174,15 @@
   &--image-wrapper {
     width: 100%;
     height: 100%;
+
+    @include masonry-img;
   }
 
   &--image {
     transition: 0.2s;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 
+    @include img-cover-important;
+    
     @at-root .masonry-secondary-section--item.is-active & {
       transform: scale(1.05);
     }

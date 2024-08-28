@@ -11,28 +11,43 @@
     }
 
     .container__wide {
+      @include lg-up {
+        gap: 2rem !important;
+      }
+
       margin: 0rem;
       width: 100%;
       max-width: unset;
 
       @include lg-down {
-        gap: 1.65rem;
+        // gap: 1.65rem;
+        gap: 2.25rem;
       }
     }
 
     .split-head-content {
       &--image {
-        @extend %container__wide;
+        // @extend %container__wide;
+        overflow: hidden;
         @include mx-auto;
+        height: 75vh !important;
 
         @include lg-down {
-          width: 100%;
+          border-top-left-radius: unset !important;
+          border-top-right-radius: unset !important;
+          border-bottom-left-radius: var(--border-radius) !important;
+          border-bottom-right-radius: var(--border-radius) !important;
+          width: 100% !important;
           max-width: unset;
           margin: 0rem;
           height: 60vh;
         }
         @include md-down {
           height: 40vh;
+        }
+
+        & > * {
+          border-radius: unset !important;
         }
 
         img {
@@ -73,14 +88,40 @@
 
   &--statement {
     @include text-section-left;
+
+    .container {
+      @include text--h3;
+      @include md-up {
+        max-width: 22ch;
+      }
+      @include sm-up {
+        max-width: 21ch;
+      }
+
+      p {
+        @include text--body;
+        max-width: 65ch;
+      }
+    }
   }
   &--leaders {
     @include text-section-left;
+    h3 {
+      margin-bottom: 2rem;
+    }
   }
   &--masonry {
   }
   &--expand {
     @include text-section-left;
+    h3 {
+      @include text--h3;
+      max-width: 16ch;
+    }
+    p {
+      @include text--body;
+      max-width: 60ch;
+    }
   }
   &--tools {
   }
@@ -90,7 +131,13 @@
   &--scroll {
   }
   &--form {
+    @include paper-background;
+
     .split-section--container {
+      @include tread-background {
+        --tread--rotation: 16deg;
+        --tread--transform-y: -20rem;
+      }
       @include lg-down {
         // display: grid !important;
         display: flex !important;
@@ -118,4 +165,5 @@
       }
     }
   }
+
 }

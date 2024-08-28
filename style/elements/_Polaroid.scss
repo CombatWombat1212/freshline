@@ -3,8 +3,9 @@
   --translate-y: 0;
   --rotation: 0;
 
-  transform: translate(var(--translate-x), var(--translate-y))
-    rotate(var(--rotation));
+  transform: translate(var(--translate-x), var(--translate-y)) rotate(var(--rotation));
+  box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.25);
+
 
   &.background {
     --translate-x: 8rem;
@@ -16,5 +17,16 @@
   }
 
   &--countdown {
+    @include text--h3;
+    height: var(--h2--font-size);
+    transition: 100ms opacity;
+    transform: translateY(1px);
+    &:not([data-countdown-state="display"]) {
+      // opacity: 0;
+    }
+    // &[data-countdown-state="transition"] {
+    //   font-size: unset !important;
+    // }
+    // max-height: Max(var(--h3--font-size), var(--h3--line-height), 5rem);
   }
 }

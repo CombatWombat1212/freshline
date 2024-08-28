@@ -211,6 +211,16 @@
   }
 
   &--block-wrapper {
+    [role="list"]{
+      margin-top:0.45rem;
+      margin-bottom:1.5rem;
+    }
+    *{
+      @include text--body;
+      strong{
+        font-weight: 600!important;
+      }
+    }
   }
 }
 

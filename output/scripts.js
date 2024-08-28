@@ -263,6 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+  let runs = 0;
   // Function to calculate the difference between two dates
   function calculateCountdown(targetDate) {
     const now = new Date();
@@ -271,12 +272,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    return `${days} • ${hours} • ${minutes} • ${seconds}`;
+
+    // Add leading zeros if the value is less than 10
+    const paddedHours = hours.toString().padStart(2, "0");
+    const paddedMinutes = minutes.toString().padStart(2, "0");
+    const paddedSeconds = seconds.toString().padStart(2, "0");
+
+    return `${days} • ${paddedHours} • ${paddedMinutes} • ${paddedSeconds}`;
   }
 
   // Function to update the countdown for each element
   function updateCountdown(element, targetDate) {
+    const state = element.getAttribute("data-countdown-state");
     element.innerHTML = calculateCountdown(targetDate);
+    if (runs == 0) {
+      setTimeout(() => {
+        element.setAttribute("data-countdown-state", "ready");
+      }, 1000);
+    }
+    runs++;
   }
 
   // Find all elements with the data-countdown attribute
@@ -287,10 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const targetDate = new Date(dateText);
 
     if (!isNaN(targetDate.getTime())) {
-      // Update the countdown immediately
       updateCountdown(element, targetDate);
-
-      // Update the countdown every second
       setInterval(() => {
         updateCountdown(element, targetDate);
       }, 1000);
@@ -711,7 +722,6 @@ document.addEventListener("DOMContentLoaded", function () {
 function entrancesInit() {
   const body = document.querySelector("body");
   body.style.setProperty("opacity", 1);
-  
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -1187,6 +1197,7 @@ function entrancesInit() {
     ":not(.split-section h3)",
     ":not(.toolbelt h3)",
     ":not(.value-highlight--paragraph)",
+    ":not(#about--brotherhood h3)",
   ];
 
   const h3s = document.querySelectorAll("h3" + stipulations.join(""));
@@ -1274,6 +1285,147 @@ function entrancesInit() {
       });
     })();
   }
+
+  class SplitTextAnimator {
+    constructor(elem, { type = "lines" } = {}) {
+      this.type = type;
+      this.elem = elem;
+      this.split = new SplitType(elem);
+      this.splitTargets = this.split[type];
+      this.count = this.splitTargets.length;
+      this.delay = 0.05;
+      this.duration = DEFAULT.DURATION;
+      this.scrollTriggerDefaults = {
+        trigger: this.elem,
+        ease: DEFAULT.EASE,
+        start: "top bottom-=20%",
+        end: "bottom top+=45%",
+      };
+    }
+
+    init() {
+      this.splitTargets.forEach((target, index) => this.animateSplitTarget(target, index));
+    }
+
+    getDelay(index) {
+      return this.delay * index;
+    }
+
+    getAnimation(index) {
+      const entranceFrom = fade.up.from;
+      const entranceTo = {
+        ...fade.up.to,
+        delay: this.getDelay(index),
+        duration: this.duration,
+      };
+
+      const leaveFrom = fade.up.to;
+      const leaveTo = {
+        ...fade.up.from,
+        delay: this.getDelay(this.count - 1 - index),
+        duration: this.duration,
+      };
+
+      const entranceBackFrom = fade.up.from;
+      const entranceBackTo = {
+        ...fade.up.to,
+        delay: this.getDelay(this.count - 1 - index),
+        duration: this.duration,
+      };
+
+      const leaveBackFrom = fade.up.to;
+      const leaveBackTo = {
+        ...fade.up.from,
+        delay: this.getDelay(index),
+        duration: this.duration,
+      };
+
+      return { entranceFrom, entranceTo, leaveFrom, leaveTo, entranceBackFrom, entranceBackTo, leaveBackFrom, leaveBackTo };
+    }
+
+    animateSplitTarget(target, index) {
+      const { entranceFrom, entranceTo, leaveFrom, leaveTo, entranceBackFrom, entranceBackTo, leaveBackFrom, leaveBackTo } = this.getAnimation(index);
+
+      requestAnimationFrame(() => {
+        gsap.set(target, entranceFrom);
+      });
+
+      ScrollTrigger.create({
+        ...this.scrollTriggerDefaults,
+        onEnter: () => gsap.fromTo(target, entranceFrom, entranceTo),
+        onEnterBack: () => gsap.fromTo(target, entranceBackFrom, entranceBackTo),
+        onLeave: () => gsap.fromTo(target, leaveFrom, leaveTo),
+        onLeaveBack: () => gsap.fromTo(target, leaveBackFrom, leaveBackTo),
+      });
+    }
+  }
+
+  const splitTextElems = Array.from(document.querySelectorAll("#about--brotherhood h3"));
+  const splitTextAnimators = splitTextElems.map((elem) => new SplitTextAnimator(elem, { type: "words" }));
+  splitTextAnimators.forEach((animator) => animator.init());
+
+
+
+
+
+
+
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  const bootcampHero = document.querySelector("#bootcamp--hero-group");
+  if (bootcampHero) bootcampHeroInit(bootcampHero);
+  function bootcampHeroInit(hero) {
+    const target = hero.querySelector(".split-head-content--image");
+    const siteMaxWidthWide = window.getComputedStyle(document.documentElement).getPropertyValue("--site-max-width_wide");
+
+    const from = {
+      width: siteMaxWidthWide,
+      borderRadius: 40,
+    };
+
+    const to = {
+      width: "100%",
+      borderRadius: 0,
+    };
+
+    const scrollTrigger = {
+      trigger: body,
+      start: "top top",
+      end: "110px top",
+      scrub: true,
+    };
+
+    const compiledTo = {
+      ...to,
+      scrollTrigger,
+    };
+
+    gsap.fromTo(target, from, compiledTo);
+  }
+
+  window.addEventListener("resize", () => {
+    ScrollTrigger.refresh();
+  });
+
+  // call scrollTrigger refresh once every 500ms for 5 seconds
+  let i = 0;
+  const interval = setInterval(() => {
+    i++;
+    ScrollTrigger.refresh();
+    if (i === 30) clearInterval(interval);
+  }, 500);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -1601,6 +1753,71 @@ document.addEventListener("DOMContentLoaded", () => {
       element.setAttribute("data-hide-until-load", "true");
     });
   }, 200);
+});
+
+class Img {
+  constructor(elem) {
+    this.elem = elem;
+    this.src = elem.getAttribute("src");
+    this.width = 0;
+    this.height = 0;
+    this.key = `img-size-${this.src}`;
+    this.storedSize = this.getStoredSize();
+  }
+
+  init() {
+    if (this.storedSize) {
+      this.setSize(this.storedSize.width, this.storedSize.height);
+    }
+
+    if (this.elem.complete) this.handleLoad({ target: this.elem });
+    else this.elem.addEventListener("load", this.handleLoad.bind(this));
+  }
+
+  getStoredSize() {
+    const stored = localStorage.getItem(this.key);
+    return stored ? JSON.parse(stored) : null;
+  }
+
+  setSize(width, height) {
+    if (!width || !height) return;
+    this.elem.setAttribute("width", width);
+    this.elem.setAttribute("height", height);
+  }
+
+  saveSize(width, height) {
+    const size = { width, height, timestamp: Date.now() };
+    localStorage.setItem(this.key, JSON.stringify(size));
+  }
+
+  handleLoad(e) {
+    const img = e.target || this.elem;
+    const width = img.naturalWidth;
+    const height = img.naturalHeight;
+
+    const widthAttr = img.getAttribute("width");
+    const heightAttr = img.getAttribute("height");
+
+    if (widthAttr && widthAttr !== "0" && widthAttr !== "auto" && heightAttr && heightAttr !== "0" && heightAttr !== "auto") {
+      return;
+    }
+
+    if (!this.storedSize) {
+      this.saveSize(width, height);
+      return;
+    }
+
+    const { width: storedWidth, height: storedHeight } = this.storedSize;
+    if (width !== storedWidth || height !== storedHeight) {
+      this.saveSize(width, height);
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const imgElems = document.querySelectorAll("img");
+  const imgs = Array.from(imgElems).map((elem) => new Img(elem));
+  imgs.forEach((img) => img.init());
 });
 
 // animations.js
@@ -2381,15 +2598,14 @@ function replaceTag(element, newTagName) {
 
 document.addEventListener("DOMContentLoaded", function () {
   function updateHeights() {
-    const masonrySections = Array.from(
-      document.querySelectorAll(".masonry-section"),
-    );
+    const masonrySections = Array.from(document.querySelectorAll(".masonry-section"));
     masonrySections.forEach((section) => {
-      const collectionList = section.querySelector(
-        ".masonry-section--collection-list",
-      );
+      const collectionList = section.querySelector(".masonry-section--collection-list");
       const height = collectionList.offsetHeight;
       section.style.setProperty("--masonry-list-height", `${height}px`);
+
+      const list = section.querySelector(".masonry-section--collection-list");
+      list.style.setProperty("--masonry-list-height", `${height}px`);
 
       // Add event listeners to images within the collection list
       const images = collectionList.querySelectorAll("img");
@@ -2398,6 +2614,15 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
+
+  let width = window.innerWidth;
+  function handleResize() {
+    if (window.innerWidth == width) return;
+    width = window.innerWidth;
+    updateHeights();
+  }
+
+  window.addEventListener("resize", handleResize);
 
   setTimeout(updateHeights, 0);
   setInterval(updateHeights, 200 * 1000);
@@ -2415,28 +2640,14 @@ document.addEventListener("DOMContentLoaded", function () {
       this.secondary = {
         elems: {
           secondary: secondary,
-          container: secondary.querySelector(
-            ".masonry-secondary-section--container",
-          ),
-          listWrapper: secondary.querySelector(
-            ".masonry-secondary-section--collection-list-wrapper",
-          ),
-          list: secondary.querySelector(
-            ".masonry-secondary-section--collection-list",
-          ),
-          items: Array.from(
-            secondary.querySelectorAll(".masonry-secondary-section--item"),
-          ),
-          controls: secondary.querySelector(
-            ".masonry-secondary-section--controls",
-          ),
+          container: secondary.querySelector(".masonry-secondary-section--container"),
+          listWrapper: secondary.querySelector(".masonry-secondary-section--collection-list-wrapper"),
+          list: secondary.querySelector(".masonry-secondary-section--collection-list"),
+          items: Array.from(secondary.querySelectorAll(".masonry-secondary-section--item")),
+          controls: secondary.querySelector(".masonry-secondary-section--controls"),
           seek: {
-            left: secondary.querySelector(
-              ".masonry-secondary-section--seek.left",
-            ),
-            right: secondary.querySelector(
-              ".masonry-secondary-section--seek.right",
-            ),
+            left: secondary.querySelector(".masonry-secondary-section--seek.left"),
+            right: secondary.querySelector(".masonry-secondary-section--seek.right"),
           },
         },
         hide: this.secondaryHide.bind(this),
@@ -2463,9 +2674,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     getLength() {
       const secondary = this.secondary.elems.secondary;
-      const list = secondary.querySelectorAll(
-        ".masonry-secondary-section--item",
-      );
+      const list = secondary.querySelectorAll(".masonry-secondary-section--item");
       return list.length;
     }
 
@@ -2527,8 +2736,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // const list = masonry.secondary.elems.list;
     // const items = masonry.secondary.elems.items;
 
-    const { container, listWrapper, list, items, controls, seek } =
-      masonry.secondary.elems;
+    const { container, listWrapper, list, items, controls, seek } = masonry.secondary.elems;
     let { left, right } = seek;
 
     container.classList.add("splide");
@@ -2608,12 +2816,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function secondaryInit() {
-    const masonryElems = Array.from(
-      document.querySelectorAll(".masonry-section"),
-    );
-    const secondaryElems = Array.from(
-      document.querySelectorAll(".masonry-secondary-section"),
-    );
+    const masonryElems = Array.from(document.querySelectorAll(".masonry-section"));
+    const secondaryElems = Array.from(document.querySelectorAll(".masonry-secondary-section"));
 
     const sections = (() => {
       let sections = [];
@@ -2654,50 +2858,67 @@ function homeHeroSection() {
   tl.fromTo(
     heroSection,
     {
-      "--background-image-top-multiplier": -0.6,
-      "--foreground-image-top-multiplier": 1.25,
+      "--background-image-top-multiplier": -0.65,
+      "--foreground-image-top-multiplier": 0.85,
     },
     {
       "--background-image-top-multiplier": 0.65,
-      "--foreground-image-top-multiplier": 0.35,
+      "--foreground-image-top-multiplier": 0.25,
       ease: Linear.easeNone,
     },
   );
+
+  // tl.fromTo(
+  //   heroSection,
+  //   {
+  //     "--background-image-top-multiplier": -0.6,
+  //     "--foreground-image-top-multiplier": 1.25,
+  //   },
+  //   {
+  //     "--background-image-top-multiplier": 0.65,
+  //     "--foreground-image-top-multiplier": 0.35,
+  //     ease: Linear.easeNone,
+  //   },
+  // );
 }
 
 document.addEventListener("DOMContentLoaded", function () {
   homeHeroSection();
 
-  let count = 0;
-  const interval = setInterval(() => {
-    if (document.documentElement.classList.contains("safari")) {
-      gsap.utils.toArray(".masonry-section--collection-list").forEach((elem) => {
-        gsap.fromTo(
-          elem,
-          {
-            y: "-45%",
-          },
-          {
-            y: "0%",
-            ease: "none",
-            scrollTrigger: {
-              trigger: elem,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: true,
-            },
-          },
-        );
-      });
+  // let count = 0;
+  // const interval = setInterval(() => {
+  // if (document.documentElement.classList.contains("safari")) {
+  gsap.utils.toArray(".masonry-section--collection-list").forEach((elem) => {
+    const parent = elem.closest(".masonry-section");
+    const height = window.getComputedStyle(parent);
 
-      clearInterval(interval);
-    }
+    gsap.fromTo(
+      elem,
+      {
+        "--transform": -0.45,
+        willChange: "transform",
+      },
+      {
+        "--transform": 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: parent,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      },
+    );
+  });
 
-    count += 2;
-    if (count >= 30) {
-      clearInterval(interval);
-    }
-  }, 2000);
+  // clearInterval(interval);
+  // }
+
+  //   count += 2;
+  //   if (count >= 30) {
+  //     clearInterval(interval);
+  //   }
+  // }, 2000);
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -2873,10 +3094,7 @@ function updatePitchHeight() {
 
   while (currentElement && currentElement !== featuredExpedition) {
     const computedStyle = window.getComputedStyle(currentElement);
-    const elementHeight =
-      currentElement.offsetHeight +
-      parseInt(computedStyle.marginTop) +
-      parseInt(computedStyle.marginBottom);
+    const elementHeight = currentElement.offsetHeight + parseInt(computedStyle.marginTop) + parseInt(computedStyle.marginBottom);
     totalHeight += elementHeight;
     currentElement = currentElement.nextElementSibling;
   }
@@ -2903,9 +3121,7 @@ document.addEventListener("DOMContentLoaded", function () {
       origin: squiggleElem,
       wrapper: squiggleWrapper,
       lines: Array.from(squiggleElem.querySelectorAll("[id*='line-']")),
-      anchors: Array.from(
-        document.querySelectorAll("[id*='squiggle--anchor-']"),
-      ),
+      anchors: Array.from(document.querySelectorAll("[id*='squiggle--anchor-']")),
     },
     paths: [],
   };
@@ -2921,28 +3137,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function squiggleInit() {
     squiggle.elems.lines.forEach((line) => {
-      const newSvg = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "svg",
-      );
-      const attrs = ["viewBox", "class"];
-      attrs.forEach((attr) =>
-        newSvg.setAttribute(attr, squiggleElem.getAttribute(attr)),
-      );
-      newSvg.classList.add("squiggle--child");
+      const lineCopies = 2;
 
-      // Clone the path and append to the new SVG
-      const newPath = line.cloneNode(true);
-      newSvg.appendChild(newPath);
+      for (let i = 0; i < lineCopies; i++) {
+        const newSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
-      // Copy the defs from the original SVG to the new SVG
-      const defs = squiggleElem.querySelector("defs");
-      const newDefs = defs.cloneNode(true);
-      newSvg.appendChild(newDefs);
+        const attrs = ["viewBox", "class"];
+        attrs.forEach((attr) => newSvg.setAttribute(attr, squiggleElem.getAttribute(attr)));
+        newSvg.classList.add("squiggle--child");
+        newSvg.classList.add(`squiggle--child--${i + 1}`);
 
-      // Append the new SVG to the wrapper
-      squiggleWrapper.appendChild(newSvg);
-      squiggle.paths.push(new Path(newPath));
+        // Clone the path and append to the new SVG
+        const newPath = line.cloneNode(true);
+        newSvg.appendChild(newPath);
+
+        // Copy the defs from the original SVG to the new SVG
+        const defs = squiggleElem.querySelector("defs");
+        const newDefs = defs.cloneNode(true);
+        newSvg.appendChild(newDefs);
+
+        // Append the new SVG to the wrapper
+        squiggleWrapper.appendChild(newSvg);
+        squiggle.paths.push(new Path(newPath));
+        // console.log(squiggleWrapper);
+      }
     });
 
     // replace squiggleWrapper with its children
@@ -2967,24 +3185,19 @@ document.addEventListener("DOMContentLoaded", function () {
       path.svg.style.transform = "";
     });
 
-    mapping.forEach(({ lineIndex, anchorIndex, anchorPosition, snapTo }) => {
-      const line = squiggle.paths[lineIndex].elem;
+    // mapping.forEach(({ lineIndex, anchorIndex, anchorPosition, snapTo }) => {
+    squiggle.paths.forEach((path, index) => {
+      const { anchorIndex, anchorPosition, snapTo } = mapping[0];
       const anchor = squiggle.elems.anchors[anchorIndex];
+      const line = squiggle.paths[index].elem;
       const lineLength = line.getTotalLength();
-      const linePoint =
-        snapTo === "start"
-          ? line.getPointAtLength(0)
-          : line.getPointAtLength(lineLength);
+      const linePoint = snapTo === "start" ? line.getPointAtLength(0) : line.getPointAtLength(lineLength);
 
       const anchorPos = getAnchorPosition(anchor, anchorPosition);
-      const diff = getTransformDifference(
-        squiggle.paths[lineIndex].elem.ownerSVGElement,
-        linePoint,
-        anchorPos,
-      );
+      const diff = getTransformDifference(line.ownerSVGElement, linePoint, anchorPos);
 
-      squiggle.paths[lineIndex].svg.style.transform =
-        `translate(${diff.x}px, ${diff.y}px)`;
+      squiggle.paths[index].svg.style.transform = `translate(${diff.x}px, ${diff.y}px)`;
+      // });
     });
   }
 
@@ -2995,11 +3208,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function setupScrollAnimation() {
     gsap.registerPlugin(ScrollTrigger);
 
-    const stroke = parseFloat(
-      window
-        .getComputedStyle(squiggle.paths[0].svg)
-        .getPropertyValue("--squiggle-stroke-width"),
-    );
+    const stroke = parseFloat(window.getComputedStyle(squiggle.paths[0].svg).getPropertyValue("--squiggle-stroke-width"));
+
+    // console.log(squiggle.paths);
 
     squiggle.paths.forEach((path, index) => {
       if (index == 0) {
@@ -3023,40 +3234,50 @@ document.addEventListener("DOMContentLoaded", function () {
         );
       }
 
-      gsap.set(path.elem, {
-        strokeDasharray: path.length,
-        strokeDashoffset: path.length,
-        strokeWidth: stroke,
-      });
+      // Animate the path, not the duplicate
+      if (index == 1) {
+        gsap.set(path.elem, {
+          strokeDashoffset: "30px 30px"
+        });
+      }
+      if (index == 1) {
+        gsap.set(path.elem, {
+          strokeDasharray: path.length,
+          strokeDashoffset: path.length,
+          strokeWidth: stroke,
+        });
 
-      const pathStart = "top 45%";
-      const pathEnd = "bottom -40%";
+        // console.log(path.elem);
 
-      // Animate the duplicate path
-      gsap.to(path.elem, {
-        strokeDashoffset: 0,
-        scrollTrigger: {
-          trigger: path.elem,
-          start: pathStart,
-          end: pathEnd,
-          scrub: true,
-        },
-      });
-
-      gsap.fromTo(
-        path.elem,
-        {
-          opacity: 0,
-        },
-        {
-          opacity: 1,
-          ease: "power3.out",
+        // const pathStart = "top 45%";
+        // const pathEnd = "bottom -40%";
+        const pathStart = "top 35%";
+        const pathEnd = "bottom -80%";
+        gsap.to(path.elem, {
+          strokeDashoffset: 0,
           scrollTrigger: {
             trigger: path.elem,
             start: pathStart,
+            end: pathEnd,
+            scrub: true,
           },
-        },
-      );
+        });
+
+        gsap.fromTo(
+          path.elem,
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: path.elem,
+              start: pathStart,
+            },
+          },
+        );
+      }
     });
   }
 
@@ -3246,65 +3467,152 @@ function swipeEventsInit() {
 }
 
 swipeEventsInit();
-document.addEventListener("DOMContentLoaded", function () {
-  const resizeText = () => {
-    const elements = document.querySelectorAll("[data-text-fill-container]");
+class Fill {
+  constructor(elem) {
+    this.elem = elem;
+    this.state = "loading";
+    this.prevState = "none";
+    this.parent = elem.parentElement;
+    this.observer = null;
+    this.resize = null;
+    this.timeout = null;
+    this.prevWidth = window.innerWidth;
+    this.prevFontSize = 0;
+    this.fontSizeAdjusted = false; // Moved to class level
+  }
 
-    elements.forEach((element) => {
-      const parent = element.parentElement;
-      const style = window.getComputedStyle(parent);
-      const containerWidth =
-        parent.clientWidth -
-        parseFloat(style.paddingLeft) -
-        parseFloat(style.paddingRight);
-      const containerHeight =
-        parent.clientHeight -
-        parseFloat(style.paddingTop) -
-        parseFloat(style.paddingBottom);
+  init() {
+    this.observer = new MutationObserver(this.handleMutation.bind(this));
+    this.observer.observe(this.elem, {
+      attributes: true,
+    });
+    window.addEventListener("resize", this.handleResize.bind(this));
 
-      let fontSize = 10;
-      element.style.fontSize = fontSize + "px";
+    setTimeout(() => {
+      this.handleResize();
+    }, 500);
+  }
 
-      while (
-        element.scrollWidth <= containerWidth &&
-        element.scrollHeight <= containerHeight &&
-        fontSize < 300
-      ) {
+  setState(str) {
+    setTimeout(() => {
+      this.prevState = this.state;
+      this.state = str;
+      this.elem.setAttribute("data-countdown-state", str);
+    }, 200);
+  }
+  
+  getState() {
+    return this.elem.getAttribute("data-countdown-state");
+  }
+
+  handleMutation(records) {
+    records.forEach((mutation) => {
+      if (mutation.attributeName != "data-countdown-state") return;
+      const state = this.elem.getAttribute("data-countdown-state");
+      if (state == this.prevState) return;
+      this.prevState = this.state;
+      this.state = state;
+      if (state == "ready") this.handleTransition();
+      if (state == "transition-done") this.handleUpdate();
+      // if (state == "display") this.handleDisplay();
+    });
+  }
+
+  handleTransition() {
+    this.setState("transition");
+    setTimeout(() => {
+      this.transitionDuring();
+      this.setState("transition-done");
+    }, 200);
+  }
+
+  transitionDuring() {
+    setTimeout(() => {
+      if (!this.characters) this.characters = this.elem.textContent;
+      if (!this.length) this.length = Math.ceil(this.characters.length * 0.625);
+      this.elem.textContent = `${"0".repeat(this.length)}`;
+    }, 0);
+  }
+
+  handleUpdate() {
+    this.setState("update");
+
+    const parent = this.parent;
+    const style = window.getComputedStyle(parent);
+    const containerWidth = parent.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    const containerHeight = parent.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+
+    let fontSize = 10;
+    this.fontSizeAdjusted = false; // Reset flag
+    this.elem.style.fontSize = `${fontSize}px`;
+
+    const adjustFontSize = () => {
+      while (this.elem.scrollWidth <= containerWidth && this.elem.scrollHeight <= containerHeight && fontSize < 300) {
         fontSize++;
-        element.style.fontSize = fontSize + "px";
+        this.elem.style.fontSize = `${fontSize}px`;
       }
 
-      element.style.fontSize = fontSize - 1 + "px";
-    });
-  };
+      fontSize--; // Step back to the last valid size
+      this.elem.style.fontSize = `${fontSize}px`;
+      this.fontSizeAdjusted = true;
 
-  const debounce = (func, delay) => {
-    let timeout;
-    return (...args) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(this, args), delay);
+      // Ensure a reflow has happened before continuing
+      requestAnimationFrame(() => {
+        this.finalizeUpdate();
+      });
     };
-  };
 
-  const handleResize = debounce(resizeText, 300);
-  window.addEventListener("resize", handleResize);
+    adjustFontSize();
+  }
 
-  const observer = new MutationObserver(
-    debounce((mutations) => {
-      resizeText();
-    }, 300),
-  );
+  finalizeUpdate() {
+    if (this.state !== "update") return;
 
-  document.querySelectorAll("[data-text-fill-container]").forEach((element) => {
-    observer.observe(element.parentElement, {
-      attributes: true,
-      childList: true,
-      subtree: true,
+    // Ensure the font size has been adjusted before proceeding
+    if (this.fontSizeAdjusted) {
+      // Revert to the original text content after the font size is finalized
+      setTimeout(() => {
+        this.elem.textContent = this.characters;
+        this.setState("display");
+      }, 100);
+    }
+  }
+
+  handleResize() {
+    const currentWidth = window.innerWidth;
+    if (currentWidth === this.prevWidth) return;
+    if (this.timeout) clearTimeout(this.timeout);
+
+    // this.elem.classList.add("hidden");
+    this.prevWidth = currentWidth;
+
+    this.setState("transition");
+    this.timeout = setTimeout(() => {
+      this.transitionDuring();
+      this.setState("transition-done");
+    }, 500);
+  }
+
+  // handleDisplay() {
+  //   this.elem.classList.remove("hidden");
+  // }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  if (document.fonts) {
+    document.fonts.ready.then(() => {
+      initializeFill();
     });
-  });
-
-  setTimeout(resizeText, 200);
+  } else {
+    initializeFill();
+  }
 });
+
+function initializeFill() {
+  const elements = Array.from(document.querySelectorAll("[data-text-fill-container]"));
+  const fills = elements.map((elem) => new Fill(elem));
+  fills.forEach((fill) => fill.init());
+}
 
 document.addEventListener("DOMContentLoaded", function () {
   const durationElements = document.querySelectorAll("[data-duration]");

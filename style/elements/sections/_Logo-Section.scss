@@ -5,11 +5,15 @@
 }
 
 .logo-section {
-  --gap: 2rem;
+  --gap: 5rem;
   --divider-width: 0.25rem;
   @include flex-col;
   width: 100%;
   padding: 0rem;
+
+  @include lg-down{
+    --gap: 2rem;
+  }
 
   &--title {
     @include lg-down {
@@ -29,6 +33,10 @@
     grid-column-gap: var(--gap);
     grid-row-gap: var(--gap);
     margin: 0rem;
+    @include lg-up{
+      gap: 4rem !important;
+      justify-content: center;
+    }
 
     @include lg-down {
       flex-wrap: wrap;
@@ -77,12 +85,16 @@
     }
   }
   &--logo-wrapper {
+    @include lg-up {
+      height: 4.5rem !important;
+      max-width: 12rem !important;
+    }
     @include lg-down {
       --gap: var(--divider-width);
       @include e-col-width(6);
       padding: 2rem;
       @include flex-col-center;
-      height: 6rem;
+      height: 9rem;
     }
     @include md-down {
       height: 6rem;
@@ -93,9 +105,13 @@
     }
   }
   &--logo {
+    // @include lg-up {
+    //   transform: scale(0.7);
+    // }
     @include lg-down {
       margin: auto;
       background-color: rgba($col--primary__lightest, 0.85);
+      max-width: 15rem;
     }
   }
   &--divider {

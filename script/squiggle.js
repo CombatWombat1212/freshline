@@ -73,10 +73,7 @@ function updatePitchHeight() {
 
   while (currentElement && currentElement !== featuredExpedition) {
     const computedStyle = window.getComputedStyle(currentElement);
-    const elementHeight =
-      currentElement.offsetHeight +
-      parseInt(computedStyle.marginTop) +
-      parseInt(computedStyle.marginBottom);
+    const elementHeight = currentElement.offsetHeight + parseInt(computedStyle.marginTop) + parseInt(computedStyle.marginBottom);
     totalHeight += elementHeight;
     currentElement = currentElement.nextElementSibling;
   }
@@ -103,9 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
       origin: squiggleElem,
       wrapper: squiggleWrapper,
       lines: Array.from(squiggleElem.querySelectorAll("[id*='line-']")),
-      anchors: Array.from(
-        document.querySelectorAll("[id*='squiggle--anchor-']"),
-      ),
+      anchors: Array.from(document.querySelectorAll("[id*='squiggle--anchor-']")),
     },
     paths: [],
   };
@@ -121,28 +116,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function squiggleInit() {
     squiggle.elems.lines.forEach((line) => {
-      const newSvg = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "svg",
-      );
-      const attrs = ["viewBox", "class"];
-      attrs.forEach((attr) =>
-        newSvg.setAttribute(attr, squiggleElem.getAttribute(attr)),
-      );
-      newSvg.classList.add("squiggle--child");
+      const lineCopies = 2;
 
-      // Clone the path and append to the new SVG
-      const newPath = line.cloneNode(true);
-      newSvg.appendChild(newPath);
+      for (let i = 0; i < lineCopies; i++) {
+        const newSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
-      // Copy the defs from the original SVG to the new SVG
-      const defs = squiggleElem.querySelector("defs");
-      const newDefs = defs.cloneNode(true);
-      newSvg.appendChild(newDefs);
+        const attrs = ["viewBox", "class"];
+        attrs.forEach((attr) => newSvg.setAttribute(attr, squiggleElem.getAttribute(attr)));
+        newSvg.classList.add("squiggle--child");
+        newSvg.classList.add(`squiggle--child--${i + 1}`);
 
-      // Append the new SVG to the wrapper
-      squiggleWrapper.appendChild(newSvg);
-      squiggle.paths.push(new Path(newPath));
+        // Clone the path and append to the new SVG
+        const newPath = line.cloneNode(true);
+        newSvg.appendChild(newPath);
+
+        // Copy the defs from the original SVG to the new SVG
+        const defs = squiggleElem.querySelector("defs");
+        const newDefs = defs.cloneNode(true);
+        newSvg.appendChild(newDefs);
+
+        // Append the new SVG to the wrapper
+        squiggleWrapper.appendChild(newSvg);
+        squiggle.paths.push(new Path(newPath));
+        // console.log(squiggleWrapper);
+      }
     });
 
     // replace squiggleWrapper with its children
@@ -167,24 +164,19 @@ document.addEventListener("DOMContentLoaded", function () {
       path.svg.style.transform = "";
     });
 
-    mapping.forEach(({ lineIndex, anchorIndex, anchorPosition, snapTo }) => {
-      const line = squiggle.paths[lineIndex].elem;
+    // mapping.forEach(({ lineIndex, anchorIndex, anchorPosition, snapTo }) => {
+    squiggle.paths.forEach((path, index) => {
+      const { anchorIndex, anchorPosition, snapTo } = mapping[0];
       const anchor = squiggle.elems.anchors[anchorIndex];
+      const line = squiggle.paths[index].elem;
       const lineLength = line.getTotalLength();
-      const linePoint =
-        snapTo === "start"
-          ? line.getPointAtLength(0)
-          : line.getPointAtLength(lineLength);
+      const linePoint = snapTo === "start" ? line.getPointAtLength(0) : line.getPointAtLength(lineLength);
 
       const anchorPos = getAnchorPosition(anchor, anchorPosition);
-      const diff = getTransformDifference(
-        squiggle.paths[lineIndex].elem.ownerSVGElement,
-        linePoint,
-        anchorPos,
-      );
+      const diff = getTransformDifference(line.ownerSVGElement, linePoint, anchorPos);
 
-      squiggle.paths[lineIndex].svg.style.transform =
-        `translate(${diff.x}px, ${diff.y}px)`;
+      squiggle.paths[index].svg.style.transform = `translate(${diff.x}px, ${diff.y}px)`;
+      // });
     });
   }
 
@@ -195,11 +187,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function setupScrollAnimation() {
     gsap.registerPlugin(ScrollTrigger);
 
-    const stroke = parseFloat(
-      window
-        .getComputedStyle(squiggle.paths[0].svg)
-        .getPropertyValue("--squiggle-stroke-width"),
-    );
+    const stroke = parseFloat(window.getComputedStyle(squiggle.paths[0].svg).getPropertyValue("--squiggle-stroke-width"));
+
+    // console.log(squiggle.paths);
 
     squiggle.paths.forEach((path, index) => {
       if (index == 0) {
@@ -223,40 +213,50 @@ document.addEventListener("DOMContentLoaded", function () {
         );
       }
 
-      gsap.set(path.elem, {
-        strokeDasharray: path.length,
-        strokeDashoffset: path.length,
-        strokeWidth: stroke,
-      });
+      // Animate the path, not the duplicate
+      if (index == 1) {
+        gsap.set(path.elem, {
+          strokeDashoffset: "30px 30px"
+        });
+      }
+      if (index == 1) {
+        gsap.set(path.elem, {
+          strokeDasharray: path.length,
+          strokeDashoffset: path.length,
+          strokeWidth: stroke,
+        });
 
-      const pathStart = "top 45%";
-      const pathEnd = "bottom -40%";
+        // console.log(path.elem);
 
-      // Animate the duplicate path
-      gsap.to(path.elem, {
-        strokeDashoffset: 0,
-        scrollTrigger: {
-          trigger: path.elem,
-          start: pathStart,
-          end: pathEnd,
-          scrub: true,
-        },
-      });
-
-      gsap.fromTo(
-        path.elem,
-        {
-          opacity: 0,
-        },
-        {
-          opacity: 1,
-          ease: "power3.out",
+        // const pathStart = "top 45%";
+        // const pathEnd = "bottom -40%";
+        const pathStart = "top 35%";
+        const pathEnd = "bottom -80%";
+        gsap.to(path.elem, {
+          strokeDashoffset: 0,
           scrollTrigger: {
             trigger: path.elem,
             start: pathStart,
+            end: pathEnd,
+            scrub: true,
           },
-        },
-      );
+        });
+
+        gsap.fromTo(
+          path.elem,
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: path.elem,
+              start: pathStart,
+            },
+          },
+        );
+      }
     });
   }
 

@@ -3,6 +3,9 @@
   --containers--max-width-small: calc(100% - calc(--containers--max-width-small-pad)) !important;
   --screen-width: calc(100vw - 15px);
   --scrollbar-width: 15px;
+
+  // --section-pad: 12rem!important;
+  --section-pad: 16rem!important;
 }
 
 body {

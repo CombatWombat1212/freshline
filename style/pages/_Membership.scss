@@ -11,24 +11,25 @@
     }
 
     .torn-split-section {
-      &--graphic {
-        height: 100%;
-      }
-
       &--container {
-        gap: 6rem;
-        grid-template-columns: 0.8fr 1.2fr;
+        --gap: 6rem;
+        gap: var(--gap);
+
+        @include xl-up {
+          @include flex-row;
+        }
 
         @include xl-down {
+          --gap: 3rem;
           width: 100%;
           max-width: unset;
+          grid-template-columns: 1fr;
         }
 
         h1 {
           @include xl-up {
-            margin-right: -3rem;
+            white-space: nowrap;
           }
-
           br {
             @include xl-down {
               display: none;
@@ -36,25 +37,34 @@
           }
         }
         h4 {
+          max-width: 60ch;
           @include xl-down {
             margin-top: 0.5rem !important;
             margin-bottom: 1.75rem !important;
           }
         }
-
-        @include xl-down {
-          grid-template-columns: 1fr;
-          gap: 3rem;
-        }
       }
 
       &--graphic {
+        @include lg-up {
+          height: unset !important;
+          @include marg-y(unset);
+
+          & > * {
+            transform: translateY(-3rem);
+          }
+        }
+
         @include xl-down {
           order: 0;
         }
 
         .value-highlight {
           &--row {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 100%;
             @include xl-down {
               display: none !important;
             }
@@ -114,9 +124,21 @@
 
   &--benefits {
     $icons: (
-      "brotherhood": "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/6695964c788b64ba28c6b200_brotherhood.svg",
-      "exclusive": "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/6695964ce1524213596d200b_exclusive.svg",
-      "priority": "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66959651d325c38516214140_priority.svg",
+      "exclusive": (
+        url: "https://cdn.prod.website-files.com/6673386a4f6b7ddc70a5931f/66ce190d72f369942ec0d59d_benefits--goods_640.webp",
+        width: 640,
+        height: 640,
+      ),
+      "priority": (
+        url: "https://cdn.prod.website-files.com/6673386a4f6b7ddc70a5931f/66ce190d569e73ca123f880c_benefits--priority_640.webp",
+        width: 640,
+        height: 640,
+      ),
+      "brotherhood": (
+        url: "https://cdn.prod.website-files.com/6673386a4f6b7ddc70a5931f/66ce190d320dbf9376b41d12_benefits--brotherhood_640.webp",
+        width: 640,
+        height: 640,
+      ),
     );
 
     .section {
@@ -126,24 +148,48 @@
     }
 
     .value-highlight {
+      // position: relative;
+      @include flex-col;
       &--graphic {
         @include flex-col-center;
         background-color: unset;
+        position: relative;
+        margin-bottom: -1rem;
+        z-index: 1;
       }
 
       &--icon {
-        @include mask;
-        @include s;
+        // @include mask;
+        // @include s;
+        // --size: 5rem;
+        // object-fit: contain;
+        // object-position: center;
+        // background-color: $col--primary__dark;
+        // margin: auto;
+
         --size: 5rem;
-        object-fit: contain;
-        object-position: center;
-        background-color: $col--primary__dark;
-        margin: auto;
-        @each $name, $icon in $icons {
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: var(--size);
+        height: var(--size);
+        transform: scale(1.25);
+
+        @each $name, $values in $icons {
+          $url: map-get($values, "url");
+          $width: map-get($values, "width");
+          $height: map-get($values, "height");
           &.#{$name} {
-            --mask-img: url("#{$icon}");
+            background-image: url($url);
+            aspect-ratio: #{$width} / #{$height};
           }
         }
+      }
+
+      &--inner {
+        z-index: 0;
+        position: relative;
+        flex: 1;
       }
     }
   }
@@ -154,9 +200,6 @@
       background-color: $col--charcoal__dark;
     }
   }
-
-
-
 
   &--scroll-video {
     h3 {
@@ -184,6 +227,10 @@
   &--masonry {
   }
   &--application {
+
+    @include topography-background;
+
+
     [class*="container"] {
       padding-top: calc(var(--section-pad) - var(--border-radius)) !important;
       @include lg-down {

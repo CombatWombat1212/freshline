@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  let runs = 0;
   // Function to calculate the difference between two dates
   function calculateCountdown(targetDate) {
     const now = new Date();
@@ -7,12 +8,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    return `${days} • ${hours} • ${minutes} • ${seconds}`;
+
+    // Add leading zeros if the value is less than 10
+    const paddedHours = hours.toString().padStart(2, "0");
+    const paddedMinutes = minutes.toString().padStart(2, "0");
+    const paddedSeconds = seconds.toString().padStart(2, "0");
+
+    return `${days} • ${paddedHours} • ${paddedMinutes} • ${paddedSeconds}`;
   }
 
   // Function to update the countdown for each element
   function updateCountdown(element, targetDate) {
+    const state = element.getAttribute("data-countdown-state");
     element.innerHTML = calculateCountdown(targetDate);
+    if (runs == 0) {
+      setTimeout(() => {
+        element.setAttribute("data-countdown-state", "ready");
+      }, 1000);
+    }
+    runs++;
   }
 
   // Find all elements with the data-countdown attribute
@@ -23,10 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const targetDate = new Date(dateText);
 
     if (!isNaN(targetDate.getTime())) {
-      // Update the countdown immediately
       updateCountdown(element, targetDate);
-
-      // Update the countdown every second
       setInterval(() => {
         updateCountdown(element, targetDate);
       }, 1000);

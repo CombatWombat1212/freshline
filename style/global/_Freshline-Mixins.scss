@@ -1,0 +1,138 @@
+@mixin tread-background {
+  &::after {
+    @content;
+    @extend %tread-background;
+  }
+}
+
+%tread-background {
+  --tread--rotation: -16deg;
+  --tread--transform-y: 0rem;
+
+  $width: map-get($graphic--treads, width);
+  $height: map-get($graphic--treads, height);
+  $url: map-get($graphic--treads, url);
+
+  content: "";
+  --width: 115vw;
+  width: var(--width);
+  height: calc(var(--width) * (#{$height} / #{$width}));
+
+  position: absolute;
+  z-index: -1;
+
+  background-image: $url;
+  aspect-ratio: #{$width} / #{$height};
+  transform: translateY(calc(-45% + var(--tread--transform-y))) translateX(-50%) rotate(var(--tread--rotation));
+  top: 55%;
+  left: 50%;
+
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  opacity: 0.25;
+}
+
+@mixin topography-background {
+  &::after {
+    @content;
+  }
+  @extend %topography-background;
+}
+
+%topography-background {
+  // --tread--rotation: -16deg;
+  // --tread--transform-y: 0rem;
+
+  &::before {
+    z-index: -2;
+  }
+
+  &::after {
+    $width: map-get($graphic--topo, width);
+    $height: map-get($graphic--topo, height);
+    $url: map-get($graphic--topo, url);
+
+    content: "";
+ 
+    width: 50%;
+    @include md-down{
+      width: 100%;
+    }
+    // height: calc(var(--width) * (#{$height} / #{$width}));
+
+    position: absolute;
+    z-index: -1;
+
+    background-image: $url;
+    aspect-ratio: #{$width} / #{$height};
+    // transform: translateY(calc(-45% + var(--tread--transform-y))) translateX(-50%) rotate(var(--tread--rotation));
+    // top: 55%;
+    // left: 50%;
+
+    top: calc(var(--border-radius) * -1);
+    left: 0;
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    opacity: 0.25;
+  }
+}
+
+@mixin paper-background() {
+  @extend %background--paper;
+}
+
+%background--paper-after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: Max(150vmax, 20%, 150rem);
+  transform: translateY(calc((var(--section-pad) * 1.25) * -1));
+}
+
+%background--paper {
+  $background: $background--paper;
+
+  //   position: relative;
+
+  background-color: unset;
+  //   background-color: $col--primary__lightest;
+
+  &.light::after {
+    background-color: $col--primary__lightest;
+  }
+
+  &::after {
+    @extend %background--paper-after;
+    z-index: -2;
+  }
+
+  &::before {
+    @extend %background--paper-after;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+    opacity: 0.2;
+    filter: brightness(1.1) saturate(0.5);
+    mix-blend-mode: multiply;
+
+    $background: mapReverse($background);
+
+    @each $key, $value in $background {
+      $url: map-get($value, url);
+      $width: map-get($value, width);
+      $height: map-get($value, height);
+
+      @media screen and (max-width: calc(#{$width}px - $subtractor)) {
+        background-image: url($url);
+        //   aspect-ratio: #{$width} / #{$height};
+      }
+    }
+  }
+}

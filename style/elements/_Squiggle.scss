@@ -1,9 +1,11 @@
 @mixin squiggle-vars {
   $squiggle-stroke-width: 16px;
-  $squiggle-dot-size: 3rem;
+  $squiggle-dot-size: 3.75rem;
 
   --squiggle-stroke-width: #{$squiggle-stroke-width};
   --squiggle-dot-size: #{$squiggle-dot-size};
+  --squiggle-color: #{mix($col--accent, $col--charcoal__dark, 75%)};
+  --squiggle-background-color: #{mix($col--turf, $col--charcoal__dark, 75%)};
 }
 
 .squiggle {
@@ -29,11 +31,11 @@
     min-width: var(--squiggle-dot-size);
     min-height: var(--squiggle-dot-size);
 
-    background-color: rgba($col--accent, 0.5);
+    background-color: var(--squiggle-color);
   }
 
   &--dot-inner {
-    --size: calc(var(--squiggle-dot-size) - var(--squiggle-stroke-width));
+    --size: calc(var(--squiggle-dot-size) - (var(--squiggle-stroke-width) * 1.5));
     width: var(--size);
     height: var(--size);
     min-width: var(--size);
@@ -42,6 +44,7 @@
 
   &--child {
     @include squiggle-vars;
+    padding-bottom: 0rem !important;
 
     position: absolute;
 
@@ -58,9 +61,14 @@
     //   stroke: rgba($col--accent, 0.5);
     // }
 
-    .cls-1 {
+    @at-root .squiggle--child--1 .cls-1 {
       fill: none;
-      stroke: rgba($col--accent, 0.25);
+      stroke: var(--squiggle-background-color);
+      stroke-width: var(--squiggle-stroke-width);
+    }
+    @at-root .squiggle--child--2 .cls-1 {
+      fill: none;
+      stroke: var(--squiggle-color);
       stroke-width: var(--squiggle-stroke-width);
     }
   }

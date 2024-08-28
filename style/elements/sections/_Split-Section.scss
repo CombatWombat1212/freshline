@@ -39,7 +39,7 @@
 
   &--body {
     @include marg-y(0rem);
-    @include md-down {
+    @include lg-down {
       order: 1;
     }
   }
@@ -51,7 +51,7 @@
     }
   }
   &--graphic {
-    @include md-down {
+    @include lg-down {
       order: 0;
     }
   }

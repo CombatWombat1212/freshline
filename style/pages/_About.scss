@@ -1,6 +1,6 @@
 #about {
   &--hero {
-    height: calc(80vh - var(--nav-height));
+    height: calc(90vh - var(--nav-height));
     @include pad-y-important(6rem, 9rem);
 
     @include lg-down {
@@ -14,6 +14,11 @@
     .torn-split-section {
       &--container {
         height: 100%;
+
+        @include lg-up {
+          @include flex-row;
+        }
+
         @include lg-down {
           gap: 3rem !important;
         }
@@ -23,6 +28,11 @@
       }
 
       &--graphic {
+        @include lg-up {
+          @include marg-y(unset);
+          height: unset;
+        }
+
         @include lg-down {
           order: 0;
           height: 100%;
@@ -33,6 +43,10 @@
       }
 
       &--image {
+        video {
+          position: relative;
+          inset: unset;
+        }
       }
 
       &--body {
@@ -58,6 +72,13 @@
   }
   &--brotherhood {
     @include text-section-left;
+
+    h3 {
+      @include lg-up {
+        @include text--h3;
+        max-width: 22ch;
+      }
+    }
   }
   &--journey {
     @include lg-down {
@@ -80,6 +101,12 @@
     }
   }
   &--careers {
+    p {
+      @include md-up {
+        @include text--body;
+        max-width: 50ch;
+      }
+    }
   }
   &--form {
     overflow: unset;

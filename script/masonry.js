@@ -24,15 +24,14 @@ function replaceTag(element, newTagName) {
 
 document.addEventListener("DOMContentLoaded", function () {
   function updateHeights() {
-    const masonrySections = Array.from(
-      document.querySelectorAll(".masonry-section"),
-    );
+    const masonrySections = Array.from(document.querySelectorAll(".masonry-section"));
     masonrySections.forEach((section) => {
-      const collectionList = section.querySelector(
-        ".masonry-section--collection-list",
-      );
+      const collectionList = section.querySelector(".masonry-section--collection-list");
       const height = collectionList.offsetHeight;
       section.style.setProperty("--masonry-list-height", `${height}px`);
+
+      const list = section.querySelector(".masonry-section--collection-list");
+      list.style.setProperty("--masonry-list-height", `${height}px`);
 
       // Add event listeners to images within the collection list
       const images = collectionList.querySelectorAll("img");
@@ -41,6 +40,15 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
+
+  let width = window.innerWidth;
+  function handleResize() {
+    if (window.innerWidth == width) return;
+    width = window.innerWidth;
+    updateHeights();
+  }
+
+  window.addEventListener("resize", handleResize);
 
   setTimeout(updateHeights, 0);
   setInterval(updateHeights, 200 * 1000);
@@ -58,28 +66,14 @@ document.addEventListener("DOMContentLoaded", function () {
       this.secondary = {
         elems: {
           secondary: secondary,
-          container: secondary.querySelector(
-            ".masonry-secondary-section--container",
-          ),
-          listWrapper: secondary.querySelector(
-            ".masonry-secondary-section--collection-list-wrapper",
-          ),
-          list: secondary.querySelector(
-            ".masonry-secondary-section--collection-list",
-          ),
-          items: Array.from(
-            secondary.querySelectorAll(".masonry-secondary-section--item"),
-          ),
-          controls: secondary.querySelector(
-            ".masonry-secondary-section--controls",
-          ),
+          container: secondary.querySelector(".masonry-secondary-section--container"),
+          listWrapper: secondary.querySelector(".masonry-secondary-section--collection-list-wrapper"),
+          list: secondary.querySelector(".masonry-secondary-section--collection-list"),
+          items: Array.from(secondary.querySelectorAll(".masonry-secondary-section--item")),
+          controls: secondary.querySelector(".masonry-secondary-section--controls"),
           seek: {
-            left: secondary.querySelector(
-              ".masonry-secondary-section--seek.left",
-            ),
-            right: secondary.querySelector(
-              ".masonry-secondary-section--seek.right",
-            ),
+            left: secondary.querySelector(".masonry-secondary-section--seek.left"),
+            right: secondary.querySelector(".masonry-secondary-section--seek.right"),
           },
         },
         hide: this.secondaryHide.bind(this),
@@ -106,9 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     getLength() {
       const secondary = this.secondary.elems.secondary;
-      const list = secondary.querySelectorAll(
-        ".masonry-secondary-section--item",
-      );
+      const list = secondary.querySelectorAll(".masonry-secondary-section--item");
       return list.length;
     }
 
@@ -170,8 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // const list = masonry.secondary.elems.list;
     // const items = masonry.secondary.elems.items;
 
-    const { container, listWrapper, list, items, controls, seek } =
-      masonry.secondary.elems;
+    const { container, listWrapper, list, items, controls, seek } = masonry.secondary.elems;
     let { left, right } = seek;
 
     container.classList.add("splide");
@@ -251,12 +242,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function secondaryInit() {
-    const masonryElems = Array.from(
-      document.querySelectorAll(".masonry-section"),
-    );
-    const secondaryElems = Array.from(
-      document.querySelectorAll(".masonry-secondary-section"),
-    );
+    const masonryElems = Array.from(document.querySelectorAll(".masonry-section"));
+    const secondaryElems = Array.from(document.querySelectorAll(".masonry-secondary-section"));
 
     const sections = (() => {
       let sections = [];

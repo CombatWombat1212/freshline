@@ -1,3 +1,9 @@
+@mixin theme($str) {
+  @at-root .#{$str} & {
+    @content;
+  }
+}
+
 .signup {
   &--form-wrapper {
   }
@@ -13,16 +19,28 @@
   }
 
   &--field {
-    color: var(--color--primary__dark);
     transition: background-color 0.2s;
+    color: $col--primary__dark;
+    background-color: $col--primary__light;
+    @include theme("turf") {
+      color: $col--turf__dark;
+      background-color: $col--turf__lightest;
+    }
 
     &::placeholder {
-      color: var(--color--primary__dark);
+      color: $col--primary__dark;
       opacity: 0.5;
+      @include theme("turf") {
+        color: $col--turf__dark;
+      }
     }
 
     &:focus {
-      background-color: var(--color--primary);
+      background-color: $col--primary;
+      @include theme("turf") {
+        color: $col--turf;
+        background-color: lighten($col--turf__lightest, 10%);
+      }
     }
   }
 
@@ -31,6 +49,48 @@
       aspect-ratio: 1 / 1;
       width: 100%;
       height: auto;
+    }
+  }
+
+  .checkbox {
+    @include theme("turf") {
+      border-color: $col--turf__dark;
+    }
+  }
+
+  .w-checkbox-input {
+    @include theme("turf") {
+      background-color: $col--turf__lightest;
+    }
+
+    &.w--redirected-focus {
+    }
+
+    &:not(.w--redirected-focus) {
+      box-shadow: unset !important;
+    }
+
+    &.w--redirected-checked {
+      background-image: unset !important;
+      background-position: unset !important;
+      background-repeat: unset !important;
+      background-size: unset !important;
+      background-color: $col--turf__lightest;
+      border-color: $col--turf__lightest;
+
+      &::before {
+        display: block;
+        content: "";
+        width: 100%;
+        height: 100%;
+        mask-size: contain;
+        mask-image: url("https://d3e54v103j8qbb.cloudfront.net/static/custom-checkbox-checkmark.589d534424.svg");
+        -webkit-mask-image: url("https://d3e54v103j8qbb.cloudfront.net/static/custom-checkbox-checkmark.589d534424.svg");
+
+        aspect-ratio: 59/50;
+
+        background-color: $col--turf__dark;
+      }
     }
   }
 }

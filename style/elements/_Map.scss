@@ -87,6 +87,9 @@ section.map-section {
         order: 1;
       }
 
+      @include lg-down {
+        overflow: visible;
+      }
       @include md-down {
         height: var(--mobile-body-height);
         max-height: var(--mobile-body-height);

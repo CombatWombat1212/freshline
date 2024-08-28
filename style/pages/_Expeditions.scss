@@ -32,6 +32,17 @@
         }
       }
       &--body {
+        @include lg-up {
+          transform: translateY(-2rem);
+        }
+
+        h1 {
+          @include text--h1;
+          @include lg-up {
+            max-width: 8ch;
+          }
+        }
+
         @include lg-down {
           order: 1;
         }
@@ -61,7 +72,7 @@
     overflow: hidden;
     padding-bottom: 5.5rem;
     max-width: 100vw;
-
+    @include paper-background;
   }
 
   &--after-map-group {
@@ -109,10 +120,9 @@
   &--masonry {
   }
   &--cta {
-    
     padding-top: 0rem;
     max-width: 100vw;
-    
+
     .container {
       padding-top: var(--section-pad);
       @include md-down {
