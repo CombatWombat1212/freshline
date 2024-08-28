@@ -52,7 +52,7 @@ class MyMap {
   }
 
   draw() {
-    if (this.theme === "primary") {
+    if (this.theme === "turf") {
       L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}" + (L.Browser.retina ? "@2x.png" : ".png"), {
         maxZoom: 20,
         attribution:
