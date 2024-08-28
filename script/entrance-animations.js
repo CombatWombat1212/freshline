@@ -916,6 +916,11 @@ function entrancesInit() {
     })();
   }
 
+
+// TODO: Give this its own file
+// TODO: Add support for custom animations outside of just 'fade'
+// TODO: custom durations, delays, etc.
+// TODO: responsivity support where it replaces the element with the original unsplit element while resizing and then starts up again
   class SplitTextAnimator {
     constructor(elem, { type = "lines" } = {}) {
       this.type = type;
