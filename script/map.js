@@ -7,25 +7,18 @@ const BREAKPOINTS = {
 };
 
 function isBelowBreakpoint(currentBp, targetBp) {
-  return (
-    Object.keys(BREAKPOINTS).indexOf(currentBp) <=
-    Object.keys(BREAKPOINTS).indexOf(targetBp)
-  );
+  return Object.keys(BREAKPOINTS).indexOf(currentBp) <= Object.keys(BREAKPOINTS).indexOf(targetBp);
 }
 
 const MARKER_ICONS = {
   primary: {
-    default:
-      "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66844fdb5d94f2dfa69b22c4_drop.svg",
-    hovered:
-      "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66845298a4a75c8fa2ec692b_drop__hovered.svg",
+    default: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66844fdb5d94f2dfa69b22c4_drop.svg",
+    hovered: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66845298a4a75c8fa2ec692b_drop__hovered.svg",
   },
 
   turf: {
-    default:
-      "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/6686b454d3eab564fecdbfd2_drop__turf.svg",
-    hovered:
-      "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/6686b4541f8e697bf7a571ab_drop__turf__hovered.svg",
+    default: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/6686b454d3eab564fecdbfd2_drop__turf.svg",
+    hovered: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/6686b4541f8e697bf7a571ab_drop__turf__hovered.svg",
   },
 };
 
@@ -34,12 +27,8 @@ class MyMap {
     this.elem = elem;
     this.section = elem.closest(".map-section");
     this.close = Array.from(this.section.querySelectorAll(".map--close"));
-    this.left = Array.from(
-      this.section.querySelectorAll(".map--seek-button.left"),
-    );
-    this.right = Array.from(
-      this.section.querySelectorAll(".map--seek-button.right"),
-    );
+    this.left = Array.from(this.section.querySelectorAll(".map--seek-button.left"));
+    this.right = Array.from(this.section.querySelectorAll(".map--seek-button.right"));
     this.embed = L.map(elem).setView([20, 0], 2);
     this.theme = elem.getAttribute("data-theme") || "primary";
     this.type = elem.getAttribute("data-map") || "";
@@ -63,29 +52,32 @@ class MyMap {
   }
 
   draw() {
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}' + (L.Browser.retina ? '@2x.png' : '.png'), {
-      maxZoom: 20,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      subdomains: 'abcd'
-    }).addTo(this.embed);
+    if (this.theme === "primary") {
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}" + (L.Browser.retina ? "@2x.png" : ".png"), {
+        maxZoom: 20,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: "abcd",
+      }).addTo(this.embed);
+    } else {
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(this.embed);
+    }
   }
 }
 
-
 function getExpeditions(map) {
   const mapSection = map.elem.closest(".map-section");
-  const dynItems = mapSection.querySelectorAll(
-    ".w-dyn-item:not(.w-dyn-item .w-dyn-item)",
-  );
+  const dynItems = mapSection.querySelectorAll(".w-dyn-item:not(.w-dyn-item .w-dyn-item)");
 
   const arr = Array.from(dynItems).map((item) => {
     const obj = { elem: item };
     const attrs = Array.from(item.attributes);
     attrs.forEach((attr) => {
       if (!attr.name.startsWith("data-")) return;
-      const propName = attr.name
-        .slice(5)
-        .replace(/-./g, (x) => x[1].toUpperCase());
+      const propName = attr.name.slice(5).replace(/-./g, (x) => x[1].toUpperCase());
       obj[propName] = attr.value;
     });
     return obj;
@@ -121,11 +113,10 @@ class Marker {
 
 async function initExpeditionMap(map) {
   await map.getLink();
-  
+
   if (!map.link.data) {
     return;
   }
-
 
   const marker_options = {
     startIconUrl: null,
@@ -154,9 +145,7 @@ async function initExpeditionMap(map) {
     map.embed.setMinZoom(map.embed.getBoundsZoom(bounds) - 2); // Set minimum zoom level
     map.embed.setMaxBounds(paddedBounds); // Restrict panning to padded GPX bounds
     map.loaded();
-
   }
-
 
   const gpxLayer = new L.GPX(map.link.href, {
     async: true,
@@ -213,8 +202,6 @@ document.addEventListener("DOMContentLoaded", async (event) => {
           return windowWidth <= breakpointValue;
         }) || "XL";
 
-
-
       if (!isBelowBreakpoint(breakpoint, "LG")) return;
 
       const expeditionsArray = getExpeditions(map);
@@ -229,12 +216,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     }
 
     function handlePopupClose(event) {
-      const isPopupClose = event.target.classList.contains(
-        "leaflet-popup-close-button",
-      );
-      const isPopupCloseChild = event.target.parentElement.classList.contains(
-        "leaflet-popup-close-button",
-      );
+      const isPopupClose = event.target.classList.contains("leaflet-popup-close-button");
+      const isPopupCloseChild = event.target.parentElement.classList.contains("leaflet-popup-close-button");
 
       if (isPopupClose || isPopupCloseChild) {
         const expeditionsArray = getExpeditions(map);
@@ -261,9 +244,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     function applySelection(item, expeditionsArray) {
       map.elem.closest(".map--container").classList.add("selected");
 
-      const selectionWrapper = map.elem
-        .closest(".map-section")
-        .querySelector(".map--selection-wrapper");
+      const selectionWrapper = map.elem.closest(".map-section").querySelector(".map--selection-wrapper");
       expeditionsArray.forEach((i) => {
         if (i.elem !== item) {
           i.elem.classList.add("d-none");
@@ -281,9 +262,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     function removeSelection(expeditionsArray) {
       map.elem.closest(".map--container").classList.remove("selected");
 
-      const selectionWrapper = map.elem
-        .closest(".map-section")
-        .querySelector(".map--selection-wrapper");
+      const selectionWrapper = map.elem.closest(".map-section").querySelector(".map--selection-wrapper");
       expeditionsArray.forEach((i) => {
         i.elem.classList.remove("selected");
         i.elem.classList.remove("d-none");
@@ -395,19 +374,12 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     }
 
     function seek(direction) {
-
       const expeditionsArray = getExpeditions(map);
-      const selectedElem = map.elem
-        .closest(".map-section")
-        .querySelector(".w-dyn-item.selected");
-      let selectedIndex = expeditionsArray.findIndex(
-        (item) => item.elem === selectedElem,
-      );
+      const selectedElem = map.elem.closest(".map-section").querySelector(".w-dyn-item.selected");
+      let selectedIndex = expeditionsArray.findIndex((item) => item.elem === selectedElem);
 
       if (direction === "left") {
-        selectedIndex =
-          (selectedIndex - 1 + expeditionsArray.length) %
-          expeditionsArray.length;
+        selectedIndex = (selectedIndex - 1 + expeditionsArray.length) % expeditionsArray.length;
       } else if (direction === "right") {
         selectedIndex = (selectedIndex + 1) % expeditionsArray.length;
       }
