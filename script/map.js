@@ -10,6 +10,18 @@ function isBelowBreakpoint(currentBp, targetBp) {
   return Object.keys(BREAKPOINTS).indexOf(currentBp) <= Object.keys(BREAKPOINTS).indexOf(targetBp);
 }
 
+// const MARKER_ICONS = {
+//   primary: {
+//     default: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66844fdb5d94f2dfa69b22c4_drop.svg",
+//     hovered: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/66845298a4a75c8fa2ec692b_drop__hovered.svg",
+//   },
+
+//   turf: {
+//     default: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/6686b454d3eab564fecdbfd2_drop__turf.svg",
+//     hovered: "https://uploads-ssl.webflow.com/6673386a4f6b7ddc70a5931f/6686b4541f8e697bf7a571ab_drop__turf__hovered.svg",
+//   },
+// };
+
 const MARKER_ICONS = {
   primary: {
     default: "https://cdn.prod.website-files.com/6673386a4f6b7ddc70a5931f/66cf9400ddd1e5db619f8cba_flag-drop_accent_non-hovered.svg",
@@ -21,6 +33,7 @@ const MARKER_ICONS = {
     hovered: "https://cdn.prod.website-files.com/6673386a4f6b7ddc70a5931f/66cf9400bfd20cd313aad703_flag-drop_turf_hovered.svg",
   },
 };
+
 
 class MyMap {
   constructor(elem) {
