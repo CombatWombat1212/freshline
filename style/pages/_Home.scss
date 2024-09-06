@@ -1,8 +1,53 @@
 #home {
   &--hero {
-    --hero-height: calc(100vh);
+    --hero-height: calc(80vh);
     --foreground-image-top-multiplier: 0;
     --background-image-top-multiplier: 0;
+
+    // padding-top: calc(6rem - var(--nav-height));
+    @include pad-y(0rem);
+
+    transition: 0s !important;
+    height: var(--hero-height);
+
+    // --background-image-scale: 145%;
+    // background-image: linear-gradient(rgba(129, 46, 13, 0.391), rgba(27, 17, 13, 0.68) 80%, #1b110d),
+    //   url("https://cdn.prod.website-files.com/6673386a4f6b7ddc70a5931f/66749df0df16e2751690f02a_Home-Foreground.png"),
+    //   url("https://cdn.prod.website-files.com/6673386a4f6b7ddc70a5931f/667499f91d78b08437690bf1_Home-Background.png");
+    // background-position:
+    //   0 0,
+    //   50% calc(var(--hero-height) * var(--foreground-image-top-multiplier)),
+    //   calc(var(--background-image-scale) * 0.5) calc(var(--hero-height) * var(--background-image-top-multiplier));
+
+    // background-repeat: no-repeat;
+    // background-size: cover, cover, cover;
+    // background-attachment: scroll;
+
+    --background-image-scale: unset !important;
+    background-image: unset !important;
+    background-position: unset !important;
+    background-repeat: unset !important;
+    background-size: unset !important;
+    background-attachment: unset !important;
+    position: relative;
+
+    @include lg-down {
+      --hero-height: calc(80vh);
+    }
+
+    &::after {
+      content: "";
+      inset: 0;
+      z-index: -1;
+      position: absolute;
+
+      background: radial-gradient(rgba($col--charcoal__dark, 0.75), rgba($col--charcoal__dark, 0));
+      mix-blend-mode: darken;
+    }
+
+    video {
+      transform: translateY(calc((50% * var(--background-image-top-multiplier)) - 2rem)) scale(1.1);
+    }
 
     .container {
       @include md-up {
@@ -10,30 +55,6 @@
         max-width: 14ch;
       }
     }
-
-    padding-top: calc(6rem - var(--nav-height));
-
-    @include lg-down {
-      --hero-height: calc(100vh);
-    }
-
-    transition: 0s !important;
-
-    --background-image-scale: 145%;
-
-    height: var(--hero-height);
-
-    background-image: linear-gradient(rgba(129, 46, 13, 0.391), rgba(27, 17, 13, 0.68) 80%, #1b110d),
-      url("https://cdn.prod.website-files.com/6673386a4f6b7ddc70a5931f/66749df0df16e2751690f02a_Home-Foreground.png"),
-      url("https://cdn.prod.website-files.com/6673386a4f6b7ddc70a5931f/667499f91d78b08437690bf1_Home-Background.png");
-    background-position:
-      0 0,
-      50% calc(var(--hero-height) * var(--foreground-image-top-multiplier)),
-      calc(var(--background-image-scale) * 0.5) calc(var(--hero-height) * var(--background-image-top-multiplier));
-
-    background-repeat: no-repeat;
-    background-size: cover, cover, cover;
-    background-attachment: scroll;
 
     h1 {
       @include lg-down {
@@ -88,5 +109,11 @@
   &--featured {
     z-index: 0;
     margin-top: calc(var(--border-radius) * -1);
+
+    p {
+      @include lg-up {
+        max-width: 50ch;
+      }
+    }
   }
 }

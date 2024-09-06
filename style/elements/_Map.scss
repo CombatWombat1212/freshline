@@ -103,6 +103,10 @@ section.map-section {
       @include scrollbar-track {
         background: var(--color--primary__lighter);
         border-radius: 100rem;
+
+        @include theme("turf") {
+          background: var(--color--turf__lightest);
+        }
       }
 
       // @include theme-turf(".map--selection-wrapper") {
@@ -114,6 +118,10 @@ section.map-section {
       @include scrollbar-thumb {
         background-color: var(--color--primary__dark);
         border-radius: 100rem;
+
+        @include theme("turf") {
+          background: var(--color--turf__light);
+        }
       }
       // @include theme-turf(".map--selection-wrapper") {
       //   @include scrollbar-thumb {
@@ -123,6 +131,10 @@ section.map-section {
 
       @supports not selector(::-webkit-scrollbar) {
         scrollbar-color: var(--color--primary__dark) var(--color--primary__lighter);
+
+        @include theme("turf") {
+          scrollbar-color: var(--color--turf) var(--color--turf__lightest);
+        }
       }
       // @include theme-turf(".map--selection-wrapper") {
       //   @supports not selector(::-webkit-scrollbar) {

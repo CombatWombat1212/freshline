@@ -60,7 +60,7 @@ class Fill {
   transitionDuring() {
     setTimeout(() => {
       if (!this.characters) this.characters = this.elem.textContent;
-      if (!this.length) this.length = Math.ceil(this.characters.length * 0.625);
+      if (!this.length) this.length = Math.ceil(this.characters.length * 0.6);
       this.elem.textContent = `${"0".repeat(this.length)}`;
     }, 0);
   }

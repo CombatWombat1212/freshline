@@ -8,6 +8,15 @@ section {
   //   }
   // }
 
+  .split-animation{
+    // overflow: hidden;
+    // @include pad-y(4rem);
+    // @include marg-y(-4rem);
+
+    // @include pad-x(4rem);
+    // @include marg-x(-4rem);
+  }
+
   &.section {
     margin-top: 0rem;
     & + & {

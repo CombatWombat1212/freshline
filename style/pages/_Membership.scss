@@ -228,6 +228,10 @@
   }
   &--application {
 
+    #application-form{
+      overflow: hidden;
+    }
+
     @include topography-background;
 
 

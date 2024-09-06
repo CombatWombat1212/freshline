@@ -232,9 +232,11 @@
   --padding: 4rem;
   --transition-duration: 1s;
 
-  @include lg-down {
-    height: unset;
-  }
+  height: unset!important;
+
+  // @include lg-down {
+    // height: unset;
+  // }
 
   &--expeditions-list {
   }
@@ -247,6 +249,9 @@
   &--item {
     cursor: pointer;
     flex: 1;
+    
+    height: unset!important;
+
     @include lg-down {
       width: 100%;
       overflow: unset;
@@ -385,4 +390,8 @@
 
 .expeditions-subpage__before-seek {
   padding-bottom: calc(var(--section-pad) - var(--border-radius)) !important;
+
+  &::after{
+    display:none!important;
+  }
 }

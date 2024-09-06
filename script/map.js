@@ -29,8 +29,8 @@ const MARKER_ICONS = {
   },
 
   turf: {
-    default: "https://cdn.prod.website-files.com/6673386a4f6b7ddc70a5931f/66cf94000391c256cbe6ec32_flag-drop_turf_non-hovered.svg",
-    hovered: "https://cdn.prod.website-files.com/6673386a4f6b7ddc70a5931f/66cf9400bfd20cd313aad703_flag-drop_turf_hovered.svg",
+    default: "https://cdn.prod.website-files.com/6673386a4f6b7ddc70a5931f/66cf9400bfd20cd313aad703_flag-drop_turf_hovered.svg",
+    hovered: "https://cdn.prod.website-files.com/6673386a4f6b7ddc70a5931f/66cf94000391c256cbe6ec32_flag-drop_turf_non-hovered.svg",
   },
 };
 
@@ -65,21 +65,21 @@ class MyMap {
   }
 
   draw() {
-    if (this.theme === "primary") {
+    // if (this.theme === "primary") {
       L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}" + (L.Browser.retina ? "@2x.png" : ".png"), {
         maxZoom: 20,
         attribution:
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
         subdomains: "abcd",
       }).addTo(this.embed);
-    } else {
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}" + (L.Browser.retina ? "@2x.png" : ".png"), {
-        maxZoom: 20,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: "abcd",
-      }).addTo(this.embed);
-    }
+    // } else {
+    //   L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}" + (L.Browser.retina ? "@2x.png" : ".png"), {
+    //     maxZoom: 20,
+    //     attribution:
+    //       '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    //     subdomains: "abcd",
+    //   }).addTo(this.embed);
+    // }
 
     // else {
     //   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {

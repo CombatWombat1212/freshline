@@ -25,12 +25,32 @@
     @include img-cover;
   }
   &--heading {
+    --width: 1.35rem;
+    --margin-right: 0.85rem;
+
     padding: 0.95rem 1.65rem 1.5rem;
+    @include flex-col;
+    // @include flex-row;
+  }
+  &--heading-inner {
+    @include flex-row;
+  }
+  &--flag {
+    width: calc(var(--width));
+    height: calc(var(--width) / (4 / 3));
+    object-fit: contain;
+    margin-bottom: 0.35rem;
+    // margin-top: 0.25rem;
+    margin-right: 0.65rem;
+    @include my-auto;
+    // margin-top: 0.575rem;
   }
   &--name {
     @extend %text--h4;
   }
   &--title {
     margin-top: -0.15rem;
+
+    // margin-left: calc(var(--width) + var(--margin-right));
   }
 }

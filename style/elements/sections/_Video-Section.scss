@@ -2,6 +2,8 @@
   &--section {
     --scroll-video-top: calc(var(--nav-height) + var(--h3--line-height));
     // --scroll-video-width_progress
+
+    height: unset;
   }
 
   position: sticky;
@@ -9,23 +11,19 @@
   height: auto;
   @include flex-col;
 
-  --scroll-video-opacity_start: 1;
-  --scroll-video-opacity_end: 1;
+  // --scroll-video-opacity_start: 1;
+  // --scroll-video-opacity_end: 1;
 
-  --scroll-video-opacity: #{blend-numbers(
-      var(--scroll-video-opacity_progress),
-      var(--scroll-video-opacity_start),
-      var(--scroll-video-opacity_end)
-    )};
+  // --scroll-video-opacity: #{blend-numbers(
+  //     var(--scroll-video-opacity_progress),
+  //     var(--scroll-video-opacity_start),
+  //     var(--scroll-video-opacity_end)
+  //   )};
 
   --scroll-video-width_start: 0rem;
   --scroll-video-width_end: var(--screen-width);
 
-  --scroll-video-width: #{blend-numbers(
-      var(--scroll-video-width_progress),
-      var(--scroll-video-width_start),
-      var(--scroll-video-width_end)
-    )};
+  --scroll-video-width: #{blend-numbers(var(--scroll-video-width_progress), var(--scroll-video-width_start), var(--scroll-video-width_end))};
 
   --scroll-video-border-radius_start: var(--border-radius);
   --scroll-video-border-radius_end: 0rem;
@@ -39,11 +37,7 @@
   --scroll-video-height_start: 0rem;
   --scroll-video-height_end: 70vh;
 
-  --scroll-video-height: #{blend-numbers(
-      var(--scroll-video-height_progress),
-      var(--scroll-video-height_start),
-      var(--scroll-video-height_end)
-    )};
+  --scroll-video-height: #{blend-numbers(var(--scroll-video-height_progress), var(--scroll-video-height_start), var(--scroll-video-height_end))};
 
   --scroll-video-y-offset_start: -10rem;
   --scroll-video-y-offset_end: 0rem;
@@ -65,32 +59,31 @@
 
   &--video-wrapper {
     position: relative;
-    // max-width: var(--site-max-width_wide);
-    // width: 100%;
-    // margin: 0 auto;
-    height: var(--scroll-video-height_end);
+    // height: var(--scroll-video-height_end);
 
     @include flex-col-center;
     & > div,
     & iframe {
-      // width: 100%;
-      // height: auto;
-      // aspect-ratio: 16/9;
+    }
+    iframe {
+      object-fit: contain;
+      width: 100%;
+      height:100%;
     }
   }
 
   &--video {
-    opacity: var(--scroll-video-opacity, 0) !important;
-    height: var(--scroll-video-height);
-    width: var(--scroll-video-width);
-    @include mx-auto;
-    overflow: hidden;
-    position: static;
-    border-radius: var(--scroll-video-border-radius);
-    transform: translateY(var(--scroll-video-y-offset))
-      rotateZ(var(--scroll-video-rotate));
-    transform-origin: center;
-    will-change: transform opacity;
+    // opacity: var(--scroll-video-opacity, 0) !important;
+    // height: var(--scroll-video-height);
+    // width: var(--scroll-video-width);
+    // @include mx-auto;
+    // overflow: hidden;
+    // position: static;
+    // border-radius: var(--scroll-video-border-radius);
+    // transform: translateY(var(--scroll-video-y-offset))
+    //   rotateZ(var(--scroll-video-rotate));
+    // transform-origin: center;
+    // will-change: transform opacity;
 
     &::before,
     &::after {
@@ -98,24 +91,13 @@
     }
   }
   iframe {
-    height: var(--scroll-video-height_end);
-    width: var(--screen-width);
-    min-width: var(--screen-width);
-    will-change: transform;
-    transform: translateX(
-        calc((var(--screen-width) - var(--scroll-video-width)) / -2)
-      )
-      translateY(
-        calc(
-          ((var(--scroll-video-height_end) - var(--scroll-video-height)) / -2) - var(
-              --scroll-video-y-offset
-            )
-        )
-      )
-      rotateZ(var(--scroll-video-rotate_inverted));
-    // position: absolute;
-    // top: 0;
-    // left: 0;
+    // height: var(--scroll-video-height_end);
+    // width: var(--screen-width);
+    // min-width: var(--screen-width);
+    // will-change: transform;
+    // transform: translateX(calc((var(--screen-width) - var(--scroll-video-width)) / -2))
+    //   translateY(calc(((var(--scroll-video-height_end) - var(--scroll-video-height)) / -2) - var(--scroll-video-y-offset)))
+    //   rotateZ(var(--scroll-video-rotate_inverted));
   }
 
   &--heading-wrapper {

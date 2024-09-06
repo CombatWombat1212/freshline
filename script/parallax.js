@@ -10,18 +10,34 @@ function homeHeroSection() {
     },
   });
 
+  // tl.fromTo(
+  //   heroSection,
+  //   {
+  //     "--background-image-top-multiplier": -0.65,
+  //     "--foreground-image-top-multiplier": 0.85,
+  //   },
+  //   {
+  //     "--background-image-top-multiplier": 0.65,
+  //     "--foreground-image-top-multiplier": 0.25,
+  //     ease: Linear.easeNone,
+  //   },
+  // );
+
+
   tl.fromTo(
     heroSection,
     {
-      "--background-image-top-multiplier": -0.65,
-      "--foreground-image-top-multiplier": 0.85,
+      "--background-image-top-multiplier": -1,
     },
     {
-      "--background-image-top-multiplier": 0.65,
-      "--foreground-image-top-multiplier": 0.25,
+      "--background-image-top-multiplier": 1,
       ease: Linear.easeNone,
     },
   );
+
+
+
+
 
   // tl.fromTo(
   //   heroSection,
