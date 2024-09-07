@@ -1287,374 +1287,6 @@ function entrancesInit() {
     })();
   }
 
-  // TODO: Give this its own file
-  // TODO: Add support for custom animations outside of just 'fade'
-  // TODO: custom durations, delays, etc.
-  // TODO: responsivity support where it replaces the element with the original unsplit element while resizing and then starts up again
-  // TODO: Make overlap optionally a float so you can set a threshhold of how complete the animation has to be before overlapping is allowed.
-
-  class SplitTextTarget {
-    constructor(elem, parent, index) {
-      this.elem = elem;
-      this.parent = parent;
-      this.index = index;
-      this.running = false;
-      this.animation = this.getAnimation();
-    }
-
-    init() {
-      requestAnimationFrame(() => {
-        gsap.set(this.elem, this.animation.enter.from);
-      });
-    }
-
-    getDelay(index) {
-      return this.parent.delay * index;
-    }
-
-    // TODO: If you prefer the idea of the animation being managed in the parent you could always move it back and do parent.getAnimation, i guess just because thats where delay and duration and such are set.
-    getAnimation() {
-      const listeners = (state) => {
-        return {
-          onStart: () => {
-            this.running = true;
-            this.parent.handleAnimationStart(this.index, state);
-          },
-          onComplete: () => {
-            this.running = false;
-            this.parent.handleAnimationComplete(this.index, state);
-          },
-        };
-      };
-
-      const defaults = ({ invert = false } = {}) => {
-        const count = this.parent.count;
-        const delay = invert ? this.getDelay([count - 1 - this.index]) : this.getDelay(this.index);
-        return {
-          duration: this.parent.duration,
-          delay: delay,
-        };
-      };
-
-      const enter = {
-        from: fade.up.from,
-        to: {
-          ...fade.up.to,
-          ...defaults({ invert: false }),
-          ...listeners("enter"),
-          // onComplete: ()=>{
-          //   console.log('test');
-          // }
-        },
-      };
-
-      const leave = {
-        from: fade.up.to,
-        to: {
-          ...fade.up.from,
-          ...defaults({ invert: true }),
-          ...listeners("leave"),
-          // onComplete: ()=>{
-          //   console.log('test');
-          // }
-        },
-      };
-
-      const enterBack = {
-        from: fade.up.from,
-        to: {
-          ...fade.up.to,
-          ...defaults({ invert: true }),
-          ...listeners("enterBack"),
-          // onComplete: ()=>{
-          //   console.log('test');
-          // }
-        },
-      };
-
-      const leaveBack = {
-        from: fade.up.to,
-        to: {
-          ...fade.up.from,
-          ...defaults({ invert: false }),
-          ...listeners("leaveBack"),
-          // onComplete: ()=>{
-          //   console.log('test');
-          // }
-        },
-      };
-
-      return {
-        enter,
-        leave,
-        enterBack,
-        leaveBack,
-      };
-    }
-  }
-
-  class SplitTextAnimator {
-    constructor(elem, { type = "lines" } = {}) {
-      this.type = type;
-      this.elem = elem;
-      this.split = new SplitType(elem);
-      this.delay = 0.005;
-      this.duration = DEFAULT.DURATION;
-      this.totalDuration = this.getTotalDuration();
-
-      this.overlap = false;
-
-      this.running = false; // Current state of whether an animation is running
-      // this.prevRunning = false; // Previous state of running
-      this.state = null; // Current state of the animation
-      this.prevState = null; // State when running last became true
-
-      this.scrollTriggerDefaults = {
-        trigger: this.elem,
-        ease: DEFAULT.EASE,
-        start: "top bottom-=10%",
-        end: "bottom top+=35%",
-        markers: true,
-      };
-
-      this.handleScrollChange = this.handleScrollChange.bind(this);
-      this.handleAnimationStart = this.handleAnimationStart.bind(this);
-      this.handleAnimationComplete = this.handleAnimationComplete.bind(this);
-      this.getSplitTargetCount = this.getSplitTargetCount.bind(this);
-      this.getIsInverted = this.getIsInverted.bind(this);
-
-      this.count = this.split[type].length;
-      this.splitTargets = this.split[type].map((elem, index) => new SplitTextTarget(elem, this, index));
-    }
-
-    init() {
-      this.splitTargets.forEach((target) => target.init());
-      this.animateSplitTargets();
-    }
-
-    getSplitTargetCount() {
-      return this.count;
-    }
-
-    getTotalDuration() {
-      return this.count * this.duration + (this.count - 1) * this.delay;
-    }
-
-    updateRunning(running, index) {
-      if (!this.running && running) {
-        this.prevState = this.state;
-      }
-
-      if (this.running && !running) {
-        if (this.prevState !== this.state) {
-          if (this.overlap) return;
-          // Prevents a flicker
-          setTimeout(() => {
-            // const invert = this.state == "enterBack" || this.state == "leave";
-            // const targets = this.splitTargets;
-            // const t = invert ? [...targets].reverse() : targets;
-
-            // t.forEach((target) => {
-            //   requestAnimationFrame(() => {
-            //     if ((this.prevState == "leave" || this.prevState == "leaveBack") && (this.state == "leave" || this.state == "leaveBack")) {
-            //       gsap.fromTo(target.elem, target.animation[this.prevState].to, {
-            //         ...target.animation[this.state].to,
-            //         duration: 0,
-            //         delay: 0,
-            //       });
-            //     } else {
-            //       gsap.fromTo(target.elem, target.animation[this.prevState].to, target.animation[this.state].to);
-            //     }
-            //   });
-            // });
-
-            this.handleScrollChange({ state: this.state, force: true });
-
-            // let forceProps = {};
-            // if (prevStateLeaving && stateLeaving) {
-            //   forceProps = {
-            //     from: {
-            //       ...target.animation[this.prevState].to,
-            //     },
-            //     to: {
-            //       ...target.animation[this.state].to,
-            //       duration: 0,
-            //       delay: 0,
-            //     },
-            //   };
-            // } else {
-            //   forceProps = {
-            //     from: {
-            //       ...target.animation[this.prevState].to,
-            //     },
-            //     to: {
-            //       ...target.animation[this.state].to,
-            //       duration: 0,
-            //       delay: 0,
-            //     },
-            //   };
-            // }
-
-            // this.handleScrollChange({ state: this.state, force: true });
-          }, 0);
-        }
-      }
-
-      this.running = running;
-    }
-
-    animateSplitTargets() {
-      this.ScrollTrigger = ScrollTrigger.create({
-        ...this.scrollTriggerDefaults,
-        onEnter: () => this.handleScrollChange({ state: "enter" }),
-        onEnterBack: () => this.handleScrollChange({ state: "enterBack" }),
-        onLeave: () => this.handleScrollChange({ state: "leave" }),
-        onLeaveBack: () => this.handleScrollChange({ state: "leaveBack" }),
-      });
-    }
-
-    handleScrollChange({ state, force = false } = {}) {
-      this.state = state;
-      console.log(state);
-
-      const invert = state == "enterBack" || state == "leave";
-      const prevStateLeaving = this.prevState == "leave" || this.prevState == "leaveBack";
-      const stateLeaving = this.state == "leave" || this.state == "leaveBack";
-
-      const targets = this.splitTargets;
-      // This inversion actually isn't necessary since inverting the delays is all you actually need to do, but its kinda nice since it makes the order of operations correct in terms of the for loop.  could be useful later.
-      // Although if you change it here you need to get rid of it in handleAnimationComplete as well
-      const t = invert ? [...targets].reverse() : targets;
-
-      if (this.running) return;
-      t.forEach((target) => {
-        if (!this.overlap && this.running && !force) return;
-        requestAnimationFrame(() => {
-          run(target);
-        });
-      });
-
-      const run = (target) => {
-        // Transition from current state to state it should be in if states are skipped over or run non-sequentially, and no transition if its going from hidden to hidden (edge cases for quick moving users)
-        const forceProps = {
-          from: {
-            ...target.animation[this.prevState]?.to,
-          },
-          to: {
-            ...target.animation[this.state].to,
-            ...(prevStateLeaving && stateLeaving ? { duration: 0, delay: 0 } : {}),
-          },
-        };
-
-        if (force) {
-          gsap.fromTo(target.elem, forceProps.from, forceProps.to);
-        } else {
-          gsap.fromTo(target.elem, target.animation[state].from, target.animation[state].to);
-        }
-      };
-    }
-
-    getIsInverted(index, state) {
-      const invert = state == "enterBack" || state == "leave";
-      return (invert && index !== this.count - 1) || (!invert && index !== 0);
-    }
-
-    handleAnimationStart(index, state) {
-      if (!this.overlap && this.splitTargets.filter((target) => target.running).length === 1) {
-        this.updateRunning(true, index);
-      }
-    }
-
-    handleAnimationComplete(index, state) {
-      if (!this.overlap && this.splitTargets.every((target) => !target.running)) {
-        this.updateRunning(false, index);
-      }
-
-      // console.log("complete");
-      // if (this.getIsInverted(index, state)) return;
-      // if (index == this.count - 1) {
-
-      // if (this.running == false) {
-      //   console.log("done");
-      // }
-      // }
-    }
-  }
-
-  // class SplitTextAnimator {
-  //   constructor(elem, { type = "lines" } = {}) {
-  //     this.type = type;
-  //     this.elem = elem;
-  //     this.split = new SplitType(elem);
-  //     this.splitTargets = this.split[type];
-  //     this.count = this.splitTargets.length;
-  //     this.delay = 0.05;
-  //     this.duration = DEFAULT.DURATION;
-  //     this.scrollTriggerDefaults = {
-  //       trigger: this.elem,
-  //       ease: DEFAULT.EASE,
-  //       start: "top bottom-=20%",
-  //       end: "bottom top+=45%",
-  //     };
-  //   }
-
-  //   init() {
-  //     this.splitTargets.forEach((target, index) => this.animateSplitTarget(target, index));
-  //   }
-
-  //   getDelay(index) {
-  //     return this.delay * index;
-  //   }
-
-  //   getAnimation(index) {
-  //     const entranceFrom = fade.up.from;
-  //     const entranceTo = {
-  //       ...fade.up.to,
-  //       delay: this.getDelay(index),
-  //       duration: this.duration,
-  //     };
-
-  //     const leaveFrom = fade.up.to;
-  //     const leaveTo = {
-  //       ...fade.up.from,
-  //       delay: this.getDelay(this.count - 1 - index),
-  //       duration: this.duration,
-  //     };
-
-  //     const entranceBackFrom = fade.up.from;
-  //     const entranceBackTo = {
-  //       ...fade.up.to,
-  //       delay: this.getDelay(this.count - 1 - index),
-  //       duration: this.duration,
-  //     };
-
-  //     const leaveBackFrom = fade.up.to;
-  //     const leaveBackTo = {
-  //       ...fade.up.from,
-  //       delay: this.getDelay(index),
-  //       duration: this.duration,
-  //     };
-
-  //     return { entranceFrom, entranceTo, leaveFrom, leaveTo, entranceBackFrom, entranceBackTo, leaveBackFrom, leaveBackTo };
-  //   }
-
-  //   animateSplitTarget(target, index) {
-  //     const { entranceFrom, entranceTo, leaveFrom, leaveTo, entranceBackFrom, entranceBackTo, leaveBackFrom, leaveBackTo } = this.getAnimation(index);
-
-  //     requestAnimationFrame(() => {
-  //       gsap.set(target, entranceFrom);
-  //     });
-
-  //     ScrollTrigger.create({
-  //       ...this.scrollTriggerDefaults,
-  //       onEnter: () => gsap.fromTo(target, entranceFrom, entranceTo),
-  //       onEnterBack: () => gsap.fromTo(target, entranceBackFrom, entranceBackTo),
-  //       onLeave: () => gsap.fromTo(target, leaveFrom, leaveTo),
-  //       onLeaveBack: () => gsap.fromTo(target, leaveBackFrom, leaveBackTo),
-  //     });
-  //   }
-  // }
-
   const splitTextElems = Array.from(document.querySelectorAll("#about--brotherhood h3"));
   const splitTextAnimators = splitTextElems.map((elem) => new SplitTextAnimator(elem, { type: "chars" }));
   splitTextAnimators.forEach((animator) => animator.init());
@@ -3317,6 +2949,243 @@ document.addEventListener("DOMContentLoaded", function () {
   // Process .social-icon--wrapper elements
   processElements(socialIconWrappers);
 });
+
+// TODO: Give this its own file
+// TODO: Add support for custom animations outside of just 'fade'
+// TODO: custom durations, delays, etc.
+// TODO: responsivity support where it replaces the element with the original unsplit element while resizing and then starts up again
+// TODO: Make overlap optionally a float so you can set a threshhold of how complete the animation has to be before overlapping is allowed.
+// TODO: Better handling for when you load the page with the element already in view
+// TODO: Ability to change scroll trigger to affect your type and below, so if you choose line as the scroll trigger you can still use word and char but the lines will be the triggers for the elements they contain.
+
+class SplitTextTarget {
+  constructor(elem, parent, index) {
+    this.elem = elem;
+    this.parent = parent;
+    this.index = index;
+    this.running = false;
+    this.animation = this.getAnimation();
+  }
+
+  init() {
+    requestAnimationFrame(() => {
+      gsap.set(this.elem, this.animation.enter.from);
+    });
+  }
+
+  getDelay(index) {
+    return this.parent.delay * index;
+  }
+
+  // TODO: If you prefer the idea of the animation being managed in the parent you could always move it back and do parent.getAnimation, i guess just because thats where delay and duration and such are set.
+  getAnimation() {
+    const listeners = (state) => {
+      return {
+        onStart: () => {
+          this.running = true;
+          this.parent.handleAnimationStart(this.index, state);
+        },
+        onComplete: () => {
+          this.running = false;
+          this.parent.handleAnimationComplete(this.index, state);
+        },
+      };
+    };
+
+    const defaults = ({ invert = false } = {}) => {
+      const count = this.parent.count;
+      const delay = invert ? this.getDelay([count - 1 - this.index]) : this.getDelay(this.index);
+      return {
+        duration: this.parent.duration,
+        delay: delay,
+      };
+    };
+
+    const enter = {
+      from: fade.up.from,
+      to: {
+        ...fade.up.to,
+        ...defaults({ invert: false }),
+        ...listeners("enter"),
+      },
+    };
+
+    const leave = {
+      from: fade.up.to,
+      to: {
+        ...fade.up.from,
+        ...defaults({ invert: true }),
+        ...listeners("leave"),
+      },
+    };
+
+    const enterBack = {
+      from: fade.up.from,
+      to: {
+        ...fade.up.to,
+        ...defaults({ invert: true }),
+        ...listeners("enterBack"),
+      },
+    };
+
+    const leaveBack = {
+      from: fade.up.to,
+      to: {
+        ...fade.up.from,
+        ...defaults({ invert: false }),
+        ...listeners("leaveBack"),
+      },
+    };
+
+    return {
+      enter,
+      leave,
+      enterBack,
+      leaveBack,
+    };
+  }
+}
+
+class SplitTextAnimator {
+  constructor(elem, { type = "lines" } = {}) {
+    this.type = type;
+    this.elem = elem;
+    this.split = new SplitType(elem);
+    this.delay = 0.005;
+    this.duration = DEFAULT.DURATION;
+    this.totalDuration = this.getTotalDuration();
+
+    this.overlap = false;
+
+    this.running = false; // Current state of whether an animation is running
+    // this.prevRunning = false; // Previous state of running
+    this.state = null; // Current state of the animation
+    this.prevState = null; // State when running last became true
+
+    this.scrollTriggerDefaults = {
+      trigger: this.elem,
+      ease: DEFAULT.EASE,
+      start: "top bottom-=10%",
+      end: "bottom top+=35%",
+      markers: false,
+    };
+
+    this.handleScrollChange = this.handleScrollChange.bind(this);
+    this.handleAnimationStart = this.handleAnimationStart.bind(this);
+    this.handleAnimationComplete = this.handleAnimationComplete.bind(this);
+    this.getSplitTargetCount = this.getSplitTargetCount.bind(this);
+    this.getIsInverted = this.getIsInverted.bind(this);
+
+    this.count = this.split[type].length;
+    this.splitTargets = this.split[type].map((elem, index) => new SplitTextTarget(elem, this, index));
+  }
+
+  init() {
+    this.splitTargets.forEach((target) => target.init());
+    this.animateSplitTargets();
+  }
+
+  getSplitTargetCount() {
+    return this.count;
+  }
+
+  getTotalDuration() {
+    return this.count * this.duration + (this.count - 1) * this.delay;
+  }
+
+  updateRunning(running, index) {
+    if (!this.running && running) {
+      this.prevState = this.state;
+    }
+
+    if (this.running && !running) {
+      if (this.prevState !== this.state) {
+        if (this.overlap) return;
+        // Prevents a flicker
+        setTimeout(() => {
+          this.handleScrollChange({ state: this.state, force: true });
+        }, 0);
+      }
+    }
+
+    this.running = running;
+  }
+
+  animateSplitTargets() {
+    this.ScrollTrigger = ScrollTrigger.create({
+      ...this.scrollTriggerDefaults,
+      onEnter: () => this.handleScrollChange({ state: "enter" }),
+      onEnterBack: () => this.handleScrollChange({ state: "enterBack" }),
+      onLeave: () => this.handleScrollChange({ state: "leave" }),
+      onLeaveBack: () => this.handleScrollChange({ state: "leaveBack" }),
+    });
+  }
+
+  handleScrollChange({ state, force = false } = {}) {
+    this.state = state;
+
+    const invert = state == "enterBack" || state == "leave";
+    const prevStateLeaving = this.prevState == "leave" || this.prevState == "leaveBack";
+    const stateLeaving = this.state == "leave" || this.state == "leaveBack";
+
+    const targets = this.splitTargets;
+
+    // This inversion actually isn't necessary since inverting the delays is all you actually need to do, but its kinda nice since it makes the order of operations correct in terms of the for loop.  could be useful later.
+    // Although if you change it here you need to get rid of it in handleAnimationComplete as well
+    const t = invert ? [...targets].reverse() : targets;
+
+    if (this.running) return;
+    t.forEach((target) => {
+      if (!this.overlap && this.running && !force) return;
+      requestAnimationFrame(() => {
+        run(target);
+      });
+    });
+
+    const run = (target) => {
+      // Initialize the props object with default properties
+      const props = {
+        from: {
+          ...target.animation[state].from,
+        },
+        to: {
+          ...target.animation[state].to,
+        },
+      };
+
+      // Check if force is true and modify props accordingly
+      if (force) {
+        props.from = {
+          ...target.animation[this.prevState]?.to,
+        };
+        props.to = {
+          ...target.animation[this.state].to,
+          ...(prevStateLeaving && stateLeaving ? { duration: 0, delay: 0 } : {}),
+        };
+      }
+
+      // Perform the gsap animation with the calculated props
+      gsap.fromTo(target.elem, props.from, props.to);
+    };
+  }
+
+  getIsInverted(index, state) {
+    const invert = state == "enterBack" || state == "leave";
+    return (invert && index !== this.count - 1) || (!invert && index !== 0);
+  }
+
+  handleAnimationStart(index, state) {
+    if (!this.overlap && this.splitTargets.filter((target) => target.running).length === 1) {
+      this.updateRunning(true, index);
+    }
+  }
+
+  handleAnimationComplete(index, state) {
+    if (!this.overlap && this.splitTargets.every((target) => !target.running)) {
+      this.updateRunning(false, index);
+    }
+  }
+}
 
 // Ensure you have GSAP and ScrollTrigger loaded before this script
 
