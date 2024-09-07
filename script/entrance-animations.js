@@ -35,6 +35,7 @@ const commonProperties = {
   opacity: { start: 0, end: 1 },
   duration: DEFAULT.DURATION,
   ease: DEFAULT.EASE,
+  // ease: "linear",
 };
 
 const fade = {
@@ -918,7 +919,7 @@ function entrancesInit() {
   }
 
   const splitTextElems = Array.from(document.querySelectorAll("#about--brotherhood h3"));
-  const splitTextAnimators = splitTextElems.map((elem) => new SplitTextAnimator(elem, { type: "lines", overlap: 1}));
+  const splitTextAnimators = splitTextElems.map((elem) => new SplitTextAnimator(elem, { type: "words", overlap: 0}));
   splitTextAnimators.forEach((animator) => animator.init());
 
   //

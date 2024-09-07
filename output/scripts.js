@@ -405,6 +405,7 @@ const commonProperties = {
   opacity: { start: 0, end: 1 },
   duration: DEFAULT.DURATION,
   ease: DEFAULT.EASE,
+  // ease: "linear",
 };
 
 const fade = {
@@ -1288,7 +1289,7 @@ function entrancesInit() {
   }
 
   const splitTextElems = Array.from(document.querySelectorAll("#about--brotherhood h3"));
-  const splitTextAnimators = splitTextElems.map((elem) => new SplitTextAnimator(elem, { type: "lines", overlap: 1}));
+  const splitTextAnimators = splitTextElems.map((elem) => new SplitTextAnimator(elem, { type: "words", overlap: 0}));
   splitTextAnimators.forEach((animator) => animator.init());
 
   //
@@ -2957,6 +2958,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // TODO: Make overlap optionally a float so you can set a threshhold of how complete the animation has to be before overlapping is allowed.
 // TODO: Better handling for when you load the page with the element already in view
 // TODO: Ability to change scroll trigger to affect your type and below, so if you choose line as the scroll trigger you can still use word and char but the lines will be the triggers for the elements they contain.
+// TODO: overlap is mostly working but i think we'd need some kind of animation queue to be able to refine it further because right now theres a bug where quick movements are able to stop and start animations before they're supposed to be done and its either a timing issue or i think it could be an issue of running vs not running being one value for every animation.  so if something is running and its early in its cycle it can still start and stop again ?? idk maybe this doesn't make sense
 
 class SplitTextTarget {
   constructor(elem, parent, index) {
@@ -2979,6 +2981,8 @@ class SplitTextTarget {
 
   // TODO: If you prefer the idea of the animation being managed in the parent you could always move it back and do parent.getAnimation, i guess just because thats where delay and duration and such are set.
   getAnimation() {
+    const self = this;
+
     const listeners = (state) => {
       return {
         onStart: () => {
@@ -2988,6 +2992,10 @@ class SplitTextTarget {
         onComplete: () => {
           this.running = false;
           this.parent.handleAnimationComplete(this.index, state);
+        },
+        onUpdate: function () {
+          const progress = this.progress();
+          self.progress = progress;
         },
       };
     };
@@ -3065,6 +3073,7 @@ class SplitTextAnimator {
     this.scrollTriggerDefaults = {
       trigger: this.elem,
       ease: DEFAULT.EASE,
+      //   ease: "linear",
       start: "top bottom-=10%",
       end: "bottom top+=35%",
       markers: true,
@@ -3230,13 +3239,27 @@ class SplitTextAnimator {
     //   this.updateRunning(false, index);
     // }
 
-    const totalCount = this.count;
-    const completedCount = this.splitTargets.filter((target) => !target.running).length;
-    const overlapPoint = totalCount - Math.ceil(this.overlap * totalCount);
+    // const totalCount = this.count;
+    // const completedCount = this.splitTargets.filter((target) => !target.running).length;
+    // const overlapPoint = totalCount - Math.ceil(this.overlap * totalCount);
 
-    if (completedCount >= overlapPoint) {
+    // if (completedCount >= overlapPoint) {
+    // if (!this.running) return;
+    // this.updateRunning(false, index);
+    // }
+
+    const totalCount = this.splitTargets.length;
+    const completedCount = this.splitTargets.filter((target) => !target.running).length;
+
+    // Calculate the average progress across all split targets
+    const totalProgress = this.splitTargets.reduce((sum, target) => sum + target.progress, 0);
+    const averageProgress = totalProgress / totalCount;
+
+    // const overlapPoint = totalCount - Math.ceil(this.overlap * totalCount);
+
+    if (averageProgress >= 1 - this.overlap) {
       if (!this.running) return;
-    //   console.log(completedCount, overlapPoint);
+      //   console.log(completedCount, overlapPoint);
       this.updateRunning(false, index);
     }
   }
