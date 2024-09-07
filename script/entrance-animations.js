@@ -918,7 +918,7 @@ function entrancesInit() {
   }
 
   const splitTextElems = Array.from(document.querySelectorAll("#about--brotherhood h3"));
-  const splitTextAnimators = splitTextElems.map((elem) => new SplitTextAnimator(elem, { type: "chars" }));
+  const splitTextAnimators = splitTextElems.map((elem) => new SplitTextAnimator(elem, { type: "lines", overlap: 1}));
   splitTextAnimators.forEach((animator) => animator.init());
 
   //

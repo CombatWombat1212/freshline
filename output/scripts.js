@@ -1288,7 +1288,7 @@ function entrancesInit() {
   }
 
   const splitTextElems = Array.from(document.querySelectorAll("#about--brotherhood h3"));
-  const splitTextAnimators = splitTextElems.map((elem) => new SplitTextAnimator(elem, { type: "chars" }));
+  const splitTextAnimators = splitTextElems.map((elem) => new SplitTextAnimator(elem, { type: "lines", overlap: 1}));
   splitTextAnimators.forEach((animator) => animator.init());
 
   //
@@ -3047,15 +3047,15 @@ class SplitTextTarget {
 }
 
 class SplitTextAnimator {
-  constructor(elem, { type = "lines" } = {}) {
+  constructor(elem, { type = "lines", overlap = false } = {}) {
     this.type = type;
     this.elem = elem;
     this.split = new SplitType(elem);
-    this.delay = 0.005;
+    this.delay = 0.05;
     this.duration = DEFAULT.DURATION;
     this.totalDuration = this.getTotalDuration();
 
-    this.overlap = false;
+    this.overlap = this.getOverlap(overlap);
 
     this.running = false; // Current state of whether an animation is running
     // this.prevRunning = false; // Previous state of running
@@ -3067,7 +3067,7 @@ class SplitTextAnimator {
       ease: DEFAULT.EASE,
       start: "top bottom-=10%",
       end: "bottom top+=35%",
-      markers: false,
+      markers: true,
     };
 
     this.handleScrollChange = this.handleScrollChange.bind(this);
@@ -3085,6 +3085,17 @@ class SplitTextAnimator {
     this.animateSplitTargets();
   }
 
+  getOverlap(overlap) {
+    if (typeof overlap == "boolean") {
+      overlap = Number(overlap);
+    }
+    if (typeof overlap != "number" || overlap > 1) {
+      console.log("Error: Overlap type.  Overlap must be either a bool or a number between 0-1");
+    }
+
+    return overlap;
+  }
+
   getSplitTargetCount() {
     return this.count;
   }
@@ -3093,14 +3104,15 @@ class SplitTextAnimator {
     return this.count * this.duration + (this.count - 1) * this.delay;
   }
 
-  updateRunning(running, index) {
+  updateRunning(running) {
+    // console.log(running);
     if (!this.running && running) {
       this.prevState = this.state;
     }
 
     if (this.running && !running) {
       if (this.prevState !== this.state) {
-        if (this.overlap) return;
+        // if (this.overlap == 0) return;
         // Prevents a flicker
         setTimeout(() => {
           this.handleScrollChange({ state: this.state, force: true });
@@ -3135,8 +3147,19 @@ class SplitTextAnimator {
     const t = invert ? [...targets].reverse() : targets;
 
     if (this.running) return;
+    // this.updateRunning(true);
+
+    // const totalCount = this.count;
+    // const completedCount = this.splitTargets.filter((target) => !target.running).length;
+    // const overlapPoint = totalCount - Math.ceil(this.overlap * totalCount);
+    // if(overlapPoint != completedCount) return;
+
+    // console.log('starting at '+ completedCount);
+
     t.forEach((target) => {
-      if (!this.overlap && this.running && !force) return;
+      //   console.log("run");
+      // if (!this.overlap && this.running && !force) return;
+      //   if (this.running && !force) return;
       requestAnimationFrame(() => {
         run(target);
       });
@@ -3165,7 +3188,9 @@ class SplitTextAnimator {
       }
 
       // Perform the gsap animation with the calculated props
-      gsap.fromTo(target.elem, props.from, props.to);
+      // gsap.fromTo(target.elem, props.from, props.to);
+
+      gsap.to(target.elem, props.to);
     };
   }
 
@@ -3175,13 +3200,43 @@ class SplitTextAnimator {
   }
 
   handleAnimationStart(index, state) {
-    if (!this.overlap && this.splitTargets.filter((target) => target.running).length === 1) {
-      this.updateRunning(true, index);
+    if (this.splitTargets.filter((target) => target.running).length === 1) {
+      if (this.running) return;
+      //   console.log("One child is running, so i started");
+      this.updateRunning(true);
     }
+
+    // const totalCount = this.count;
+    // const completedCount = this.splitTargets.filter((target) => target.running).length;
+    // const overlapPoint = totalCount - Math.ceil(this.overlap * totalCount);
+
+    // if (completedCount >= overlapPoint) {
+    //   if (!this.running) return;
+    //   console.log('start');
+    //   this.updateRunning(true);
+    // }
+
+    // if (this.splitTargets.filter((target) => target.running).length === 1) {
+    //   this.updateRunning(true, index);
+    // }
   }
 
   handleAnimationComplete(index, state) {
-    if (!this.overlap && this.splitTargets.every((target) => !target.running)) {
+    // if (!this.overlap && this.splitTargets.every((target) => !target.running)) {
+    //   this.updateRunning(false, index);
+    // }
+
+    // if (this.splitTargets.every((target) => !target.running)) {
+    //   this.updateRunning(false, index);
+    // }
+
+    const totalCount = this.count;
+    const completedCount = this.splitTargets.filter((target) => !target.running).length;
+    const overlapPoint = totalCount - Math.ceil(this.overlap * totalCount);
+
+    if (completedCount >= overlapPoint) {
+      if (!this.running) return;
+    //   console.log(completedCount, overlapPoint);
       this.updateRunning(false, index);
     }
   }
