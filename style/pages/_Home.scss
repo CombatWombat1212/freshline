@@ -46,7 +46,7 @@
     }
 
     video {
-      transform: translateY(calc((50% * var(--background-image-top-multiplier)) - 2rem)) scale(1.1);
+      transform: translateY(calc((50% * var(--background-image-top-multiplier)) - 2rem)) scale(1.15);
     }
 
     .container {
@@ -60,7 +60,7 @@
       @include lg-down {
         text-align: left;
         word-break: break-word;
-        hyphens: auto;
+        // hyphens: auto;
       }
     }
 

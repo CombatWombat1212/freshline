@@ -5,8 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const parentElement = target.parentElement;
 
   const logPercentageDistance = () => {
-    let distanceToBottom =
-      target.offsetTop / (parentElement.offsetHeight - target.offsetHeight);
+    let distanceToBottom = target.offsetTop / (parentElement.offsetHeight - target.offsetHeight);
 
     const scrollTargets = document.querySelectorAll(".looking-for--scroll");
     const totalTargets = scrollTargets.length;
@@ -19,11 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const sliceStart = index / totalTargets;
       const sliceEnd = (index + 1) / totalTargets;
 
-      if (
-        distanceToBottom >= sliceStart &&
-        (distanceToBottom < sliceEnd ||
-          (distanceToBottom === 1 && index === totalTargets - 1))
-      ) {
+      if (distanceToBottom >= sliceStart && (distanceToBottom < sliceEnd || (distanceToBottom === 1 && index === totalTargets - 1))) {
         el.classList.add("active");
         activeIndex = index;
       } else {

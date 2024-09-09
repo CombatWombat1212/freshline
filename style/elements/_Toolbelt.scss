@@ -34,10 +34,15 @@ $wiggle-duration: 1.5s;
   --upper-overflow-mobile: 0rem;
   --mobile-graphic-padding: 2rem;
 
-  --toolbelt-gap: 3rem;
+  // --toolbelt-gap: 3rem;
+  --toolbelt-gap: 3.5rem;
 
   @include lg-down {
     --toolbelt-gap: 2rem;
+  }
+
+  @include md-down {
+    --toolbelt-gap: 1.5rem;
   }
 
   &--inner {
@@ -47,6 +52,9 @@ $wiggle-duration: 1.5s;
   }
 
   &--body {
+    & * {
+      margin-right: auto;
+    }
     @include lg-down {
       order: 1;
       height: auto;
@@ -73,6 +81,9 @@ $wiggle-duration: 1.5s;
   }
   &--body-slide {
     padding: 3rem;
+    @include md-down {
+      padding: 2rem;
+    }
   }
   &--body-heading {
   }
@@ -168,6 +179,15 @@ $wiggle-duration: 1.5s;
     }
   }
   &--button-image-wrapper {
+    // transform: scale(1.25);
+    transform: scale(0.85);
+    @include lg-down {
+      // transform: scale(1.25);
+    }
+    @include md-down {
+      transform: scale(0.85);
+    }
+
     @include safari {
       @include lg-down {
         width: 4rem;

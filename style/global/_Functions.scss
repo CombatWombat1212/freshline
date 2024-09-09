@@ -411,3 +411,9 @@ $enable-important-utilities: false !default;
     @function zoom-vw($val){
         @return calc(#{$val} / var(--zoom));
     }
+
+
+
+    @function negative($value) {
+        @return calc(-1 * #{$value});
+    }

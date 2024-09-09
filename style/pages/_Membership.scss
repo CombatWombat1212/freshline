@@ -239,6 +239,7 @@
       padding-top: calc(var(--section-pad) - var(--border-radius)) !important;
       @include lg-down {
         gap: 2rem !important;
+        padding-top:0rem!important;
       }
       & > * {
         width: 100%;

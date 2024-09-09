@@ -26,10 +26,11 @@
   &--graphic {
   }
   &--image-wrapper {
-    $width: 165%;
+    // $width: 165%;
+    // left: 17.5%;
+    $width: 135%;
     width: $width;
     min-width: $width;
-    left: 17.5%;
   }
   &--image {
   }

@@ -1289,7 +1289,7 @@ function entrancesInit() {
   }
 
   const splitTextElems = Array.from(document.querySelectorAll("#about--brotherhood h3"));
-  const splitTextAnimators = splitTextElems.map((elem) => new SplitTextAnimator(elem, { type: "words", overlap: 0}));
+  const splitTextAnimators = splitTextElems.map((elem) => new SplitTextAnimator(elem, { type: "words", overlap: 0.25, delay: 0.025}));
   splitTextAnimators.forEach((animator) => animator.init());
 
   //
@@ -2026,8 +2026,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const parentElement = target.parentElement;
 
   const logPercentageDistance = () => {
-    let distanceToBottom =
-      target.offsetTop / (parentElement.offsetHeight - target.offsetHeight);
+    let distanceToBottom = target.offsetTop / (parentElement.offsetHeight - target.offsetHeight);
 
     const scrollTargets = document.querySelectorAll(".looking-for--scroll");
     const totalTargets = scrollTargets.length;
@@ -2040,11 +2039,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const sliceStart = index / totalTargets;
       const sliceEnd = (index + 1) / totalTargets;
 
-      if (
-        distanceToBottom >= sliceStart &&
-        (distanceToBottom < sliceEnd ||
-          (distanceToBottom === 1 && index === totalTargets - 1))
-      ) {
+      if (distanceToBottom >= sliceStart && (distanceToBottom < sliceEnd || (distanceToBottom === 1 && index === totalTargets - 1))) {
         el.classList.add("active");
         activeIndex = index;
       } else {
@@ -2960,6 +2955,18 @@ document.addEventListener("DOMContentLoaded", function () {
 // TODO: Ability to change scroll trigger to affect your type and below, so if you choose line as the scroll trigger you can still use word and char but the lines will be the triggers for the elements they contain.
 // TODO: overlap is mostly working but i think we'd need some kind of animation queue to be able to refine it further because right now theres a bug where quick movements are able to stop and start animations before they're supposed to be done and its either a timing issue or i think it could be an issue of running vs not running being one value for every animation.  so if something is running and its early in its cycle it can still start and stop again ?? idk maybe this doesn't make sense
 
+// TODO: Do it all this way lmao it would be a thousand times more simple and it might fix the issues with getting overlap to work, as well as probably improving performance a lot
+// const animation = t[0].animation[state].to;
+// const elements = t.map((target) => target.elem);
+// gsap.to(elements, {
+//   ...animation,
+//   delay: 0,
+//   stagger: 0.05,
+// });
+
+// TODO: Improve invocation so that you can just call a function and give it either an elem, a selector, list of selectors, list of elems, objects with .elem or .elems
+// TODO: Give it a class or attribute as well, probably both because attribute is what it should be but class would play nice with wordpress and salient
+
 class SplitTextTarget {
   constructor(elem, parent, index) {
     this.elem = elem;
@@ -3055,11 +3062,11 @@ class SplitTextTarget {
 }
 
 class SplitTextAnimator {
-  constructor(elem, { type = "lines", overlap = false } = {}) {
+  constructor(elem, { type = "lines", overlap = false, delay = 0.05 } = {}) {
     this.type = type;
     this.elem = elem;
     this.split = new SplitType(elem);
-    this.delay = 0.05;
+    this.delay = delay;
     this.duration = DEFAULT.DURATION;
     this.totalDuration = this.getTotalDuration();
 
@@ -3074,9 +3081,9 @@ class SplitTextAnimator {
       trigger: this.elem,
       ease: DEFAULT.EASE,
       //   ease: "linear",
-      start: "top bottom-=10%",
+      start: "top bottom-=5%",
       end: "bottom top+=35%",
-      markers: true,
+      markers: false,
     };
 
     this.handleScrollChange = this.handleScrollChange.bind(this);
@@ -3173,6 +3180,21 @@ class SplitTextAnimator {
         run(target);
       });
     });
+
+    // TODO: Do it all this way lmao it would be a thousand times more simple
+    // const animation = t[0].animation[state].to;
+    // const elements = t.map((target) => target.elem);
+    // gsap.to(elements, {
+    //   ...animation,
+    //   delay: 0,
+    //   stagger: 0.05,
+    // });
+
+    // console.log({
+    //   ...animation,
+    //   delay: 0,
+    //   stagger: 0.05,
+    // });
 
     const run = (target) => {
       // Initialize the props object with default properties
@@ -3490,7 +3512,7 @@ document.addEventListener("DOMContentLoaded", function () {
         gsap.set(path.elem, {
           strokeDasharray: path.length,
           strokeDashoffset: path.length,
-          strokeWidth: stroke,
+          // strokeWidth: stroke,
         });
 
         // console.log(path.elem);

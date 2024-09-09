@@ -28,6 +28,16 @@
     position: relative;
     z-index: 1;
 
+
+    &,
+    & > section:first-child,
+    & > section:first-child [class*=container],
+    & > .section--container{
+      @include lg-down {
+        padding-top: 0rem!important;
+      }
+    }
+
     &::before {
       content: "";
       display: block;

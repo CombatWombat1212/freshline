@@ -132,6 +132,9 @@
   }
   &--form {
     @include paper-background;
+    @include lg-down {
+      padding-top: var(--border-radius)!important;
+    }
 
     .split-section--container {
       @include tread-background {
@@ -165,5 +168,4 @@
       }
     }
   }
-
 }

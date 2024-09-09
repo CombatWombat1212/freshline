@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
         gsap.set(path.elem, {
           strokeDasharray: path.length,
           strokeDashoffset: path.length,
-          strokeWidth: stroke,
+          // strokeWidth: stroke,
         });
 
         // console.log(path.elem);

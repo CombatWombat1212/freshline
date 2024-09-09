@@ -43,6 +43,11 @@
   &--scroll-wrapper {
     margin-top: 0rem;
     transform: translateY(var(--scroll-wrapper-translate));
+    overflow: visible !important;
+
+    @include lg-down{
+      overflow: hidden!important;
+    }
 
     @include md-down {
       width: 100%;
@@ -55,6 +60,24 @@
   &--scroll {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateX(calc(var(--index) * -100%)) translateY(calc((var(--distance-from-active) * 100%) + 1px));
+
+    --gap: 3rem;
+    padding-top: var(--gap);
+    margin-top: negative(var(--gap));
+
+    &.active {
+      opacity: 1 !important;
+      @include lg-down {
+        opacity: unset !important;
+      }
+    }
+    &:not(.active) {
+      opacity: 0.25 !important;
+      @include lg-down {
+        opacity: unset !important;
+      }
+    }
+
     @include md-down {
       width: 100%;
       min-width: 100%;

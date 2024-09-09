@@ -5,11 +5,21 @@
 }
 
 .signup {
+  &.embed,
+  & .embed {
+    min-width: unset;
+  }
+
+  iframe {
+    @include marg-x-important(-12px);
+  }
+
   &--form-wrapper {
   }
   &--form {
   }
   &--heading {
+    margin-right: auto;
   }
   &--row {
   }

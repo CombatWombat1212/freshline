@@ -5,7 +5,11 @@
   --scrollbar-width: 15px;
 
   // --section-pad: 12rem!important;
-  --section-pad: 16rem!important;
+  --section-pad: 16rem !important;
+
+  @include lg-down {
+    --section-pad: 10rem !important;
+  }
 }
 
 body {

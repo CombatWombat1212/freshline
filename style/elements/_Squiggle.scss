@@ -1,11 +1,17 @@
 @mixin squiggle-vars {
-  $squiggle-stroke-width: 16px;
-  $squiggle-dot-size: 3.75rem;
+  // $squiggle-stroke-width: 16px;
+  // $squiggle-dot-size: 3.75rem;
 
-  --squiggle-stroke-width: #{$squiggle-stroke-width};
-  --squiggle-dot-size: #{$squiggle-dot-size};
+  --squiggle-dot-size: 3.75rem;
+  // --squiggle-stroke-width: 16px;
+  --squiggle-stroke-width: 16px;
   --squiggle-color: #{mix($col--accent, $col--charcoal__dark, 75%)};
   --squiggle-background-color: #{mix($col--turf, $col--charcoal__dark, 75%)};
+
+  @include lg-down {
+    --squiggle-dot-size: 3.25rem;
+    --squiggle-stroke-width: 16px;
+  }
 }
 
 .squiggle {
@@ -35,7 +41,7 @@
   }
 
   &--dot-inner {
-    --size: calc(var(--squiggle-dot-size) - (var(--squiggle-stroke-width) * 1.5));
+    --size: calc(var(--squiggle-dot-size) - (var(--squiggle-stroke-width) * 1.425));
     width: var(--size);
     height: var(--size);
     min-width: var(--size);
@@ -64,12 +70,12 @@
     @at-root .squiggle--child--1 .cls-1 {
       fill: none;
       stroke: var(--squiggle-background-color);
-      stroke-width: var(--squiggle-stroke-width);
+      stroke-width: calc(var(--squiggle-stroke-width) * 0.7);
     }
     @at-root .squiggle--child--2 .cls-1 {
       fill: none;
       stroke: var(--squiggle-color);
-      stroke-width: var(--squiggle-stroke-width);
+      stroke-width: calc(var(--squiggle-stroke-width) * 0.7);
     }
   }
 }

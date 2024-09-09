@@ -15,7 +15,8 @@
 
     .torn-split-section {
       @at-root #expeditions--hero.torn-split-section {
-        $section-color: $col--turf;
+        // $section-color: $col--turf;
+        $section-color: $col--charcoal;
         $pattern-opacity: 1 - 0.15;
         $url: "https://cdn.prod.website-files.com/6673386a4f6b7ddc70a5931f/667dd7f5200029ca6c243787_topographic-small.svg";
         background-image: linear-gradient(rgba($section-color, $pattern-opacity), rgba($section-color, $pattern-opacity)), url($url),
@@ -32,6 +33,10 @@
         }
       }
       &--body {
+        @include text {
+          color: $col--primary__lightest;
+        }
+
         @include lg-up {
           transform: translateY(-2rem);
         }
@@ -119,9 +124,17 @@
   }
   &--masonry {
   }
+  &--cta-wrapper {
+    &::before {
+      background-color: $col--charcoal__lightest;
+    }
+  }
+
   &--cta {
     padding-top: 0rem;
     max-width: 100vw;
+
+    background-color: $col--charcoal__lightest;
 
     .container {
       padding-top: var(--section-pad);

@@ -11,14 +11,22 @@
     background-color: $col--primary__lighter;
   }
 
+  &--row-wrapper {
+    @include lg-down {
+      width: 100%;
+    }
+  }
+
   &--row {
-    gap: 3rem !important;
+    @include gap(3rem);
   }
   &--image-wrapper {
+    // height: 26rem !important;
     width: 100%;
-    height: 26rem !important;
+    aspect-ratio: 3.5/4;
+    height: auto;
     @include lg-down {
-      height: 20rem !important;
+      // height: 20rem !important;
     }
   }
   &--image {

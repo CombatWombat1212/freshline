@@ -54,6 +54,11 @@
   }
 
   &--heading {
+    margin-top: 0.35rem;
+    margin-bottom: 0.25rem;
+    @include md-down{
+      // margin-bottom: 0.5rem;
+    }
   }
   &--paragraph {
   }

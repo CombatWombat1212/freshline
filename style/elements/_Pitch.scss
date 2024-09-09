@@ -27,16 +27,17 @@
     }
 
     &--graphic {
+      aspect-ratio: 3.75/4;
       @include lg-down {
-        height: 20rem;
-        aspect-ratio: unset;
+        // height: 20rem;
+        // aspect-ratio: unset;
       }
       @include md-down {
         order: 0;
         // height: 10rem;
       }
       @include sm-down {
-        height: 10rem;
+        // height: 10rem;+
       }
     }
     &--image {
