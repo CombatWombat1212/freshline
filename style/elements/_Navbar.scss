@@ -27,12 +27,11 @@
 
 .navigation {
   --nav-height: 4.25rem;
-  
+
   --logo-height: 2.5rem;
   --link-gap: 2.5rem;
-  
+
   --transition: 0.12s;
-  
 
   background-color: $col--charcoal;
   border: unset;
@@ -59,8 +58,8 @@
       background-color: $col--charcoal__light;
     }
 
-    @include lg-down{
-        max-width: 14rem;
+    @include lg-down {
+      max-width: 14rem;
     }
   }
 
@@ -78,22 +77,24 @@
     @include hover(".navigation--logo-wrapper", ".navigation--logo-svg") {
     }
 
-    [fill="#FAF6F0"] {
+    [fill*="#FAF6F0"],
+    [fill*="#faf6f0"] {
       transition: var(--transition) !important;
 
-      @include hover(".navigation--logo-wrapper", "[fill='#FAF6F0']") {
+      @include hover(".navigation--logo-wrapper", "[fill*='#FAF6F0'],[fill*='#faf6f0']") {
         // fill: mix($col--accent, $col--primary__lightest, 100%);
         fill: $col--primary__lighter;
       }
     }
 
-    [fill="#F05D31"] {
+    [fill*="#F05D31"],
+    [fill*="#f05d31"] {
       transition: var(--transition) !important;
 
       fill: $col--accent;
       transition: var(--transition) !important;
 
-      @include hover(".navigation--logo-wrapper", "[fill='#F05D31']") {
+      @include hover(".navigation--logo-wrapper", "[fill*='#F05D31'],[fill*='#f05d31']") {
         // fill: mix($col--accent, $col--primary__lightest, 20%);
         fill: darken($col--primary, 25%);
         // fill: $col--accent__hovered;
