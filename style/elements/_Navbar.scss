@@ -55,7 +55,7 @@
     transition: var(--transition) !important;
 
     @include hover {
-      background-color: $col--charcoal__light;
+      background-color: $col--charcoal__light!important;
     }
 
     @include lg-down {
@@ -85,7 +85,7 @@
 
       @include hover(".navigation--logo-wrapper", "[fill*='#FAF6F0'],[fill*='#faf6f0'],[style*='fill:#FAF6F0'],[style*='fill:#faf6f0']") {
         // fill: mix($col--accent, $col--primary__lightest, 100%);
-        fill: $col--primary__lighter;
+        fill: $col--primary__lighter!important;
       }
     }
 
@@ -100,7 +100,7 @@
 
       @include hover(".navigation--logo-wrapper", "[fill*='#F05D31'],[fill*='#f05d31'],[style*='fill:#F05D31'],[style*='fill:#f05d31']") {
         // fill: mix($col--accent, $col--primary__lightest, 20%);
-        fill: darken($col--primary, 25%);
+        fill: darken($col--primary, 25%)!important;
         // fill: $col--accent__hovered;
       }
     }

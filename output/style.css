@@ -610,7 +610,7 @@ body {
   transition: var(--transition);
 }
 .navigation--logo-wrapper:hover, .navigation--logo-wrapper:focus, .navigation--logo-wrapper.focus, .navigation--logo-wrapper.hover {
-  background-color: #414141;
+  background-color: #414141 !important;
 }
 @media screen and (max-width: 990px) {
   .navigation--logo-wrapper {
@@ -633,7 +633,7 @@ body {
   transition: var(--transition) !important;
 }
 .navigation--logo-wrapper:hover [fill*="#FAF6F0"], .navigation--logo-wrapper:focus [fill*="#FAF6F0"], .navigation--logo-wrapper.focus [fill*="#FAF6F0"], .navigation--logo-wrapper.hover [fill*="#FAF6F0"], .navigation--logo-wrapper:hover [fill*="#faf6f0"], .navigation--logo-wrapper:focus [fill*="#faf6f0"], .navigation--logo-wrapper.focus [fill*="#faf6f0"], .navigation--logo-wrapper.hover [fill*="#faf6f0"], .navigation--logo-wrapper:hover [style*="fill:#FAF6F0"], .navigation--logo-wrapper:focus [style*="fill:#FAF6F0"], .navigation--logo-wrapper.focus [style*="fill:#FAF6F0"], .navigation--logo-wrapper.hover [style*="fill:#FAF6F0"], .navigation--logo-wrapper:hover [style*="fill:#faf6f0"], .navigation--logo-wrapper:focus [style*="fill:#faf6f0"], .navigation--logo-wrapper.focus [style*="fill:#faf6f0"], .navigation--logo-wrapper.hover [style*="fill:#faf6f0"] {
-  fill: #f8e8d8;
+  fill: #f8e8d8 !important;
 }
 
 .navigation--logo-svg [fill*="#F05D31"],
@@ -645,7 +645,7 @@ body {
   transition: var(--transition) !important;
 }
 .navigation--logo-wrapper:hover [fill*="#F05D31"], .navigation--logo-wrapper:focus [fill*="#F05D31"], .navigation--logo-wrapper.focus [fill*="#F05D31"], .navigation--logo-wrapper.hover [fill*="#F05D31"], .navigation--logo-wrapper:hover [fill*="#f05d31"], .navigation--logo-wrapper:focus [fill*="#f05d31"], .navigation--logo-wrapper.focus [fill*="#f05d31"], .navigation--logo-wrapper.hover [fill*="#f05d31"], .navigation--logo-wrapper:hover [style*="fill:#F05D31"], .navigation--logo-wrapper:focus [style*="fill:#F05D31"], .navigation--logo-wrapper.focus [style*="fill:#F05D31"], .navigation--logo-wrapper.hover [style*="fill:#F05D31"], .navigation--logo-wrapper:hover [style*="fill:#f05d31"], .navigation--logo-wrapper:focus [style*="fill:#f05d31"], .navigation--logo-wrapper.focus [style*="fill:#f05d31"], .navigation--logo-wrapper.hover [style*="fill:#f05d31"] {
-  fill: #be7f3d;
+  fill: #be7f3d !important;
 }
 
 .navigation .w-nav-overlay {
