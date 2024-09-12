@@ -78,23 +78,27 @@
     }
 
     [fill*="#FAF6F0"],
-    [fill*="#faf6f0"] {
+    [fill*="#faf6f0"],
+    [style*="fill:#FAF6F0"],
+    [style*="fill:#faf6f0"] {
       transition: var(--transition) !important;
 
-      @include hover(".navigation--logo-wrapper", "[fill*='#FAF6F0'],[fill*='#faf6f0']") {
+      @include hover(".navigation--logo-wrapper", "[fill*='#FAF6F0'],[fill*='#faf6f0'],[style*='fill:#FAF6F0'],[style*='fill:#faf6f0']") {
         // fill: mix($col--accent, $col--primary__lightest, 100%);
         fill: $col--primary__lighter;
       }
     }
 
     [fill*="#F05D31"],
-    [fill*="#f05d31"] {
+    [fill*="#f05d31"],
+    [style*="fill:#F05D31"],
+    [style*="fill:#f05d31"] {
       transition: var(--transition) !important;
 
       fill: $col--accent;
       transition: var(--transition) !important;
 
-      @include hover(".navigation--logo-wrapper", "[fill*='#F05D31'],[fill*='#f05d31']") {
+      @include hover(".navigation--logo-wrapper", "[fill*='#F05D31'],[fill*='#f05d31'],[style*='fill:#F05D31'],[style*='fill:#f05d31']") {
         // fill: mix($col--accent, $col--primary__lightest, 20%);
         fill: darken($col--primary, 25%);
         // fill: $col--accent__hovered;
